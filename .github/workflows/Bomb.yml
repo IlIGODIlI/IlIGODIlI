@@ -4,8 +4,6 @@ on:
   schedule:
     - cron: "0 0 * * *"   # once a day at 00:00 UTC
   workflow_dispatch: {}    # lets you trigger it manually from the Actions tab
-  push:
-    branches: [ main ]
 
 jobs:
   build:
@@ -24,6 +22,13 @@ jobs:
           GH_TOKEN: ${{ secrets.BOMB_TOKEN }}
           GH_USERNAME: IlIGODIlI
         run: node scripts/generate-bomb-svg.js
+
+      - name: Pull latest changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
+    
 
       - name: Commit and push if changed
         uses: stefanzweifel/git-auto-commit-action@v5
