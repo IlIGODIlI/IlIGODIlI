@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binary IDE — Interactive Scene</title>
+<meta name="description" content="An interactive binary art scene: VS Code IDE typing code, hover to see the app output">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:#07090f;
+    display:flex;align-items:center;justify-content:center;
+    min-height:100vh;overflow:hidden;
+    font-family:'JetBrains Mono','Consolas','Courier New',monospace;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 50% 45%,#0e1424 0%,#07090f 70%);
+    z-index:0;
+  }
+  .wrap{position:relative;z-index:1;text-align:center}
+  #box{
+    position:relative;display:inline-block;padding:2px;
+    border-radius:14px;
+    background:linear-gradient(145deg,#1e2838,#0c1218,#1e2838);
+    box-shadow:0 0 90px rgba(0,0,0,.6),0 4px 30px rgba(0,0,0,.4);
+  }
+  #grid{
+    font-size:clamp(9px,1.3vmin,14px);
+    line-height:1.45;letter-spacing:.12em;
+    white-space:pre;display:inline-block;
+    padding:1.2rem 1.4rem;border-radius:12px;
+    background:#0a0e18;position:relative;cursor:crosshair;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.03),
+               inset 0 0 50px rgba(0,0,0,.5),
+               0 0 40px rgba(0,120,204,.02);
+  }
+  #grid::after{
+    content:'';position:absolute;inset:0;
+    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px);
+    pointer-events:none;border-radius:12px;
+  }
+  .c{transition:color .5s ease;display:inline}
+  .lbl{
+    color:#18263a;font-size:clamp(7px,.75vmin,10px);
+    letter-spacing:6px;text-transform:uppercase;
+    margin-top:1.3rem;transition:color .7s,letter-spacing .7s;
+    user-select:none;
+  }
+  .lbl.on{color:#1a6040;letter-spacing:9px}
+  .led{
+    position:absolute;top:10px;right:14px;
+    width:6px;height:6px;border-radius:50%;
+    background:#007acc;box-shadow:0 0 6px #007acc66;
+    transition:background .5s,box-shadow .5s;z-index:2;
+  }
+  .led.run{background:#27c93f;box-shadow:0 0 8px #27c93f88}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="box">
+    <div class="led" id="led"></div>
+    <div id="grid"></div>
+  </div>
+  <div class="lbl" id="lbl">hover to execute</div>
+</div>
+
+<script>
+const W=58, H=28;
+
+/* ─── palette ─── */
+const C={
+  BZ:'#2c2c34',BZL:'#383844',BZD:'#1a1a22',
+  CAM:'#444450',BASE:'#2a2a32',BLIT:'#363640',
+  BG:'#07090f',
+  /* IDE */
+  TT:'#323233',TAB:'#1e1e1e',TABI:'#2d2d2d',
+  DR:'#ff5f56',DY:'#ffbd2e',DG:'#27c93f',
+  AB:'#333340',ABI:'#808088',ABA:'#d4d4d4',
+  SB:'#252526',SBF:'#e8ab53',SBX:'#519aba',SBT:'#bbbbbb',
+  SBA:'#ffffff',SBAB:'#37373d',
+  ED:'#1e1e1e',LN:'#858585',MM:'#2a2a2a',
+  TB:'#1a1a1a',TS:'#2a2a2a',TP:'#27c93f',TX:'#aaaaaa',TC:'#cccccc',TU:'#569cd6',
+  ST:'#007acc',STT:'#ffffff',STG:'#e8ab53',
+  /* syntax */
+  KW:'#569cd6',SR:'#ce9178',FN:'#dcdcaa',VR:'#9cdcfe',
+  CM:'#6a9955',OP:'#d4d4d4',BK:'#ffd700',TY:'#4ec9b0',
+  NM:'#b5cea8',CT:'#c586c0',
+  /* app */
+  BRT:'#2b2b2b',BRA:'#1e1e1e',BRU:'#333340',BRTX:'#888888',BRL:'#27c93f',
+  N1:'#667eea',N2:'#764ba2',NT:'#ffffff',
+  HE:'#141428',HT:'#e0e0f0',HS:'#888898',
+  BN:'#00b894',
+  CD:'#1e1e38',CB1:'#667eea',CB2:'#f093fb',CB3:'#4facfe',
+  CN:'#ffffff',CL:'#888898',
+  CHB:'#141428',
+  CH1:'#667eea',CH2:'#f093fb',CH3:'#4facfe',CH4:'#43e97b',CH5:'#fa709a',
+  FO:'#0e0e20',FOT:'#444458',
+  APB:'#111124',
+};
+
+const cm={K:C.KW,S:C.SR,F:C.FN,V:C.VR,C:C.CM,O:C.OP,B:C.BK,T:C.TY,N:C.NM,P:C.CT};
+
+/* 16 lines of syntax-coloured code */
+const code=[
+  'CCCCCCCCCCCCCCCCCC',
+  'KKKKKK VVVVV KKKK SSSSSSS',
+  'KKKKKK B FFFFFFFF B KKKK SSSSSSS',
+  'KKKKKK B TTTTT B KKKK SSSSSS',
+  '',
+  'KKKKKKKK FFFFFFFFFOO B',
+  '  KKKKK BVVVVO VVVB O FFFFFFFFOBBO',
+  '  KKKKK VVVVV O SSSSSS',
+  '',
+  '  FFFFFFFFFOOO KK B',
+  '    FFFFFOVVVOOFFFFOVVVVVVVO',
+  '  BO BBO',
+  '',
+  '  PPPPPP O',
+  '    OTTTTT VVVVOBVVVVB OO',
+  '  O',
+];
+
+/* ─── helpers ─── */
+function mkG(f){return Array.from({length:H},()=>Array(W).fill(f))}
+function R(g,x,y,w,h,c){for(let j=Math.max(0,y);j<Math.min(H,y+h);j++)for(let i=Math.max(0,x);i<Math.min(W,x+w);i++)g[j][i]=c}
+function P(g,x,y,c){if(y>=0&&y<H&&x>=0&&x<W)g[y][x]=c}
+
+/* ─── shared laptop frame ─── */
+function laptop(g){
+  R(g,0,0,W,2,C.BZ); R(g,0,0,W,1,C.BZD);
+  P(g,0,0,C.BG); P(g,W-1,0,C.BG);
+  P(g,28,1,C.CAM); P(g,29,1,C.CAM);
+  R(g,0,25,W,2,C.BZ); R(g,0,26,W,1,C.BZD);
+  P(g,0,26,C.BG); P(g,W-1,26,C.BG);
+  R(g,0,2,2,23,C.BZ); R(g,56,2,2,23,C.BZ);
+  R(g,10,27,38,1,C.BASE); R(g,24,27,10,1,C.BLIT);
+}
+
+/* ═══════ Scene 1 — VS Code IDE ═══════ */
+function buildIDE(){
+  const g=mkG(C.BG);
+  laptop(g);
+  R(g,2,2,54,23,C.ED);
+
+  /* title bar */
+  R(g,2,2,54,1,C.TT);
+  P(g,4,2,C.DR); P(g,6,2,C.DY); P(g,8,2,C.DG);
+  R(g,14,2,10,1,C.TAB);
+  R(g,15,2,7,1,C.SBT);
+  R(g,25,2,8,1,C.TABI);
+  R(g,26,2,5,1,'#666666');
+
+  /* activity bar */
+  R(g,2,3,3,22,C.AB);
+  P(g,3,4,C.ABA); P(g,3,6,C.ABI); P(g,3,8,C.ABI);
+  P(g,3,10,C.ABI); P(g,3,12,C.ABI);
+
+  /* sidebar */
+  R(g,5,3,9,22,C.SB);
+  R(g,6,3,7,1,C.SBT);
+  P(g,6,5,C.SBF); R(g,8,5,3,1,C.SBT);
+  R(g,5,6,9,1,C.SBAB);
+  P(g,7,6,C.SBX); R(g,9,6,4,1,C.SBA);
+  P(g,7,7,C.SBX); R(g,9,7,5,1,C.SBT);
+  P(g,7,8,C.SBX); R(g,9,8,5,1,C.SBT);
+  P(g,7,9,C.SBX); R(g,9,9,4,1,C.SBT);
+
+  /* line numbers */
+  for(let r=3;r<=18;r++){
+    const n=r-2;
+    if(n<10) P(g,16,r,C.LN);
+    else{P(g,15,r,C.LN);P(g,16,r,C.LN)}
+  }
+
+  /* code content */
+  for(let i=0;i<code.length;i++){
+    const ln=code[i], row=3+i;
+    for(let j=0;j<ln.length;j++){
+      const ch=ln[j];
+      if(ch!==' '&&cm[ch]) P(g,17+j,row,cm[ch]);
+    }
+  }
+
+  /* minimap strip */
+  for(let r=3;r<=18;r++){
+    const ln=code[r-3]||'';
+    P(g,55,r,ln.length>0?C.MM:C.ED);
+    if(ln.length>5) P(g,54,r,'#252530');
+  }
+
+  /* terminal separator */
+  R(g,14,19,42,1,C.TS);
+  R(g,15,19,8,1,C.TX);
+
+  /* terminal */
+  R(g,14,20,42,4,C.TB);
+  P(g,15,20,C.TP); R(g,17,20,3,1,C.TC); R(g,21,20,3,1,C.TC); R(g,25,20,3,1,C.TC);
+  R(g,15,21,18,1,C.TX);
+  R(g,15,22,4,1,C.TC); R(g,20,22,5,1,C.TP); R(g,26,22,5,1,C.TC);
+  P(g,15,23,C.TP); R(g,17,23,6,1,C.TX); R(g,24,23,18,1,C.TU);
+
+  /* status bar */
+  R(g,2,24,54,1,C.ST);
+  R(g,3,24,3,1,C.STG); R(g,7,24,4,1,C.STT);
+  R(g,42,24,3,1,C.STT); R(g,46,24,7,1,C.STT);
+
+  return g;
+}
+
+/* ═══════ Scene 2 — Dashboard App ═══════ */
+function buildApp(){
+  const g=mkG(C.BG);
+  laptop(g);
+  R(g,2,2,54,23,C.APB);
+
+  /* browser tab bar */
+  R(g,2,2,54,1,C.BRT);
+  R(g,4,2,12,1,C.BRA);
+  R(g,5,2,9,1,C.SBT);
+
+  /* url bar */
+  R(g,2,3,54,1,C.BRU);
+  P(g,4,3,C.BRL);
+  R(g,6,3,14,1,C.BRTX);
+
+  /* navbar gradient */
+  for(let x=2;x<=55;x++){
+    const t=(x-2)/53;
+    const r=Math.round(0x66+(0x76-0x66)*t);
+    const gv=Math.round(0x7e+(0x4b-0x7e)*t);
+    const b=Math.round(0xea+(0xa2-0xea)*t);
+    const hex='#'+[r,gv,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+    P(g,x,4,hex); P(g,x,5,hex);
+  }
+  R(g,4,4,4,2,C.NT);
+  R(g,42,4,3,1,C.NT); R(g,46,4,4,1,C.NT); R(g,51,4,3,1,C.NT);
+
+  /* hero */
+  R(g,2,6,54,4,C.HE);
+  R(g,14,7,28,1,C.HT);
+  R(g,18,8,20,1,C.HS);
+  R(g,23,9,10,1,C.BN);
+
+  /* stats cards */
+  const cards=[[4,C.CB1],[21,C.CB2],[38,C.CB3]];
+  for(const[cx,cc]of cards){
+    R(g,cx,11,15,4,C.CD);
+    R(g,cx,11,15,1,cc);
+    R(g,cx+2,12,5,1,C.CN);
+    R(g,cx+2,13,7,1,C.CL);
+  }
+
+  /* chart area */
+  R(g,2,16,54,7,C.CHB);
+  R(g,4,16,9,1,C.CL);
+  P(g,50,16,C.DG); R(g,51,16,3,1,C.TP);
+
+  /* chart bars */
+  const bars=[
+    [6,4,C.CH1],[10,6,C.CH2],[14,2,C.CH3],[18,5,C.CH4],
+    [22,7,C.CH1],[26,3,C.CH5],[30,5,C.CH3],[34,2,C.CH2],
+    [38,6,C.CH4],[42,4,C.CH1],[46,5,C.CH5],[50,7,C.CH3],
+  ];
+  for(const[bx,bh,bc]of bars) R(g,bx,23-bh,3,bh,bc);
+
+  /* footer */
+  R(g,2,23,54,1,C.FO);
+  R(g,18,23,20,1,C.FOT);
+  R(g,2,24,54,1,C.APB);
+
+  return g;
+}
+
+/* ─── build ─── */
+const s1=buildIDE(), s2=buildApp();
+
+/* random binary */
+const ch=Array.from({length:H},()=>Array.from({length:W},()=>Math.random()>.5?'1':'0'));
+
+/* ─── DOM ─── */
+const gridEl=document.getElementById('grid');
+const cells=[];
+const frag=document.createDocumentFragment();
+for(let y=0;y<H;y++){
+  cells[y]=[];
+  for(let x=0;x<W;x++){
+    const s=document.createElement('span');
+    s.className='c';
+    s.textContent=ch[y][x];
+    s.style.color=s1[y][x];
+    frag.appendChild(s);
+    cells[y].push(s);
+  }
+  frag.appendChild(document.createTextNode('\n'));
+}
+gridEl.appendChild(frag);
+
+/* ─── typing animation ─── */
+let tTimers=[], tLine=0, tCol=0;
+const codeStartCol=17, codeStartRow=3, codeW=38;
+
+function clearTypingTimers(){tTimers.forEach(clearTimeout);tTimers=[]}
+
+function clearCodeArea(){
+  for(let i=0;i<code.length;i++)
+    for(let j=0;j<codeW;j++){
+      const r=codeStartRow+i, c=codeStartCol+j;
+      if(r<H&&c<W) cells[r][c].style.color=C.ED;
+    }
+}
+
+function typeNext(){
+  if(hovering)return;
+  if(tLine>=code.length){
+    tTimers.push(setTimeout(()=>{
+      if(!hovering){clearCodeArea();tLine=0;tCol=0;tTimers.push(setTimeout(typeNext,300))}
+    },2200));
+    return;
+  }
+  const ln=code[tLine];
+  if(!ln){tLine++;tCol=0;tTimers.push(setTimeout(typeNext,120));return}
+  if(tCol>=ln.length){tLine++;tCol=0;tTimers.push(setTimeout(typeNext,60));return}
+
+  const row=codeStartRow+tLine, col=codeStartCol+tCol;
+  const c=ln[tCol];
+  if(c!==' '&&cm[c]&&row<H&&col<W) cells[row][col].style.color=cm[c];
+
+  /* cursor at next pos */
+  const nc=codeStartCol+tCol+1;
+  if(nc<W&&row<H) cells[row][nc].style.color='#aeafad';
+
+  tCol++;
+  tTimers.push(setTimeout(typeNext,30+Math.random()*50));
+}
+
+function startTyping(){
+  clearTypingTimers();
+  clearCodeArea();
+  tLine=0;tCol=0;
+  typeNext();
+}
+
+/* blank code area initially, then start typing */
+clearCodeArea();
+setTimeout(startTyping,600);
+
+/* ─── transition ─── */
+let pending=[], hovering=false;
+const lbl=document.getElementById('lbl'), led=document.getElementById('led');
+
+function gp(e){
+  const r=gridEl.getBoundingClientRect();
+  const st=getComputedStyle(gridEl);
+  const px=parseFloat(st.paddingLeft)||0,py=parseFloat(st.paddingTop)||0;
+  const iw=r.width-px*2,ih=r.height-py*2;
+  return[
+    Math.max(0,Math.min(W-1,Math.floor(((e.clientX-r.left-px)/iw)*W))),
+    Math.max(0,Math.min(H-1,Math.floor(((e.clientY-r.top-py)/ih)*H)))
+  ];
+}
+
+function ripple(target,ox,oy){
+  pending.forEach(clearTimeout);pending=[];
+  const mx=Math.hypot(W,H);
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    const d=Math.hypot(x-ox,y-oy);
+    pending.push(setTimeout(()=>{
+      cells[y][x].style.color=target[y][x];
+      if(Math.random()>.5){ch[y][x]=ch[y][x]==='0'?'1':'0';cells[y][x].textContent=ch[y][x]}
+    },(d/mx)*750));
+  }
+}
+
+gridEl.addEventListener('mouseenter',e=>{
+  hovering=true;
+  clearTypingTimers();
+  const[mx,my]=gp(e);
+  ripple(s2,mx,my);
+  lbl.textContent='● live';lbl.classList.add('on');
+  led.classList.add('run');
+});
+
+gridEl.addEventListener('mouseleave',e=>{
+  hovering=false;
+  const[mx,my]=gp(e);
+  ripple(s1,mx,my);
+  lbl.textContent='hover to execute';lbl.classList.remove('on');
+  led.classList.remove('run');
+  setTimeout(()=>{if(!hovering)startTyping()},1000);
+});
+
+gridEl.addEventListener('touchstart',e=>{
+  e.preventDefault();
+  const t=e.touches[0];
+  const[mx,my]=gp({clientX:t.clientX,clientY:t.clientY});
+  hovering=!hovering;
+  if(hovering){
+    clearTypingTimers();
+    ripple(s2,mx,my);
+    lbl.textContent='● live';lbl.classList.add('on');led.classList.add('run');
+  }else{
+    ripple(s1,mx,my);
+    lbl.textContent='hover to execute';lbl.classList.remove('on');led.classList.remove('run');
+    setTimeout(()=>{if(!hovering)startTyping()},1000);
+  }
+},{passive:false});
+
+/* ─── ambient ─── */
+setInterval(()=>{
+  for(let i=0;i<2;i++){
+    const x=Math.floor(Math.random()*W),y=Math.floor(Math.random()*H);
+    ch[y][x]=ch[y][x]==='0'?'1':'0';cells[y][x].textContent=ch[y][x];
+  }
+},200);
+
+/* live-dot pulse in app mode */
+setInterval(()=>{
+  if(hovering){
+    const on=Math.sin(Date.now()/400)>0;
+    cells[16][50].style.color=on?'#27c93f':'#0a3018';
+  }
+},120);
+</script>
+</body>
+</html>
