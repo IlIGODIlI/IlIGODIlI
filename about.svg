@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono&amp;display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;display=swap');
     
     .bg {
       fill: #0b0f19;
@@ -10,76 +10,60 @@
     }
     .text-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 500;
       fill: #00E5FF;
+      text-anchor: middle;
     }
     .text-body {
       font-family: 'Outfit', sans-serif;
-      font-size: 13.5px;
-      line-height: 1.5;
+      font-size: 13px;
       fill: #c9d1d9;
       font-weight: 300;
+      text-anchor: middle;
+      opacity: 0;
     }
-    .cursor {
-      fill: #00E5FF;
-      animation: blink 0.8s infinite steps(2);
-    }
-    @keyframes blink {
+    
+    /* Ultra-compatible opacity animation instead of clipPaths */
+    @keyframes line-reveal {
       0%, 100% { opacity: 0; }
-      50% { opacity: 1; }
+      10%, 90% { opacity: 1; }
     }
-    /* Typing reveals via clipPath scaling */
-    @keyframes type-line1 {
-      0% { width: 0; }
-      30%, 100% { width: 180px; }
-    }
-    @keyframes type-line2 {
-      0%, 30% { width: 0; }
-      60%, 100% { width: 180px; }
-    }
-    @keyframes type-line3 {
-      0%, 60% { width: 0; }
-      90%, 100% { width: 180px; }
-    }
-    .line-1 { animation: type-line1 8s infinite steps(25); }
-    .line-2 { animation: type-line2 8s infinite steps(25); }
-    .line-3 { animation: type-line3 8s infinite steps(25); }
+    
+    .t1 { animation: line-reveal 9s infinite ease-in-out; animation-delay: 0.5s; }
+    .t2 { animation: line-reveal 9s infinite ease-in-out; animation-delay: 3s; }
+    .t3 { animation: line-reveal 9s infinite ease-in-out; animation-delay: 5.5s; }
   </style>
   
   <rect class="bg" width="220" height="220" />
   
-  <clipPath id="clip-1">
-    <rect class="line-1" x="20" y="30" height="30" width="180" />
-  </clipPath>
-  <clipPath id="clip-2">
-    <rect class="line-2" x="20" y="60" height="30" width="180" />
-  </clipPath>
-  <clipPath id="clip-3">
-    <rect class="line-3" x="20" y="90" height="30" width="180" />
-  </clipPath>
-
-  <g transform="translate(20, 45)">
-    <!-- Header Title -->
+  <!-- Bio Text Groups -->
+  <g transform="translate(110, 60)">
+    <!-- Header -->
     <text class="text-title" x="0" y="0">About Me</text>
     
-    <!-- Typing lines -->
-    <g transform="translate(0, 30)">
-      <!-- Line 1 -->
-      <g clip-path="url(#clip-1)">
+    <!-- Text body blocks cycling -->
+    <g transform="translate(0, 40)">
+      <!-- Block 1 -->
+      <g class="t1">
         <text class="text-body" x="0" y="0">AI enthusiast,</text>
-      </g>
-      <!-- Line 2 -->
-      <g clip-path="url(#clip-2)">
         <text class="text-body" x="0" y="20">backend developer, and</text>
-      </g>
-      <!-- Line 3 -->
-      <g clip-path="url(#clip-3)">
         <text class="text-body" x="0" y="40">lifelong learner.</text>
       </g>
       
-      <!-- Blinking Cursor -->
-      <rect class="cursor" x="120" y="28" width="2" height="13" />
+      <!-- Block 2 -->
+      <g class="t2">
+        <text class="text-body" x="0" y="0">Driven by curiosity</text>
+        <text class="text-body" x="0" y="20">and creating positive</text>
+        <text class="text-body" x="0" y="40">community impact.</text>
+      </g>
+
+      <!-- Block 3 -->
+      <g class="t3">
+        <text class="text-body" x="0" y="0">Building tools that</text>
+        <text class="text-body" x="0" y="20">challenge me and</text>
+        <text class="text-body" x="0" y="40">help other developers.</text>
+      </g>
     </g>
   </g>
 </svg>

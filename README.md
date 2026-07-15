@@ -6,9 +6,13 @@
 
 ---
 
-<!-- Top Title Banner -->
+<!-- Top Title Banner (Clickable Link to Deployed HTML with Mouse Physics) -->
 <p align="center">
-  <img src="title.svg" alt="Aryan Nair Skyline Banner" width="900" style="max-width: 100%; border-radius: 12px;" />
+  <a href="https://IlIGODIlI.github.io/IlIGODIlI/title.html" target="_blank">
+    <img src="title.svg" alt="Aryan Nair Skyline Banner" width="900" style="max-width: 100%; border-radius: 12px;" />
+  </a>
+  <br>
+  <sub>💡 <b>Interactive Demo:</b> Click the banner above to open the live 3D pointer-spring physics grid.</sub>
 </p>
 
 ---
@@ -18,10 +22,18 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="10">
   <tr>
     <td width="50%" align="center" valign="top">
-      <img src="binary-clock.svg" alt="Binary Clock Widget" width="420" style="max-width: 100%; border-radius: 12px;" />
+      <a href="https://IlIGODIlI.github.io/IlIGODIlI/binary-clock.html" target="_blank">
+        <img src="binary-clock.svg" alt="Binary Clock Widget" width="420" style="max-width: 100%; border-radius: 12px;" />
+      </a>
+      <br>
+      <sub>💡 Click to view the ticking, real-time live atomic clock.</sub>
     </td>
     <td width="50%" align="center" valign="top">
-      <img src="binary-room.svg" alt="Binary Room Widget" width="420" style="max-width: 100%; border-radius: 12px;" />
+      <a href="https://IlIGODIlI.github.io/IlIGODIlI/binary-room.html" target="_blank">
+        <img src="binary-room.svg" alt="Binary Room Widget" width="420" style="max-width: 100%; border-radius: 12px;" />
+      </a>
+      <br>
+      <sub>💡 Click to launch the live coding VS Code space.</sub>
     </td>
   </tr>
 </table>
@@ -46,10 +58,18 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="10">
   <tr>
     <td width="50%" align="right" valign="top">
-      <img src="about.svg" alt="About Bio Widget" width="220" style="border-radius: 12px;" />
+      <a href="https://IlIGODIlI.github.io/IlIGODIlI/about.html" target="_blank">
+        <img src="about.svg" alt="About Bio Widget" width="220" style="border-radius: 12px;" />
+      </a>
+      <br>
+      <p align="center"><sub>💡 Click to launch the typing bio loop.</sub></p>
     </td>
     <td width="50%" align="left" valign="top">
-      <img src="project.svg" alt="Project Widget" width="220" style="border-radius: 12px;" />
+      <a href="https://IlIGODIlI.github.io/IlIGODIlI/project.html" target="_blank">
+        <img src="project.svg" alt="Project Widget" width="220" style="border-radius: 12px;" />
+      </a>
+      <br>
+      <p align="center"><sub>💡 Click to launch the repository scanner.</sub></p>
     </td>
   </tr>
 </table>
@@ -59,7 +79,9 @@
 ### 🛠️ Interactive Tech Stack Loop
 
 <p align="center">
-  <img src="tech-stack.svg" alt="Tech Stack Loop Carousel" width="900" style="max-width: 100%; border-radius: 12px;" />
+  <a href="https://IlIGODIlI.github.io/IlIGODIlI/tech-stack.html" target="_blank">
+    <img src="tech-stack.svg" alt="Tech Stack Loop Carousel" width="900" style="max-width: 100%; border-radius: 12px;" />
+  </a>
 </p>
 
 ---
