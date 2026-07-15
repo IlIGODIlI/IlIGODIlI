@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binary Atomic Clock — IST</title>
+<meta name="description" content="A mechanical-atomic hybrid clock rendered in colored binary digits, showing Indian Standard Time">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:#07090f;display:flex;align-items:center;justify-content:center;
+    min-height:100vh;overflow:hidden;
+    font-family:'JetBrains Mono','Consolas','Courier New',monospace;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse at 50% 42%,#10162a 0%,#07090f 65%);
+    z-index:0;
+  }
+  .wrap{position:relative;z-index:1;text-align:center}
+  #box{
+    position:relative;display:inline-block;padding:2px;
+    border-radius:14px;
+    background:linear-gradient(145deg,#1e2838,#0c1218,#1e2838);
+    box-shadow:0 0 100px rgba(0,0,0,.6),0 0 40px rgba(192,160,96,.025);
+  }
+  #grid{
+    font-size:clamp(9px,1.3vmin,14px);line-height:1.45;letter-spacing:.12em;
+    white-space:pre;display:inline-block;padding:1.2rem 1.4rem;
+    border-radius:12px;background:#080c16;position:relative;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.02),
+               inset 0 0 60px rgba(0,0,0,.6),
+               0 0 50px rgba(192,160,96,.02);
+  }
+  #grid::after{
+    content:'';position:absolute;inset:0;
+    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.035) 2px,rgba(0,0,0,.035) 4px);
+    pointer-events:none;border-radius:12px;
+  }
+  .c{transition:color .2s ease;display:inline}
+  .lbl{
+    color:#1a2a3a;font-size:clamp(7px,.75vmin,10px);
+    letter-spacing:7px;text-transform:uppercase;
+    margin-top:1.4rem;user-select:none;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="box"><div id="grid"></div></div>
+  <div class="lbl">indian standard time</div>
+</div>
+<script>
+const W=56,H=28,CX=28,CY=11,CR=8.5,A=.5;
+
+/* ─── palette ─── */
+const $={
+  BG:'#080c16',B1:'#0a1020',B2:'#0d1428',
+  FC:'#101828',F2:'#131c2c',
+  RG:'#8a7840',R2:'#a89050',GR:'#6a5830',GR2:'#584820',
+  MK:'#ffd700',M2:'#886a20',
+  HH:'#d4a040',H2:'#b08830',
+  MN:'#569cd6',M3:'#4888b8',
+  SC:'#ff5f56',S2:'#cc4440',S3:'#aa3030',
+  PV:'#e0e0e0',P2:'#a0a0a8',
+  OB:'#183434',O2:'#122a2a',O3:'#0e2222',
+  EL:'#4ec9b0',E2:'#38a890',
+  IN:'#161630',
+  DG:'#00ff88',D2:'#00884a',D3:'#004a28',
+  SW:'#2a2a34',
+  ARC:'#662820',AR2:'#aa4038',
+};
+
+/* 3×5 digit bitmaps */
+const DT=[
+  [7,5,5,5,7],[2,2,2,2,2],[7,1,7,4,7],[7,1,7,1,7],[5,5,7,1,1],
+  [7,4,7,1,7],[7,4,7,5,7],[7,1,1,1,1],[7,5,7,5,7],[7,5,7,1,7],
+];
+
+/* ─── helpers ─── */
+function mk(f){return Array.from({length:H},()=>Array(W).fill(f))}
+function P(g,x,y,c){if(y>=0&&y<H&&x>=0&&x<W)g[y][x]=c}
+
+/* clock-angle → grid pixel (0=12 o'clock, clockwise) */
+function cg(r,a){return[Math.round(CX+r*Math.sin(a)/A),Math.round(CY-r*Math.cos(a))]}
+
+/* pixels along a hand */
+function hp(a,l){
+  const s=new Set(),n=Math.ceil(l*6);
+  for(let i=0;i<=n;i++){const[x,y]=cg(i/n*l,a);s.add(x+','+y)}
+  return[...s].map(p=>p.split(',').map(Number));
+}
+
+/* distance from clock center in visual units */
+function cdist(x,y){const dx=(x-CX)*A,dy=y-CY;return Math.sqrt(dx*dx+dy*dy)}
+
+/* ═══════ build clock frame ═══════ */
+function build(h,m,s,ms){
+  const g=mk($.BG);
+  const now=Date.now();
+
+  /* ── background radial glow ── */
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    const d=cdist(x,y);
+    if(d<15) g[y][x]=d<9?$.B2:d<13?$.B1:$.BG;
+  }
+
+  /* ── 3 orbital ellipses (atomic) ── */
+  const orbs=[[25,3.5,.2,$.OB],[20,5.2,-.28,$.OB],[27,2,.07,$.O2]];
+  for(const[sa,sb,tl,cl]of orbs){
+    const n=Math.max(sa,sb)*10;
+    for(let i=0;i<n;i++){
+      const th=i/n*Math.PI*2;
+      const ex=sa*Math.cos(th),ey=sb*Math.sin(th);
+      const rx=ex*Math.cos(tl)-ey*Math.sin(tl);
+      const ry=ex*Math.sin(tl)+ey*Math.cos(tl);
+      const px=Math.round(CX+rx),py=Math.round(CY+ry);
+      /* faint dashes */
+      if(i%4<3) P(g,px,py,cl);
+    }
+  }
+
+  /* ── orbiting electrons (2) ── */
+  for(let oi=0;oi<2;oi++){
+    const[sa,sb,tl]=orbs[oi];
+    const spd=oi?2600:4200;
+    const et=now/spd*Math.PI*2;
+    const ex=sa*Math.cos(et),ey=sb*Math.sin(et);
+    const px=Math.round(CX+ex*Math.cos(tl)-ey*Math.sin(tl));
+    const py=Math.round(CY+ex*Math.sin(tl)+ey*Math.cos(tl));
+    if(cdist(px,py)>CR-.8){
+      P(g,px,py,$.EL);P(g,px-1,py,$.E2);P(g,px+1,py,$.E2);
+    }
+  }
+
+  /* ── clock face fill ── */
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    if(cdist(x,y)<CR-.5) g[y][x]=(x+y)%7<2?$.F2:$.FC;
+  }
+
+  /* ── inner concentric mechanism rings ── */
+  for(const ir of[3,5,7]){
+    const n=Math.ceil(ir*16);
+    for(let i=0;i<n;i++){
+      const a=i/n*Math.PI*2;
+      const[px,py]=cg(ir,a);
+      if(cdist(px,py)<CR-1) P(g,px,py,$.IN);
+    }
+  }
+
+  /* ── seconds progress arc (chronograph bezel) ── */
+  const sf=(s+ms/1000)/60;
+  const arcN=140;
+  for(let i=0;i<arcN;i++){
+    const a=i/arcN*Math.PI*2;
+    if(a<=sf*Math.PI*2){
+      const[px,py]=cg(CR+.4,a);
+      P(g,px,py,a>sf*Math.PI*2-.3?$.AR2:$.ARC);
+    }
+  }
+
+  /* ── clock ring with gear teeth texture ── */
+  const ringN=200;
+  for(let i=0;i<ringN;i++){
+    const a=i/ringN*Math.PI*2;
+    const[px,py]=cg(CR,a);
+    P(g,px,py,i%16<5?$.R2:$.RG);
+  }
+
+  /* ── gear protrusions at 12 hour positions ── */
+  for(let hi=0;hi<12;hi++){
+    const a=hi*Math.PI/6;
+    for(const dr of[.6,1.1,1.5]){
+      const[px,py]=cg(CR+dr,a);
+      P(g,px,py,dr<1?$.GR:$.GR2);
+    }
+  }
+
+  /* ── 60 minute tick marks (every 5th = hour mark) ── */
+  for(let mi=0;mi<60;mi++){
+    const a=mi*Math.PI/30;
+    const isH=mi%5===0;
+    const r1=CR-(isH?1.8:1.1), r2=CR-.5;
+    const steps=Math.ceil((r2-r1)*4);
+    for(let j=0;j<=steps;j++){
+      const r=r1+j/steps*(r2-r1);
+      const[px,py]=cg(r,a);
+      P(g,px,py,isH?$.MK:$.M2);
+    }
+  }
+
+  /* ── cardinal position markers (12,3,6,9) ── */
+  for(let ci=0;ci<4;ci++){
+    const a=ci*Math.PI/2;
+    const[px,py]=cg(CR-2.5,a);
+    P(g,px,py,$.MK);
+    /* tiny cross */
+    P(g,px+1,py,$.M2);P(g,px-1,py,$.M2);
+  }
+
+  /* ── hour hand (thick, gold) ── */
+  const hA=((h%12)+m/60+s/3600)*Math.PI/6;
+  for(const[px,py]of hp(hA,4.2)){
+    P(g,px,py,$.HH);P(g,px-1,py,$.H2);P(g,px+1,py,$.H2);
+  }
+
+  /* ── minute hand (medium, blue) ── */
+  const mA=(m+s/60)*Math.PI/30;
+  for(const[px,py]of hp(mA,6.2)){
+    P(g,px,py,$.MN);P(g,px+1,py,$.M3);
+  }
+
+  /* ── second hand (thin, red) + counterweight tail ── */
+  const fS=s+ms/1000;
+  const sA=fS*Math.PI/30;
+  for(const[px,py]of hp(sA,7.8)) P(g,px,py,$.SC);
+  for(const[px,py]of hp(sA+Math.PI,2)) P(g,px,py,$.S2);
+
+  /* ── center pivot ── */
+  P(g,CX,CY,$.PV);
+  P(g,CX-1,CY,$.P2);P(g,CX+1,CY,$.P2);
+  P(g,CX,CY-1,$.P2);P(g,CX,CY+1,$.P2);
+  P(g,CX-2,CY,$.IN);P(g,CX+2,CY,$.IN);
+
+  /* ── corner mounting screws ── */
+  for(const[sx,sy]of[[2,0],[53,0],[2,27],[53,27]]){
+    P(g,sx,sy,$.SW);P(g,sx+1,sy,$.SW);
+  }
+
+  /* ── digital time readout (rows 22-26) ── */
+  const tx=15,ty=22;
+  const digits=[Math.floor(h/10),h%10,-1,Math.floor(m/10),m%10,-1,Math.floor(s/10),s%10];
+  const blink=ms<500;
+  let dx=tx;
+
+  /* dim glow behind digits */
+  for(let gy=ty-1;gy<=ty+5;gy++)
+    for(let gx=tx-1;gx<=tx+28;gx++)
+      if(gy>=0&&gy<H&&gx>=0&&gx<W&&g[gy][gx]===$.BG) P(g,gx,gy,$.D3);
+
+  for(const d of digits){
+    if(d===-1){
+      if(blink){P(g,dx,ty+1,$.DG);P(g,dx,ty+3,$.DG)}
+      else{P(g,dx,ty+1,$.D2);P(g,dx,ty+3,$.D2)}
+      dx+=2;
+    }else{
+      const bm=DT[d];
+      for(let r=0;r<5;r++)for(let c=0;c<3;c++)
+        if(bm[r]&(1<<(2-c))) P(g,dx+c,ty+r,$.DG);
+      dx+=4;
+    }
+  }
+
+  /* ── "IST" label at row 21 ── */
+  const ist=[[7,2,2,2,7],[7,4,7,1,7],[7,2,2,2,2]]; /* I S T */
+  const lx=25;
+  for(let li=0;li<3;li++){
+    const bm=ist[li];
+    for(let r=0;r<5;r++)for(let c=0;c<3;c++)
+      if(bm[r]&(1<<(2-c))) P(g,lx+li*4+c,ty-1,$.D2);
+  }
+  /* Actually IST is 5 rows but we only have 1 row at ty-1.
+     Let me render IST as a compact 1-row label instead */
+
+  return g;
+}
+
+/* ─── DOM ─── */
+const ch=Array.from({length:H},()=>Array.from({length:W},()=>Math.random()>.5?'1':'0'));
+const gridEl=document.getElementById('grid');
+const cells=[];
+const frag=document.createDocumentFragment();
+for(let y=0;y<H;y++){
+  cells[y]=[];
+  for(let x=0;x<W;x++){
+    const sp=document.createElement('span');
+    sp.className='c';sp.textContent=ch[y][x];sp.style.color=$.BG;
+    frag.appendChild(sp);cells[y].push(sp);
+  }
+  frag.appendChild(document.createTextNode('\n'));
+}
+gridEl.appendChild(frag);
+
+/* ─── tick ─── */
+let cur=mk('');
+
+function tick(){
+  const now=new Date();
+  const ist=new Date(now.getTime()+(330+now.getTimezoneOffset())*60000);
+  const hr=ist.getHours(),mn=ist.getMinutes(),sc=ist.getSeconds(),ms=ist.getMilliseconds();
+  const g=build(hr,mn,sc,ms);
+
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    if(g[y][x]!==cur[y][x]){
+      cells[y][x].style.color=g[y][x];
+      cur[y][x]=g[y][x];
+      if(Math.random()>.55){
+        ch[y][x]=ch[y][x]==='0'?'1':'0';
+        cells[y][x].textContent=ch[y][x];
+      }
+    }
+  }
+}
+
+tick();
+setInterval(tick,150);
+
+/* ambient flicker */
+setInterval(()=>{
+  for(let i=0;i<3;i++){
+    const x=Math.floor(Math.random()*W),y=Math.floor(Math.random()*H);
+    ch[y][x]=ch[y][x]==='0'?'1':'0';cells[y][x].textContent=ch[y][x];
+  }
+},200);
+</script>
+</body>
+</html>
