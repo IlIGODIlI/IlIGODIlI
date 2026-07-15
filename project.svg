@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;display=swap');
+    
+    .bg {
+      fill: #0b0f19;
+      stroke: rgba(0, 229, 255, 0.08);
+      stroke-width: 1;
+      rx: 12px;
+    }
+    .text-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      fill: #00E5FF;
+      filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.3));
+    }
+    .text-bold {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      fill: #00E5FF;
+      filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.3));
+    }
+    .text-body {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      fill: #e2e8f0;
+      font-weight: 300;
+    }
+    
+    /* Elegant vertical scanline sweeping across the project card */
+    @keyframes scan {
+      0% { top: 0; opacity: 0; transform: translateY(0); }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100% { opacity: 0; transform: translateY(180px); }
+    }
+    .scan-bar {
+      fill: linear-gradient(90deg, transparent, #00E5FF, transparent);
+      opacity: 0;
+      animation: scan 4s infinite linear;
+    }
+  </style>
+  
+  <rect class="bg" width="220" height="220" />
+  
+  <g transform="translate(24, 45)">
+    <!-- Project Description -->
+    <text class="text-bold" x="0" y="0">Currently building</text>
+    <text class="text-title" x="0" y="32">RepoLens,</text>
+    <text class="text-body" x="0" y="60">making every</text>
+    <text class="text-body" x="0" y="84">repository easier</text>
+    <text class="text-body" x="0" y="108">to understand.</text>
+  </g>
+
+  <!-- Sweeping Scan line -->
+  <rect class="scan-bar" x="2" y="10" width="216" height="2" fill="#00E5FF" />
+</svg>

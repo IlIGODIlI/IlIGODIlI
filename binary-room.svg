@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 220" width="420" height="220">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;display=swap');
+    
+    .bg {
+      fill: #0b0f19;
+      stroke: rgba(0, 229, 255, 0.08);
+      stroke-width: 1;
+      rx: 12px;
+    }
+    .pane-border {
+      stroke: rgba(255, 255, 255, 0.06);
+      stroke-width: 1;
+    }
+    .pane-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      fill: #4c4c5e;
+    }
+    .code-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      fill: #a9b1d6;
+    }
+    .tag { fill: #f7768e; }
+    .attr { fill: #e0af68; }
+    .val { fill: #9ece6a; }
+    .term-green { fill: #73daca; }
+    .term-dim { fill: #565f89; }
+
+    /* Typing / Compiling active scroll line keyframe */
+    @keyframes line-reveal {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+    .act-line {
+      animation: line-reveal 2s infinite ease-in-out;
+    }
+  </style>
+  
+  <rect class="bg" width="420" height="220" />
+  
+  <!-- Left Editor Pane -->
+  <g transform="translate(15, 15)">
+    <rect width="185" height="190" fill="#090d16" rx="6" />
+    <text class="pane-title" x="12" y="18">src/App.js</text>
+    <line class="pane-border" x1="0" y1="28" x2="185" y2="28" />
+    
+    <!-- Code Blocks -->
+    <g transform="translate(12, 45)" class="code-text">
+      <text x="0" y="10">&lt;<tspan class="tag">div</tspan> className="App"&gt;</text>
+      <text x="10" y="25" class="act-line">&lt;<tspan class="tag">Cubes</tspan> <tspan class="attr">gridSize</tspan>=<tspan class="val">{8}</tspan></text>
+      <text x="20" y="40">&lt;<tspan class="attr">maxAngle</tspan>=<tspan class="val">{45}</tspan></text>
+      <text x="20" y="55">&lt;<tspan class="attr">autoAnimate</tspan></text>
+      <text x="20" y="70">&lt;<tspan class="attr">faceColor</tspan>=<tspan class="val">"#1a1a2e"</tspan></text>
+      <text x="10" y="85">/&gt;</text>
+      <text x="0" y="100">&lt;/<tspan class="tag">div</tspan>&gt;</text>
+    </g>
+  </g>
+
+  <!-- Right Terminal Pane -->
+  <g transform="translate(220, 15)">
+    <rect width="185" height="190" fill="#05080e" rx="6" />
+    <text class="pane-title" x="12" y="18">terminal</text>
+    <line class="pane-border" x1="0" y1="28" x2="185" y2="28" />
+    
+    <!-- Logs Blocks -->
+    <g transform="translate(12, 45)" class="code-text">
+      <text x="0" y="10" class="term-dim">$ npm run dev</text>
+      <text x="0" y="25" class="term-green">> repo-lens@1.0.0 dev</text>
+      <text x="0" y="40">> next dev</text>
+      <text x="0" y="60" class="act-line">ready - started server on port 3000</text>
+      <text x="0" y="75" class="term-green">event - compiled client successfully</text>
+      <text x="0" y="90" class="term-dim">Parsed: 42 files (insights ready)</text>
+    </g>
+  </g>
+</svg>

@@ -8,7 +8,7 @@
 
 <!-- Top Title Banner -->
 <p align="center">
-  <iframe src="title.html" width="900" height="220" frameborder="0" scrolling="no" style="border: none; border-radius: 12px; max-width: 100%;"></iframe>
+  <img src="title.svg" alt="Aryan Nair Skyline Banner" width="900" style="max-width: 100%; border-radius: 12px;" />
 </p>
 
 ---
@@ -18,10 +18,10 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="10">
   <tr>
     <td width="50%" align="center" valign="top">
-      <iframe src="binary-clock.html" width="420" height="220" frameborder="0" scrolling="no" style="border: none; border-radius: 12px; max-width: 100%;"></iframe>
+      <img src="binary-clock.svg" alt="Binary Clock Widget" width="420" style="max-width: 100%; border-radius: 12px;" />
     </td>
     <td width="50%" align="center" valign="top">
-      <iframe src="binary-room.html" width="420" height="220" frameborder="0" scrolling="no" style="border: none; border-radius: 12px; max-width: 100%;"></iframe>
+      <img src="binary-room.svg" alt="Binary Room Widget" width="420" style="max-width: 100%; border-radius: 12px;" />
     </td>
   </tr>
 </table>
@@ -46,10 +46,10 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="10">
   <tr>
     <td width="50%" align="right" valign="top">
-      <iframe src="about.html" width="220" height="220" frameborder="0" scrolling="no" style="border: none; border-radius: 12px;"></iframe>
+      <img src="about.svg" alt="About Bio Widget" width="220" style="border-radius: 12px;" />
     </td>
     <td width="50%" align="left" valign="top">
-      <iframe src="project.html" width="220" height="220" frameborder="0" scrolling="no" style="border: none; border-radius: 12px;"></iframe>
+      <img src="project.svg" alt="Project Widget" width="220" style="border-radius: 12px;" />
     </td>
   </tr>
 </table>
@@ -59,7 +59,7 @@
 ### 🛠️ Interactive Tech Stack Loop
 
 <p align="center">
-  <iframe src="tech-stack.html" width="900" height="220" frameborder="0" scrolling="no" style="border: none; border-radius: 12px; max-width: 100%;"></iframe>
+  <img src="tech-stack.svg" alt="Tech Stack Loop Carousel" width="900" style="max-width: 100%; border-radius: 12px;" />
 </p>
 
 ---

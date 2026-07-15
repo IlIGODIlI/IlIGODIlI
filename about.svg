@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;family=JetBrains+Mono&amp;display=swap');
+    
+    .bg {
+      fill: #0b0f19;
+      stroke: rgba(0, 229, 255, 0.08);
+      stroke-width: 1;
+      rx: 12px;
+    }
+    .text-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      fill: #00E5FF;
+    }
+    .text-body {
+      font-family: 'Outfit', sans-serif;
+      font-size: 13.5px;
+      line-height: 1.5;
+      fill: #c9d1d9;
+      font-weight: 300;
+    }
+    .cursor {
+      fill: #00E5FF;
+      animation: blink 0.8s infinite steps(2);
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+    /* Typing reveals via clipPath scaling */
+    @keyframes type-line1 {
+      0% { width: 0; }
+      30%, 100% { width: 180px; }
+    }
+    @keyframes type-line2 {
+      0%, 30% { width: 0; }
+      60%, 100% { width: 180px; }
+    }
+    @keyframes type-line3 {
+      0%, 60% { width: 0; }
+      90%, 100% { width: 180px; }
+    }
+    .line-1 { animation: type-line1 8s infinite steps(25); }
+    .line-2 { animation: type-line2 8s infinite steps(25); }
+    .line-3 { animation: type-line3 8s infinite steps(25); }
+  </style>
+  
+  <rect class="bg" width="220" height="220" />
+  
+  <clipPath id="clip-1">
+    <rect class="line-1" x="20" y="30" height="30" width="180" />
+  </clipPath>
+  <clipPath id="clip-2">
+    <rect class="line-2" x="20" y="60" height="30" width="180" />
+  </clipPath>
+  <clipPath id="clip-3">
+    <rect class="line-3" x="20" y="90" height="30" width="180" />
+  </clipPath>
+
+  <g transform="translate(20, 45)">
+    <!-- Header Title -->
+    <text class="text-title" x="0" y="0">About Me</text>
+    
+    <!-- Typing lines -->
+    <g transform="translate(0, 30)">
+      <!-- Line 1 -->
+      <g clip-path="url(#clip-1)">
+        <text class="text-body" x="0" y="0">AI enthusiast,</text>
+      </g>
+      <!-- Line 2 -->
+      <g clip-path="url(#clip-2)">
+        <text class="text-body" x="0" y="20">backend developer, and</text>
+      </g>
+      <!-- Line 3 -->
+      <g clip-path="url(#clip-3)">
+        <text class="text-body" x="0" y="40">lifelong learner.</text>
+      </g>
+      
+      <!-- Blinking Cursor -->
+      <rect class="cursor" x="120" y="28" width="2" height="13" />
+    </g>
+  </g>
+</svg>
