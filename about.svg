@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&amp;display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;display=swap');
     
     .bg {
       fill: #0b0f19;
@@ -11,58 +11,66 @@
     .text-title {
       font-family: 'Outfit', sans-serif;
       font-size: 16px;
-      font-weight: 500;
+      font-weight: 600;
       fill: #00E5FF;
-      text-anchor: middle;
+      text-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+    }
+    .text-bold {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      fill: #00E5FF;
+      text-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
     }
     .text-body {
       font-family: 'Outfit', sans-serif;
-      font-size: 13px;
-      fill: #c9d1d9;
+      font-size: 16px;
+      fill: #e2e8f0;
       font-weight: 300;
-      text-anchor: middle;
       opacity: 0;
     }
     
-    /* Ultra-compatible opacity animation instead of clipPaths */
-    @keyframes line-reveal {
-      0%, 100% { opacity: 0; }
-      10%, 90% { opacity: 1; }
+    /* 12-second loop cycling through 3 pages of bio statements */
+    @keyframes page-cycle {
+      0%, 30% { opacity: 1; transform: translateY(0); }
+      33%, 97% { opacity: 0; transform: translateY(-5px); }
     }
     
-    .t1 { animation: line-reveal 9s infinite ease-in-out; animation-delay: 0.5s; }
-    .t2 { animation: line-reveal 9s infinite ease-in-out; animation-delay: 3s; }
-    .t3 { animation: line-reveal 9s infinite ease-in-out; animation-delay: 5.5s; }
+    .p1 { animation: page-cycle 12s infinite ease-in-out; animation-delay: 0s; }
+    .p2 { animation: page-cycle 12s infinite ease-in-out; animation-delay: 4s; }
+    .p3 { animation: page-cycle 12s infinite ease-in-out; animation-delay: 8s; }
   </style>
   
   <rect class="bg" width="220" height="220" />
   
-  <!-- Bio Text Groups -->
-  <g transform="translate(110, 60)">
-    <!-- Header -->
-    <text class="text-title" x="0" y="0">About Me</text>
+  <g transform="translate(24, 45)">
+    <!-- Main Header (Symmetrical to Currently building) -->
+    <text class="text-bold" x="0" y="0">About</text>
     
-    <!-- Text body blocks cycling -->
-    <g transform="translate(0, 40)">
-      <!-- Block 1 -->
-      <g class="t1">
+    <!-- Cycling Pages (Matching layout scale of project.svg) -->
+    <g transform="translate(0, 32)">
+      <!-- Page 1 -->
+      <g class="p1">
         <text class="text-body" x="0" y="0">AI enthusiast,</text>
-        <text class="text-body" x="0" y="20">backend developer, and</text>
-        <text class="text-body" x="0" y="40">lifelong learner.</text>
+        <text class="text-body" x="0" y="28">backend developer,</text>
+        <text class="text-body" x="0" y="56">and lifelong</text>
+        <text class="text-body" x="0" y="84">learner.</text>
       </g>
       
-      <!-- Block 2 -->
-      <g class="t2">
-        <text class="text-body" x="0" y="0">Driven by curiosity</text>
-        <text class="text-body" x="0" y="20">and creating positive</text>
-        <text class="text-body" x="0" y="40">community impact.</text>
+      <!-- Page 2 -->
+      <g class="p2" style="opacity: 0;">
+        <text class="text-body" x="0" y="0">Driven by</text>
+        <text class="text-body" x="0" y="28">curiosity and</text>
+        <text class="text-body" x="0" y="56">creating positive</text>
+        <text class="text-body" x="0" y="84">impact.</text>
       </g>
 
-      <!-- Block 3 -->
-      <g class="t3">
-        <text class="text-body" x="0" y="0">Building tools that</text>
-        <text class="text-body" x="0" y="20">challenge me and</text>
-        <text class="text-body" x="0" y="40">help other developers.</text>
+      <!-- Page 3 -->
+      <g class="p3" style="opacity: 0;">
+        <text class="text-body" x="0" y="0">Building tools</text>
+        <text class="text-body" x="0" y="28">that challenge</text>
+        <text class="text-body" x="0" y="56">and help</text>
+        <text class="text-body" x="0" y="84">developers.</text>
       </g>
     </g>
   </g>
