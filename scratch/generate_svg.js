@@ -48,29 +48,53 @@ const ARYAN_MAP = new Set([
 let svgContent = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" width="900" height="220">
   <style>
     .bg { fill: #050816; }
+    
+    /* Base inactive cubes */
     .cube {
-      fill: #11111a;
-      stroke: rgba(0, 229, 255, 0.12);
-      stroke-width: 1.5;
+      fill: #060919;
+      stroke: rgba(0, 229, 255, 0.06);
+      stroke-width: 1.2;
       rx: 3px;
     }
+
+    /* Standard animations loop */
+    @keyframes breathe {
+      0%, 100% { stroke: rgba(0, 229, 255, 0.05); }
+      50% { stroke: rgba(0, 229, 255, 0.15); }
+    }
+    
+    @keyframes signal-run {
+      0% { fill: #060919; stroke: rgba(0, 229, 255, 0.06); }
+      5% { fill: rgba(103, 232, 249, 0.2); stroke: #67E8F9; }
+      15%, 100% { fill: #060919; stroke: rgba(0, 229, 255, 0.06); }
+    }
+
+    @keyframes reveal-name {
+      0%, 40% { stroke: rgba(0, 229, 255, 0.06); fill: #060919; }
+      55%, 100% { stroke: #00E5FF; fill: rgba(0, 229, 255, 0.08); }
+    }
+
+    @keyframes active-shimmer {
+      0%, 70%, 100% { filter: drop-shadow(0 0 4px rgba(0, 229, 255, 0.45)); }
+      85% { filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.85)); }
+    }
+
+    .cube {
+      animation: breathe 4s infinite ease-in-out;
+    }
+
+    /* Assigning multi-stage timeline animation */
     .active {
-      stroke: #00E5FF;
-      fill: rgba(0, 229, 255, 0.08);
-      filter: drop-shadow(0 0 4px rgba(0, 229, 255, 0.6));
+      animation: reveal-name 8s infinite ease-in-out,
+                 active-shimmer 8s infinite ease-in-out;
     }
-    @keyframes shimmer {
-      0%, 100% { opacity: 0.85; }
-      50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.95)); }
-    }
-    .active {
-      animation: shimmer 3s infinite ease-in-out;
-    }
-    .col-2, .col-3, .col-4, .col-5, .col-6, .col-7 { animation-delay: 0.1s; }
-    .col-9, .col-10, .col-11, .col-12, .col-13, .col-14 { animation-delay: 0.6s; }
-    .col-16, .col-17, .col-18, .col-19, .col-20, .col-21 { animation-delay: 1.1s; }
-    .col-23, .col-24, .col-25, .col-26, .col-27, .col-28 { animation-delay: 1.6s; }
-    .col-30, .col-31, .col-32, .col-33, .col-34, .col-35 { animation-delay: 2.1s; }
+
+    /* Staggered delays for the name letter discovery effect */
+    .col-2, .col-3, .col-4, .col-5, .col-6, .col-7 { animation-delay: 0s, 0s; }
+    .col-9, .col-10, .col-11, .col-12, .col-13, .col-14 { animation-delay: 0.3s, 0.3s; }
+    .col-16, .col-17, .col-18, .col-19, .col-20, .col-21 { animation-delay: 0.6s, 0.6s; }
+    .col-23, .col-24, .col-25, .col-26, .col-27, .col-28 { animation-delay: 0.9s, 0.9s; }
+    .col-30, .col-31, .col-32, .col-33, .col-34, .col-35 { animation-delay: 1.2s, 1.2s; }
   </style>
   <rect class="bg" width="900" height="220" rx="12" />
   

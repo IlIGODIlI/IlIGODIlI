@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap');
     
     .bg {
       fill: #0b0f19;
@@ -8,52 +8,118 @@
       stroke-width: 1;
       rx: 12px;
     }
-    .text-title {
+    
+    /* Overall loop timelines (14 seconds) */
+    @keyframes show-text {
+      0%, 35%, 100% { opacity: 1; transform: translateY(0); }
+      40%, 95% { opacity: 0; transform: translateY(-5px); }
+    }
+    @keyframes show-scan {
+      0%, 38% { opacity: 0; transform: translateY(5px); }
+      43%, 68% { opacity: 1; transform: translateY(0); }
+      73%, 100% { opacity: 0; transform: translateY(-5px); }
+    }
+    @keyframes show-json {
+      0%, 70% { opacity: 0; transform: translateY(5px); }
+      75%, 95% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-5px); }
+    }
+    
+    .panel-text {
+      animation: show-text 14s infinite ease-in-out;
       font-family: 'Outfit', sans-serif;
+    }
+    .panel-scan {
+      animation: show-scan 14s infinite ease-in-out;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+    .panel-json {
+      animation: show-json 14s infinite ease-in-out;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+    }
+
+    /* Scan line animation inside scanning pane */
+    @keyframes scan-move {
+      0% { transform: translateY(0); opacity: 0; }
+      10%, 90% { opacity: 0.6; }
+      100% { transform: translateY(110px); opacity: 0; }
+    }
+    .scan-bar {
+      animation: scan-move 2.5s infinite linear;
+    }
+
+    .text-title {
       font-size: 16px;
       font-weight: 600;
       fill: #00E5FF;
-      filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.3));
+      text-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
     }
     .text-bold {
-      font-family: 'Outfit', sans-serif;
       font-size: 16px;
       font-weight: 600;
       fill: #00E5FF;
-      filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.3));
+      text-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
     }
     .text-body {
-      font-family: 'Outfit', sans-serif;
       font-size: 16px;
       fill: #e2e8f0;
       font-weight: 300;
     }
+    .folder { fill: #00E5FF; font-weight: bold; }
+    .file { fill: #8b949e; }
     
-    /* Elegant vertical scanline sweeping across the project card */
-    @keyframes scan {
-      0% { top: 0; opacity: 0; transform: translateY(0); }
-      10% { opacity: 0.6; }
-      90% { opacity: 0.6; }
-      100% { opacity: 0; transform: translateY(180px); }
-    }
-    .scan-bar {
-      fill: linear-gradient(90deg, transparent, #00E5FF, transparent);
-      opacity: 0;
-      animation: scan 4s infinite linear;
-    }
+    .json-key { fill: #00E5FF; }
+    .json-val { fill: #39d353; }
   </style>
   
   <rect class="bg" width="220" height="220" />
   
+  <!-- Content Area -->
   <g transform="translate(24, 45)">
-    <!-- Project Description -->
-    <text class="text-bold" x="0" y="0">Currently building</text>
-    <text class="text-title" x="0" y="32">RepoLens,</text>
-    <text class="text-body" x="0" y="60">making every</text>
-    <text class="text-body" x="0" y="84">repository easier</text>
-    <text class="text-body" x="0" y="108">to understand.</text>
-  </g>
+    
+    <!-- Phase 1: Description Text -->
+    <g class="panel-text">
+      <text class="text-bold" x="0" y="0">Currently building</text>
+      <text class="text-title" x="0" y="32">RepoLens,</text>
+      <text class="text-body" x="0" y="60">making every</text>
+      <text class="text-body" x="0" y="84">repository easier</text>
+      <text class="text-body" x="0" y="108">to understand.</text>
+    </g>
 
-  <!-- Sweeping Scan line -->
-  <rect class="scan-bar" x="2" y="10" width="216" height="2" fill="#00E5FF" />
+    <!-- Phase 2: Folder scanning -->
+    <g class="panel-scan" style="opacity: 0;">
+      <text fill="#4c4c5e" x="0" y="-8">SCANNING REPO...</text>
+      <rect x="0" y="2" width="172" height="1" fill="rgba(255,255,255,0.06)" />
+      
+      <g transform="translate(0, 22)">
+        <text class="folder" x="0" y="0">📁 src</text>
+        <text class="folder" x="12" y="18">📁 components</text>
+        <text class="file" x="24" y="36">📄 Lens.py</text>
+        <text class="file" x="24" y="54">📄 Parser.java</text>
+        <text class="folder" x="0" y="72">📁 config</text>
+        <text class="file" x="12" y="90">📄 schema.sql</text>
+      </g>
+      
+      <!-- Scan Bar -->
+      <rect class="scan-bar" x="0" y="8" width="172" height="2" fill="#00E5FF" style="filter: drop-shadow(0 0 4px #00E5FF);" />
+    </g>
+
+    <!-- Phase 3: JSON response -->
+    <g class="panel-json" style="opacity: 0;">
+      <text fill="#4c4c5e" x="0" y="-8">CONVERTED TO JSON</text>
+      <rect x="0" y="2" width="172" height="1" fill="rgba(255,255,255,0.06)" />
+      
+      <g transform="translate(0, 22)" fill="#8b949e">
+        <text x="0" y="0">{</text>
+        <text x="10" y="16"><tspan class="json-key">"status"</tspan>: <tspan class="json-val">"analyzed"</tspan>,</text>
+        <text x="10" y="32"><tspan class="json-key">"repo"</tspan>: <tspan class="json-val">"RepoLens"</tspan>,</text>
+        <text x="10" y="48"><tspan class="json-key">"files"</tspan>: <tspan class="json-val">124</tspan>,</text>
+        <text x="10" y="64"><tspan class="json-key">"language"</tspan>: <tspan class="json-val">"Python"</tspan></text>
+        <text x="0" y="80">}</text>
+      </g>
+    </g>
+    
+  </g>
 </svg>

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 220" width="420" height="220">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&amp;family=JetBrains+Mono&amp;display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;display=swap');
     
     .bg {
       fill: #0b0f19;
@@ -16,20 +16,43 @@
     }
     .dot {
       fill: #161b22;
-      transition: fill 0.3s;
       rx: 2px;
     }
-    
-    /* Simulate binary clock ticking states */
-    @keyframes tick-1 { 0%, 100% { fill: #161b22; } 50% { fill: #00E5FF; filter: drop-shadow(0 0 4px #00E5FF); } }
-    @keyframes tick-2 { 0%, 80% { fill: #161b22; } 40% { fill: #00E5FF; filter: drop-shadow(0 0 4px #00E5FF); } }
-    @keyframes tick-3 { 0%, 60% { fill: #161b22; } 30% { fill: #00E5FF; filter: drop-shadow(0 0 4px #00E5FF); } }
-    @keyframes tick-fast { 0%, 100% { fill: #161b22; } 50% { fill: #ff6b6b; filter: drop-shadow(0 0 4px #ff6b6b); } }
 
-    .t1 { animation: tick-1 4s infinite ease-in-out; }
-    .t2 { animation: tick-2 3s infinite ease-in-out; }
-    .t3 { animation: tick-3 2s infinite ease-in-out; }
-    .tf { animation: tick-fast 1s infinite steps(2); }
+    /* Timed keyframes representing real binary time ticking logic */
+    @keyframes sec-1 { 0%, 100% { fill: #161b22; } 50% { fill: #00E5FF; filter: drop-shadow(0 0 5px #00E5FF); } }
+    @keyframes sec-2 { 0%, 100% { fill: #161b22; } 50% { fill: #00E5FF; filter: drop-shadow(0 0 5px #00E5FF); } }
+    @keyframes min-1 { 0%, 100% { fill: #161b22; } 50% { fill: #00E5FF; filter: drop-shadow(0 0 5px #00E5FF); } }
+    @keyframes min-2 { 0%, 100% { fill: #161b22; } 50% { fill: #00E5FF; filter: drop-shadow(0 0 5px #00E5FF); } }
+    @keyframes hr-1  { 0%, 100% { fill: #161b22; } 50% { fill: #00E5FF; filter: drop-shadow(0 0 5px #00E5FF); } }
+    @keyframes hr-2  { 0%, 100% { fill: #161b22; } 50% { fill: #00E5FF; filter: drop-shadow(0 0 5px #00E5FF); } }
+
+    /* Staggered animation classes based on real clock dividers */
+    .s-unit-0 { animation: sec-1 1s infinite steps(2); }
+    .s-unit-1 { animation: sec-1 2s infinite steps(2); }
+    .s-unit-2 { animation: sec-1 4s infinite steps(2); }
+    .s-unit-3 { animation: sec-1 8s infinite steps(2); }
+
+    .s-ten-0  { animation: sec-2 10s infinite steps(2); }
+    .s-ten-1  { animation: sec-2 20s infinite steps(2); }
+    .s-ten-2  { animation: sec-2 40s infinite steps(2); }
+
+    .m-unit-0 { animation: min-1 60s infinite steps(2); }
+    .m-unit-1 { animation: min-1 120s infinite steps(2); }
+    .m-unit-2 { animation: min-1 240s infinite steps(2); }
+    .m-unit-3 { animation: min-1 480s infinite steps(2); }
+
+    .m-ten-0  { animation: min-2 600s infinite steps(2); }
+    .m-ten-1  { animation: min-2 1200s infinite steps(2); }
+    .m-ten-2  { animation: min-2 2400s infinite steps(2); }
+
+    .h-unit-0 { animation: hr-1 3600s infinite steps(2); }
+    .h-unit-1 { animation: hr-1 7200s infinite steps(2); }
+    .h-unit-2 { animation: hr-1 14400s infinite steps(2); }
+    .h-unit-3 { animation: hr-1 28800s infinite steps(2); }
+
+    .h-ten-0  { animation: hr-2 43200s infinite steps(2); }
+    .h-ten-1  { animation: hr-2 86400s infinite steps(2); }
   </style>
   
   <rect class="bg" width="420" height="220" />
@@ -38,34 +61,37 @@
   <text class="panel-title" x="30" y="35">BINARY ATOMIC CLOCK (IST)</text>
   
   <!-- Clock Dot Matrix Grid -->
-  <g transform="translate(110, 60)">
+  <g transform="translate(100, 60)">
     <!-- Column 1 (Hours H1) -->
-    <rect class="dot" x="0" y="40" width="22" height="22" />
-    <rect class="dot t1" x="0" y="80" width="22" height="22" />
+    <rect class="dot h-ten-1" x="0" y="50" width="22" height="22" />
+    <rect class="dot h-ten-0" x="0" y="80" width="22" height="22" />
     
     <!-- Column 2 (Hours H2) -->
-    <rect class="dot t2" x="35" y="0" width="22" height="22" />
-    <rect class="dot" x="35" y="40" width="22" height="22" />
-    <rect class="dot t3" x="35" y="80" width="22" height="22" />
+    <rect class="dot h-unit-3" x="35" y="0" width="22" height="22" />
+    <rect class="dot h-unit-2" x="35" y="30" width="22" height="22" />
+    <rect class="dot h-unit-1" x="35" y="60" width="22" height="22" />
+    <rect class="dot h-unit-0" x="35" y="90" width="22" height="22" />
     
     <!-- Column 3 (Minutes M1) -->
-    <rect class="dot t1" x="80" y="20" width="22" height="22" />
-    <rect class="dot t3" x="80" y="50" width="22" height="22" />
-    <rect class="dot" x="80" y="80" width="22" height="22" />
+    <rect class="dot m-ten-2" x="80" y="20" width="22" height="22" />
+    <rect class="dot m-ten-1" x="80" y="50" width="22" height="22" />
+    <rect class="dot m-ten-0" x="80" y="80" width="22" height="22" />
 
     <!-- Column 4 (Minutes M2) -->
-    <rect class="dot t2" x="115" y="0" width="22" height="22" />
-    <rect class="dot" x="115" y="40" width="22" height="22" />
-    <rect class="dot t1" x="115" y="80" width="22" height="22" />
+    <rect class="dot m-unit-3" x="115" y="0" width="22" height="22" />
+    <rect class="dot m-unit-2" x="115" y="30" width="22" height="22" />
+    <rect class="dot m-unit-1" x="115" y="60" width="22" height="22" />
+    <rect class="dot m-unit-0" x="115" y="90" width="22" height="22" />
     
     <!-- Column 5 (Seconds S1) -->
-    <rect class="dot tf" x="160" y="20" width="22" height="22" />
-    <rect class="dot" x="160" y="50" width="22" height="22" />
-    <rect class="dot tf" x="160" y="80" width="22" height="22" />
+    <rect class="dot s-ten-2" x="160" y="20" width="22" height="22" />
+    <rect class="dot s-ten-1" x="160" y="50" width="22" height="22" />
+    <rect class="dot s-ten-0" x="160" y="80" width="22" height="22" />
 
     <!-- Column 6 (Seconds S2) -->
-    <rect class="dot" x="195" y="0" width="22" height="22" />
-    <rect class="dot tf" x="195" y="40" width="22" height="22" />
-    <rect class="dot tf" x="195" y="80" width="22" height="22" />
+    <rect class="dot s-unit-3" x="195" y="0" width="22" height="22" />
+    <rect class="dot s-unit-2" x="195" y="30" width="22" height="22" />
+    <rect class="dot s-unit-1" x="195" y="60" width="22" height="22" />
+    <rect class="dot s-unit-0" x="195" y="90" width="22" height="22" />
   </g>
 </svg>
