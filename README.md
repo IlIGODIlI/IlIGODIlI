@@ -105,6 +105,10 @@ Every square below is a day from the last year. If I shipped a commit that day, 
 
 # 📈 GitHub Stats
 
+<img data-importer="snake" src="https://raw.githubusercontent.com/IlIGODIlI/IlIGODIlI/snake-output/snake.svg" alt="Snake animation" />
+
+###
+
 <p align="center">
 
 <img height="180em" src="https://github-readme-stats.vercel.app/api?username=IlIGODIlI&show_icons=true&theme=tokyonight&hide_border=true"/>
