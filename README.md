@@ -1,11 +1,3 @@
-# Aryan Nair 👋
-
-<p align="center">
-  Building practical software at the intersection of <b>Artificial Intelligence</b>, <b>Backend Engineering</b>, and <b>Cybersecurity</b>.
-</p>
-
----
-
 <!-- Top Title Banner (Clickable Link to Deployed HTML with Mouse Physics) -->
 <p align="center">
   <a href="https://IlIGODIlI.github.io/IlIGODIlI/title.html" target="_blank">
