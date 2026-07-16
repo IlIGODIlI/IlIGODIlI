@@ -1,4 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220" width="900" height="220">
+  <defs>
+    <!-- Glow filter for active cells -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Stronger glow for signal wave -->
+    <filter id="signal-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
   <style>
     .bg { fill: #050816; }
     
@@ -7,354 +25,414 @@
       fill: #060919;
       stroke: rgba(0, 229, 255, 0.06);
       stroke-width: 1.2;
-      rx: 3px;
+      rx: 3;
     }
 
-    /* Standard animations loop */
+    /* Ambient breathing on all inactive cubes */
     @keyframes breathe {
-      0%, 100% { stroke: rgba(0, 229, 255, 0.05); }
-      50% { stroke: rgba(0, 229, 255, 0.15); }
-    }
-    
-    @keyframes signal-run {
-      0% { fill: #060919; stroke: rgba(0, 229, 255, 0.06); }
-      5% { fill: rgba(103, 232, 249, 0.2); stroke: #67E8F9; }
-      15%, 100% { fill: #060919; stroke: rgba(0, 229, 255, 0.06); }
+      0%, 100% { stroke: rgba(0, 229, 255, 0.04); fill: #060919; }
+      50% { stroke: rgba(0, 229, 255, 0.14); fill: #070b1e; }
     }
 
+    /* Signal wave traveling through inactive cubes */
+    @keyframes signal-wave {
+      0%, 100% { fill: #060919; stroke: rgba(0, 229, 255, 0.06); }
+      4%, 6% { fill: rgba(0, 229, 255, 0.15); stroke: rgba(0, 229, 255, 0.5); }
+      10% { fill: #060919; stroke: rgba(0, 229, 255, 0.06); }
+    }
+
+    /* Reveal animation for active (letter) cells */
     @keyframes reveal-name {
-      0%, 40% { stroke: rgba(0, 229, 255, 0.06); fill: #060919; }
-      55%, 100% { stroke: #00E5FF; fill: rgba(0, 229, 255, 0.08); }
+      0%, 35% { stroke: rgba(0, 229, 255, 0.06); fill: #060919; }
+      50%, 100% { stroke: #00E5FF; fill: rgba(0, 229, 255, 0.08); }
     }
 
-    @keyframes active-shimmer {
-      0%, 70%, 100% { filter: drop-shadow(0 0 4px rgba(0, 229, 255, 0.45)); }
-      85% { filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.85)); }
+    /* Shimmer glow pulse on active cells */
+    @keyframes active-glow {
+      0%, 70%, 100% { stroke: #00E5FF; fill: rgba(0, 229, 255, 0.08); }
+      85% { stroke: #5effff; fill: rgba(0, 229, 255, 0.16); }
     }
 
+    /* Corner accent pulse */
+    @keyframes corner-pulse {
+      0%, 100% { fill: rgba(0, 229, 255, 0.05); stroke: rgba(0, 229, 255, 0.1); }
+      50% { fill: rgba(0, 229, 255, 0.2); stroke: rgba(0, 229, 255, 0.45); }
+    }
+
+    /* Inactive cubes: breathing + signal wave */
     .cube {
-      animation: breathe 4s infinite ease-in-out;
+      animation: breathe 5s infinite ease-in-out, signal-wave 8s infinite ease-in-out;
     }
 
-    /* Assigning multi-stage timeline animation */
+    /* Stagger signal wave across columns (left to right sweep) */
+    .c0  { animation-delay: 0s, 0.00s; } .c1  { animation-delay: 0.1s, 0.12s; }
+    .c2  { animation-delay: 0.2s, 0.24s; } .c3  { animation-delay: 0.3s, 0.36s; }
+    .c4  { animation-delay: 0.4s, 0.48s; } .c5  { animation-delay: 0.5s, 0.60s; }
+    .c6  { animation-delay: 0.6s, 0.72s; } .c7  { animation-delay: 0.7s, 0.84s; }
+    .c8  { animation-delay: 0.8s, 0.96s; } .c9  { animation-delay: 0.9s, 1.08s; }
+    .c10 { animation-delay: 1.0s, 1.20s; } .c11 { animation-delay: 1.1s, 1.32s; }
+    .c12 { animation-delay: 1.2s, 1.44s; } .c13 { animation-delay: 1.3s, 1.56s; }
+    .c14 { animation-delay: 1.4s, 1.68s; } .c15 { animation-delay: 1.5s, 1.80s; }
+    .c16 { animation-delay: 1.6s, 1.92s; } .c17 { animation-delay: 1.7s, 2.04s; }
+    .c18 { animation-delay: 1.8s, 2.16s; } .c19 { animation-delay: 1.9s, 2.28s; }
+    .c20 { animation-delay: 2.0s, 2.40s; } .c21 { animation-delay: 2.1s, 2.52s; }
+    .c22 { animation-delay: 2.2s, 2.64s; } .c23 { animation-delay: 2.3s, 2.76s; }
+    .c24 { animation-delay: 2.4s, 2.88s; } .c25 { animation-delay: 2.5s, 3.00s; }
+    .c26 { animation-delay: 2.6s, 3.12s; } .c27 { animation-delay: 2.7s, 3.24s; }
+    .c28 { animation-delay: 2.8s, 3.36s; } .c29 { animation-delay: 2.9s, 3.48s; }
+    .c30 { animation-delay: 3.0s, 3.60s; } .c31 { animation-delay: 3.1s, 3.72s; }
+    .c32 { animation-delay: 3.2s, 3.84s; } .c33 { animation-delay: 3.3s, 3.96s; }
+    .c34 { animation-delay: 3.4s, 4.08s; } .c35 { animation-delay: 3.5s, 4.20s; }
+    .c36 { animation-delay: 3.6s, 4.32s; } .c37 { animation-delay: 3.7s, 4.44s; }
+
+    /* Active cells override: reveal + shimmer */
     .active {
-      animation: reveal-name 8s infinite ease-in-out,
-                 active-shimmer 8s infinite ease-in-out;
+      animation: reveal-name 6s ease-in-out 1 forwards, active-glow 4s infinite ease-in-out 6s;
     }
 
-    /* Staggered delays for the name letter discovery effect */
-    .col-2, .col-3, .col-4, .col-5, .col-6, .col-7 { animation-delay: 0s, 0s; }
-    .col-9, .col-10, .col-11, .col-12, .col-13, .col-14 { animation-delay: 0.3s, 0.3s; }
-    .col-16, .col-17, .col-18, .col-19, .col-20, .col-21 { animation-delay: 0.6s, 0.6s; }
-    .col-23, .col-24, .col-25, .col-26, .col-27, .col-28 { animation-delay: 0.9s, 0.9s; }
-    .col-30, .col-31, .col-32, .col-33, .col-34, .col-35 { animation-delay: 1.2s, 1.2s; }
+    /* Stagger reveal per letter group */
+    .lA  { animation-delay: 0.0s, 6.0s; }
+    .lR  { animation-delay: 0.4s, 6.4s; }
+    .lY  { animation-delay: 0.8s, 6.8s; }
+    .lA2 { animation-delay: 1.2s, 7.2s; }
+    .lN  { animation-delay: 1.6s, 7.6s; }
+
+    /* Corner accents */
+    .corner {
+      animation: corner-pulse 3s infinite ease-in-out;
+    }
+    .corner-tl { animation-delay: 0s; }
+    .corner-tr { animation-delay: 0.75s; }
+    .corner-bl { animation-delay: 1.5s; }
+    .corner-br { animation-delay: 2.25s; }
   </style>
   <rect class="bg" width="900" height="220" rx="12" />
+
+  <!-- Corner accent dots -->
+  <rect class="corner corner-tl" x="8" y="8" width="6" height="6" rx="1.5" fill="rgba(0,229,255,0.05)" stroke="rgba(0,229,255,0.1)" stroke-width="0.5"/>
+  <rect class="corner corner-tr" x="886" y="8" width="6" height="6" rx="1.5" fill="rgba(0,229,255,0.05)" stroke="rgba(0,229,255,0.1)" stroke-width="0.5"/>
+  <rect class="corner corner-bl" x="8" y="206" width="6" height="6" rx="1.5" fill="rgba(0,229,255,0.05)" stroke="rgba(0,229,255,0.1)" stroke-width="0.5"/>
+  <rect class="corner corner-br" x="886" y="206" width="6" height="6" rx="1.5" fill="rgba(0,229,255,0.05)" stroke="rgba(0,229,255,0.1)" stroke-width="0.5"/>
   
   <g transform="translate(18, 18)">
-    <rect class="cube" x="0" y="0" width="18" height="18" />
-    <rect class="cube" x="23" y="0" width="18" height="18" />
-    <rect class="cube" x="46" y="0" width="18" height="18" />
-    <rect class="cube" x="69" y="0" width="18" height="18" />
-    <rect class="cube" x="92" y="0" width="18" height="18" />
-    <rect class="cube" x="115" y="0" width="18" height="18" />
-    <rect class="cube" x="138" y="0" width="18" height="18" />
-    <rect class="cube" x="161" y="0" width="18" height="18" />
-    <rect class="cube" x="184" y="0" width="18" height="18" />
-    <rect class="cube" x="207" y="0" width="18" height="18" />
-    <rect class="cube" x="230" y="0" width="18" height="18" />
-    <rect class="cube" x="253" y="0" width="18" height="18" />
-    <rect class="cube" x="276" y="0" width="18" height="18" />
-    <rect class="cube" x="299" y="0" width="18" height="18" />
-    <rect class="cube" x="322" y="0" width="18" height="18" />
-    <rect class="cube" x="345" y="0" width="18" height="18" />
-    <rect class="cube" x="368" y="0" width="18" height="18" />
-    <rect class="cube" x="391" y="0" width="18" height="18" />
-    <rect class="cube" x="414" y="0" width="18" height="18" />
-    <rect class="cube" x="437" y="0" width="18" height="18" />
-    <rect class="cube" x="460" y="0" width="18" height="18" />
-    <rect class="cube" x="483" y="0" width="18" height="18" />
-    <rect class="cube" x="506" y="0" width="18" height="18" />
-    <rect class="cube" x="529" y="0" width="18" height="18" />
-    <rect class="cube" x="552" y="0" width="18" height="18" />
-    <rect class="cube" x="575" y="0" width="18" height="18" />
-    <rect class="cube" x="598" y="0" width="18" height="18" />
-    <rect class="cube" x="621" y="0" width="18" height="18" />
-    <rect class="cube" x="644" y="0" width="18" height="18" />
-    <rect class="cube" x="667" y="0" width="18" height="18" />
-    <rect class="cube" x="690" y="0" width="18" height="18" />
-    <rect class="cube" x="713" y="0" width="18" height="18" />
-    <rect class="cube" x="736" y="0" width="18" height="18" />
-    <rect class="cube" x="759" y="0" width="18" height="18" />
-    <rect class="cube" x="782" y="0" width="18" height="18" />
-    <rect class="cube" x="805" y="0" width="18" height="18" />
-    <rect class="cube" x="828" y="0" width="18" height="18" />
-    <rect class="cube" x="851" y="0" width="18" height="18" />
-    <rect class="cube" x="0" y="23" width="18" height="18" />
-    <rect class="cube" x="23" y="23" width="18" height="18" />
-    <rect class="cube" x="46" y="23" width="18" height="18" />
-    <rect class="cube" x="69" y="23" width="18" height="18" />
-    <rect class="cube active col-4" x="92" y="23" width="18" height="18" />
-    <rect class="cube active col-5" x="115" y="23" width="18" height="18" />
-    <rect class="cube" x="138" y="23" width="18" height="18" />
-    <rect class="cube" x="161" y="23" width="18" height="18" />
-    <rect class="cube" x="184" y="23" width="18" height="18" />
-    <rect class="cube active col-9" x="207" y="23" width="18" height="18" />
-    <rect class="cube active col-10" x="230" y="23" width="18" height="18" />
-    <rect class="cube active col-11" x="253" y="23" width="18" height="18" />
-    <rect class="cube active col-12" x="276" y="23" width="18" height="18" />
-    <rect class="cube active col-13" x="299" y="23" width="18" height="18" />
-    <rect class="cube" x="322" y="23" width="18" height="18" />
-    <rect class="cube" x="345" y="23" width="18" height="18" />
-    <rect class="cube active col-16" x="368" y="23" width="18" height="18" />
-    <rect class="cube active col-17" x="391" y="23" width="18" height="18" />
-    <rect class="cube" x="414" y="23" width="18" height="18" />
-    <rect class="cube" x="437" y="23" width="18" height="18" />
-    <rect class="cube active col-20" x="460" y="23" width="18" height="18" />
-    <rect class="cube active col-21" x="483" y="23" width="18" height="18" />
-    <rect class="cube" x="506" y="23" width="18" height="18" />
-    <rect class="cube" x="529" y="23" width="18" height="18" />
-    <rect class="cube" x="552" y="23" width="18" height="18" />
-    <rect class="cube active col-25" x="575" y="23" width="18" height="18" />
-    <rect class="cube active col-26" x="598" y="23" width="18" height="18" />
-    <rect class="cube" x="621" y="23" width="18" height="18" />
-    <rect class="cube" x="644" y="23" width="18" height="18" />
-    <rect class="cube" x="667" y="23" width="18" height="18" />
-    <rect class="cube active col-30" x="690" y="23" width="18" height="18" />
-    <rect class="cube active col-31" x="713" y="23" width="18" height="18" />
-    <rect class="cube" x="736" y="23" width="18" height="18" />
-    <rect class="cube" x="759" y="23" width="18" height="18" />
-    <rect class="cube active col-34" x="782" y="23" width="18" height="18" />
-    <rect class="cube active col-35" x="805" y="23" width="18" height="18" />
-    <rect class="cube" x="828" y="23" width="18" height="18" />
-    <rect class="cube" x="851" y="23" width="18" height="18" />
-    <rect class="cube" x="0" y="46" width="18" height="18" />
-    <rect class="cube" x="23" y="46" width="18" height="18" />
-    <rect class="cube" x="46" y="46" width="18" height="18" />
-    <rect class="cube active col-3" x="69" y="46" width="18" height="18" />
-    <rect class="cube active col-4" x="92" y="46" width="18" height="18" />
-    <rect class="cube active col-5" x="115" y="46" width="18" height="18" />
-    <rect class="cube active col-6" x="138" y="46" width="18" height="18" />
-    <rect class="cube" x="161" y="46" width="18" height="18" />
-    <rect class="cube" x="184" y="46" width="18" height="18" />
-    <rect class="cube active col-9" x="207" y="46" width="18" height="18" />
-    <rect class="cube active col-10" x="230" y="46" width="18" height="18" />
-    <rect class="cube" x="253" y="46" width="18" height="18" />
-    <rect class="cube" x="276" y="46" width="18" height="18" />
-    <rect class="cube active col-13" x="299" y="46" width="18" height="18" />
-    <rect class="cube active col-14" x="322" y="46" width="18" height="18" />
-    <rect class="cube" x="345" y="46" width="18" height="18" />
-    <rect class="cube active col-16" x="368" y="46" width="18" height="18" />
-    <rect class="cube active col-17" x="391" y="46" width="18" height="18" />
-    <rect class="cube" x="414" y="46" width="18" height="18" />
-    <rect class="cube" x="437" y="46" width="18" height="18" />
-    <rect class="cube active col-20" x="460" y="46" width="18" height="18" />
-    <rect class="cube active col-21" x="483" y="46" width="18" height="18" />
-    <rect class="cube" x="506" y="46" width="18" height="18" />
-    <rect class="cube" x="529" y="46" width="18" height="18" />
-    <rect class="cube active col-24" x="552" y="46" width="18" height="18" />
-    <rect class="cube active col-25" x="575" y="46" width="18" height="18" />
-    <rect class="cube active col-26" x="598" y="46" width="18" height="18" />
-    <rect class="cube active col-27" x="621" y="46" width="18" height="18" />
-    <rect class="cube" x="644" y="46" width="18" height="18" />
-    <rect class="cube" x="667" y="46" width="18" height="18" />
-    <rect class="cube active col-30" x="690" y="46" width="18" height="18" />
-    <rect class="cube active col-31" x="713" y="46" width="18" height="18" />
-    <rect class="cube active col-32" x="736" y="46" width="18" height="18" />
-    <rect class="cube" x="759" y="46" width="18" height="18" />
-    <rect class="cube active col-34" x="782" y="46" width="18" height="18" />
-    <rect class="cube active col-35" x="805" y="46" width="18" height="18" />
-    <rect class="cube" x="828" y="46" width="18" height="18" />
-    <rect class="cube" x="851" y="46" width="18" height="18" />
-    <rect class="cube" x="0" y="69" width="18" height="18" />
-    <rect class="cube" x="23" y="69" width="18" height="18" />
-    <rect class="cube active col-2" x="46" y="69" width="18" height="18" />
-    <rect class="cube active col-3" x="69" y="69" width="18" height="18" />
-    <rect class="cube" x="92" y="69" width="18" height="18" />
-    <rect class="cube" x="115" y="69" width="18" height="18" />
-    <rect class="cube active col-6" x="138" y="69" width="18" height="18" />
-    <rect class="cube active col-7" x="161" y="69" width="18" height="18" />
-    <rect class="cube" x="184" y="69" width="18" height="18" />
-    <rect class="cube active col-9" x="207" y="69" width="18" height="18" />
-    <rect class="cube active col-10" x="230" y="69" width="18" height="18" />
-    <rect class="cube" x="253" y="69" width="18" height="18" />
-    <rect class="cube" x="276" y="69" width="18" height="18" />
-    <rect class="cube active col-13" x="299" y="69" width="18" height="18" />
-    <rect class="cube active col-14" x="322" y="69" width="18" height="18" />
-    <rect class="cube" x="345" y="69" width="18" height="18" />
-    <rect class="cube" x="368" y="69" width="18" height="18" />
-    <rect class="cube active col-17" x="391" y="69" width="18" height="18" />
-    <rect class="cube active col-18" x="414" y="69" width="18" height="18" />
-    <rect class="cube active col-19" x="437" y="69" width="18" height="18" />
-    <rect class="cube active col-20" x="460" y="69" width="18" height="18" />
-    <rect class="cube" x="483" y="69" width="18" height="18" />
-    <rect class="cube" x="506" y="69" width="18" height="18" />
-    <rect class="cube active col-23" x="529" y="69" width="18" height="18" />
-    <rect class="cube active col-24" x="552" y="69" width="18" height="18" />
-    <rect class="cube" x="575" y="69" width="18" height="18" />
-    <rect class="cube" x="598" y="69" width="18" height="18" />
-    <rect class="cube active col-27" x="621" y="69" width="18" height="18" />
-    <rect class="cube active col-28" x="644" y="69" width="18" height="18" />
-    <rect class="cube" x="667" y="69" width="18" height="18" />
-    <rect class="cube active col-30" x="690" y="69" width="18" height="18" />
-    <rect class="cube active col-31" x="713" y="69" width="18" height="18" />
-    <rect class="cube active col-32" x="736" y="69" width="18" height="18" />
-    <rect class="cube active col-33" x="759" y="69" width="18" height="18" />
-    <rect class="cube active col-34" x="782" y="69" width="18" height="18" />
-    <rect class="cube active col-35" x="805" y="69" width="18" height="18" />
-    <rect class="cube" x="828" y="69" width="18" height="18" />
-    <rect class="cube" x="851" y="69" width="18" height="18" />
-    <rect class="cube" x="0" y="92" width="18" height="18" />
-    <rect class="cube" x="23" y="92" width="18" height="18" />
-    <rect class="cube active col-2" x="46" y="92" width="18" height="18" />
-    <rect class="cube active col-3" x="69" y="92" width="18" height="18" />
-    <rect class="cube active col-4" x="92" y="92" width="18" height="18" />
-    <rect class="cube active col-5" x="115" y="92" width="18" height="18" />
-    <rect class="cube active col-6" x="138" y="92" width="18" height="18" />
-    <rect class="cube active col-7" x="161" y="92" width="18" height="18" />
-    <rect class="cube" x="184" y="92" width="18" height="18" />
-    <rect class="cube active col-9" x="207" y="92" width="18" height="18" />
-    <rect class="cube active col-10" x="230" y="92" width="18" height="18" />
-    <rect class="cube active col-11" x="253" y="92" width="18" height="18" />
-    <rect class="cube active col-12" x="276" y="92" width="18" height="18" />
-    <rect class="cube active col-13" x="299" y="92" width="18" height="18" />
-    <rect class="cube" x="322" y="92" width="18" height="18" />
-    <rect class="cube" x="345" y="92" width="18" height="18" />
-    <rect class="cube" x="368" y="92" width="18" height="18" />
-    <rect class="cube" x="391" y="92" width="18" height="18" />
-    <rect class="cube active col-18" x="414" y="92" width="18" height="18" />
-    <rect class="cube active col-19" x="437" y="92" width="18" height="18" />
-    <rect class="cube" x="460" y="92" width="18" height="18" />
-    <rect class="cube" x="483" y="92" width="18" height="18" />
-    <rect class="cube" x="506" y="92" width="18" height="18" />
-    <rect class="cube active col-23" x="529" y="92" width="18" height="18" />
-    <rect class="cube active col-24" x="552" y="92" width="18" height="18" />
-    <rect class="cube active col-25" x="575" y="92" width="18" height="18" />
-    <rect class="cube active col-26" x="598" y="92" width="18" height="18" />
-    <rect class="cube active col-27" x="621" y="92" width="18" height="18" />
-    <rect class="cube active col-28" x="644" y="92" width="18" height="18" />
-    <rect class="cube" x="667" y="92" width="18" height="18" />
-    <rect class="cube active col-30" x="690" y="92" width="18" height="18" />
-    <rect class="cube active col-31" x="713" y="92" width="18" height="18" />
-    <rect class="cube" x="736" y="92" width="18" height="18" />
-    <rect class="cube active col-33" x="759" y="92" width="18" height="18" />
-    <rect class="cube active col-34" x="782" y="92" width="18" height="18" />
-    <rect class="cube active col-35" x="805" y="92" width="18" height="18" />
-    <rect class="cube" x="828" y="92" width="18" height="18" />
-    <rect class="cube" x="851" y="92" width="18" height="18" />
-    <rect class="cube" x="0" y="115" width="18" height="18" />
-    <rect class="cube" x="23" y="115" width="18" height="18" />
-    <rect class="cube active col-2" x="46" y="115" width="18" height="18" />
-    <rect class="cube active col-3" x="69" y="115" width="18" height="18" />
-    <rect class="cube" x="92" y="115" width="18" height="18" />
-    <rect class="cube" x="115" y="115" width="18" height="18" />
-    <rect class="cube active col-6" x="138" y="115" width="18" height="18" />
-    <rect class="cube active col-7" x="161" y="115" width="18" height="18" />
-    <rect class="cube" x="184" y="115" width="18" height="18" />
-    <rect class="cube active col-9" x="207" y="115" width="18" height="18" />
-    <rect class="cube active col-10" x="230" y="115" width="18" height="18" />
-    <rect class="cube" x="253" y="115" width="18" height="18" />
-    <rect class="cube active col-12" x="276" y="115" width="18" height="18" />
-    <rect class="cube active col-13" x="299" y="115" width="18" height="18" />
-    <rect class="cube" x="322" y="115" width="18" height="18" />
-    <rect class="cube" x="345" y="115" width="18" height="18" />
-    <rect class="cube" x="368" y="115" width="18" height="18" />
-    <rect class="cube" x="391" y="115" width="18" height="18" />
-    <rect class="cube active col-18" x="414" y="115" width="18" height="18" />
-    <rect class="cube active col-19" x="437" y="115" width="18" height="18" />
-    <rect class="cube" x="460" y="115" width="18" height="18" />
-    <rect class="cube" x="483" y="115" width="18" height="18" />
-    <rect class="cube" x="506" y="115" width="18" height="18" />
-    <rect class="cube active col-23" x="529" y="115" width="18" height="18" />
-    <rect class="cube active col-24" x="552" y="115" width="18" height="18" />
-    <rect class="cube" x="575" y="115" width="18" height="18" />
-    <rect class="cube" x="598" y="115" width="18" height="18" />
-    <rect class="cube active col-27" x="621" y="115" width="18" height="18" />
-    <rect class="cube active col-28" x="644" y="115" width="18" height="18" />
-    <rect class="cube" x="667" y="115" width="18" height="18" />
-    <rect class="cube active col-30" x="690" y="115" width="18" height="18" />
-    <rect class="cube active col-31" x="713" y="115" width="18" height="18" />
-    <rect class="cube" x="736" y="115" width="18" height="18" />
-    <rect class="cube" x="759" y="115" width="18" height="18" />
-    <rect class="cube active col-34" x="782" y="115" width="18" height="18" />
-    <rect class="cube active col-35" x="805" y="115" width="18" height="18" />
-    <rect class="cube" x="828" y="115" width="18" height="18" />
-    <rect class="cube" x="851" y="115" width="18" height="18" />
-    <rect class="cube" x="0" y="138" width="18" height="18" />
-    <rect class="cube" x="23" y="138" width="18" height="18" />
-    <rect class="cube active col-2" x="46" y="138" width="18" height="18" />
-    <rect class="cube active col-3" x="69" y="138" width="18" height="18" />
-    <rect class="cube" x="92" y="138" width="18" height="18" />
-    <rect class="cube" x="115" y="138" width="18" height="18" />
-    <rect class="cube active col-6" x="138" y="138" width="18" height="18" />
-    <rect class="cube active col-7" x="161" y="138" width="18" height="18" />
-    <rect class="cube" x="184" y="138" width="18" height="18" />
-    <rect class="cube active col-9" x="207" y="138" width="18" height="18" />
-    <rect class="cube active col-10" x="230" y="138" width="18" height="18" />
-    <rect class="cube" x="253" y="138" width="18" height="18" />
-    <rect class="cube" x="276" y="138" width="18" height="18" />
-    <rect class="cube active col-13" x="299" y="138" width="18" height="18" />
-    <rect class="cube active col-14" x="322" y="138" width="18" height="18" />
-    <rect class="cube" x="345" y="138" width="18" height="18" />
-    <rect class="cube" x="368" y="138" width="18" height="18" />
-    <rect class="cube" x="391" y="138" width="18" height="18" />
-    <rect class="cube active col-18" x="414" y="138" width="18" height="18" />
-    <rect class="cube active col-19" x="437" y="138" width="18" height="18" />
-    <rect class="cube" x="460" y="138" width="18" height="18" />
-    <rect class="cube" x="483" y="138" width="18" height="18" />
-    <rect class="cube" x="506" y="138" width="18" height="18" />
-    <rect class="cube active col-23" x="529" y="138" width="18" height="18" />
-    <rect class="cube active col-24" x="552" y="138" width="18" height="18" />
-    <rect class="cube" x="575" y="138" width="18" height="18" />
-    <rect class="cube" x="598" y="138" width="18" height="18" />
-    <rect class="cube active col-27" x="621" y="138" width="18" height="18" />
-    <rect class="cube active col-28" x="644" y="138" width="18" height="18" />
-    <rect class="cube" x="667" y="138" width="18" height="18" />
-    <rect class="cube active col-30" x="690" y="138" width="18" height="18" />
-    <rect class="cube active col-31" x="713" y="138" width="18" height="18" />
-    <rect class="cube" x="736" y="138" width="18" height="18" />
-    <rect class="cube" x="759" y="138" width="18" height="18" />
-    <rect class="cube active col-34" x="782" y="138" width="18" height="18" />
-    <rect class="cube active col-35" x="805" y="138" width="18" height="18" />
-    <rect class="cube" x="828" y="138" width="18" height="18" />
-    <rect class="cube" x="851" y="138" width="18" height="18" />
-    <rect class="cube" x="0" y="161" width="18" height="18" />
-    <rect class="cube" x="23" y="161" width="18" height="18" />
-    <rect class="cube" x="46" y="161" width="18" height="18" />
-    <rect class="cube" x="69" y="161" width="18" height="18" />
-    <rect class="cube" x="92" y="161" width="18" height="18" />
-    <rect class="cube" x="115" y="161" width="18" height="18" />
-    <rect class="cube" x="138" y="161" width="18" height="18" />
-    <rect class="cube" x="161" y="161" width="18" height="18" />
-    <rect class="cube" x="184" y="161" width="18" height="18" />
-    <rect class="cube" x="207" y="161" width="18" height="18" />
-    <rect class="cube" x="230" y="161" width="18" height="18" />
-    <rect class="cube" x="253" y="161" width="18" height="18" />
-    <rect class="cube" x="276" y="161" width="18" height="18" />
-    <rect class="cube" x="299" y="161" width="18" height="18" />
-    <rect class="cube" x="322" y="161" width="18" height="18" />
-    <rect class="cube" x="345" y="161" width="18" height="18" />
-    <rect class="cube" x="368" y="161" width="18" height="18" />
-    <rect class="cube" x="391" y="161" width="18" height="18" />
-    <rect class="cube" x="414" y="161" width="18" height="18" />
-    <rect class="cube" x="437" y="161" width="18" height="18" />
-    <rect class="cube" x="460" y="161" width="18" height="18" />
-    <rect class="cube" x="483" y="161" width="18" height="18" />
-    <rect class="cube" x="506" y="161" width="18" height="18" />
-    <rect class="cube" x="529" y="161" width="18" height="18" />
-    <rect class="cube" x="552" y="161" width="18" height="18" />
-    <rect class="cube" x="575" y="161" width="18" height="18" />
-    <rect class="cube" x="598" y="161" width="18" height="18" />
-    <rect class="cube" x="621" y="161" width="18" height="18" />
-    <rect class="cube" x="644" y="161" width="18" height="18" />
-    <rect class="cube" x="667" y="161" width="18" height="18" />
-    <rect class="cube" x="690" y="161" width="18" height="18" />
-    <rect class="cube" x="713" y="161" width="18" height="18" />
-    <rect class="cube" x="736" y="161" width="18" height="18" />
-    <rect class="cube" x="759" y="161" width="18" height="18" />
-    <rect class="cube" x="782" y="161" width="18" height="18" />
-    <rect class="cube" x="805" y="161" width="18" height="18" />
-    <rect class="cube" x="828" y="161" width="18" height="18" />
-    <rect class="cube" x="851" y="161" width="18" height="18" />
+    <!-- Row 0 (y=0) — all inactive -->
+    <rect class="cube c0" x="0" y="0" width="18" height="18" />
+    <rect class="cube c1" x="23" y="0" width="18" height="18" />
+    <rect class="cube c2" x="46" y="0" width="18" height="18" />
+    <rect class="cube c3" x="69" y="0" width="18" height="18" />
+    <rect class="cube c4" x="92" y="0" width="18" height="18" />
+    <rect class="cube c5" x="115" y="0" width="18" height="18" />
+    <rect class="cube c6" x="138" y="0" width="18" height="18" />
+    <rect class="cube c7" x="161" y="0" width="18" height="18" />
+    <rect class="cube c8" x="184" y="0" width="18" height="18" />
+    <rect class="cube c9" x="207" y="0" width="18" height="18" />
+    <rect class="cube c10" x="230" y="0" width="18" height="18" />
+    <rect class="cube c11" x="253" y="0" width="18" height="18" />
+    <rect class="cube c12" x="276" y="0" width="18" height="18" />
+    <rect class="cube c13" x="299" y="0" width="18" height="18" />
+    <rect class="cube c14" x="322" y="0" width="18" height="18" />
+    <rect class="cube c15" x="345" y="0" width="18" height="18" />
+    <rect class="cube c16" x="368" y="0" width="18" height="18" />
+    <rect class="cube c17" x="391" y="0" width="18" height="18" />
+    <rect class="cube c18" x="414" y="0" width="18" height="18" />
+    <rect class="cube c19" x="437" y="0" width="18" height="18" />
+    <rect class="cube c20" x="460" y="0" width="18" height="18" />
+    <rect class="cube c21" x="483" y="0" width="18" height="18" />
+    <rect class="cube c22" x="506" y="0" width="18" height="18" />
+    <rect class="cube c23" x="529" y="0" width="18" height="18" />
+    <rect class="cube c24" x="552" y="0" width="18" height="18" />
+    <rect class="cube c25" x="575" y="0" width="18" height="18" />
+    <rect class="cube c26" x="598" y="0" width="18" height="18" />
+    <rect class="cube c27" x="621" y="0" width="18" height="18" />
+    <rect class="cube c28" x="644" y="0" width="18" height="18" />
+    <rect class="cube c29" x="667" y="0" width="18" height="18" />
+    <rect class="cube c30" x="690" y="0" width="18" height="18" />
+    <rect class="cube c31" x="713" y="0" width="18" height="18" />
+    <rect class="cube c32" x="736" y="0" width="18" height="18" />
+    <rect class="cube c33" x="759" y="0" width="18" height="18" />
+    <rect class="cube c34" x="782" y="0" width="18" height="18" />
+    <rect class="cube c35" x="805" y="0" width="18" height="18" />
+    <rect class="cube c36" x="828" y="0" width="18" height="18" />
+    <rect class="cube c37" x="851" y="0" width="18" height="18" />
+
+    <!-- Row 1 (y=23) — A(4,5) R(9-13) Y(16,17,20,21) A2(25,26) N(30,31,34,35) -->
+    <rect class="cube c0" x="0" y="23" width="18" height="18" />
+    <rect class="cube c1" x="23" y="23" width="18" height="18" />
+    <rect class="cube c2" x="46" y="23" width="18" height="18" />
+    <rect class="cube c3" x="69" y="23" width="18" height="18" />
+    <rect class="active lA" x="92" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="115" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c6" x="138" y="23" width="18" height="18" />
+    <rect class="cube c7" x="161" y="23" width="18" height="18" />
+    <rect class="cube c8" x="184" y="23" width="18" height="18" />
+    <rect class="active lR" x="207" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="230" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="253" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="276" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="299" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c14" x="322" y="23" width="18" height="18" />
+    <rect class="cube c15" x="345" y="23" width="18" height="18" />
+    <rect class="active lY" x="368" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lY" x="391" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c18" x="414" y="23" width="18" height="18" />
+    <rect class="cube c19" x="437" y="23" width="18" height="18" />
+    <rect class="active lY" x="460" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lY" x="483" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c22" x="506" y="23" width="18" height="18" />
+    <rect class="cube c23" x="529" y="23" width="18" height="18" />
+    <rect class="cube c24" x="552" y="23" width="18" height="18" />
+    <rect class="active lA2" x="575" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="598" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c27" x="621" y="23" width="18" height="18" />
+    <rect class="cube c28" x="644" y="23" width="18" height="18" />
+    <rect class="cube c29" x="667" y="23" width="18" height="18" />
+    <rect class="active lN" x="690" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="713" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c32" x="736" y="23" width="18" height="18" />
+    <rect class="cube c33" x="759" y="23" width="18" height="18" />
+    <rect class="active lN" x="782" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="805" y="23" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c36" x="828" y="23" width="18" height="18" />
+    <rect class="cube c37" x="851" y="23" width="18" height="18" />
+
+    <!-- Row 2 (y=46) — A(3-6) R(9,10,13,14) Y(16,17,20,21) A2(24-27) N(30-32,34,35) -->
+    <rect class="cube c0" x="0" y="46" width="18" height="18" />
+    <rect class="cube c1" x="23" y="46" width="18" height="18" />
+    <rect class="cube c2" x="46" y="46" width="18" height="18" />
+    <rect class="active lA" x="69" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="92" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="115" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="138" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c7" x="161" y="46" width="18" height="18" />
+    <rect class="cube c8" x="184" y="46" width="18" height="18" />
+    <rect class="active lR" x="207" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="230" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c11" x="253" y="46" width="18" height="18" />
+    <rect class="cube c12" x="276" y="46" width="18" height="18" />
+    <rect class="active lR" x="299" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="322" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c15" x="345" y="46" width="18" height="18" />
+    <rect class="active lY" x="368" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lY" x="391" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c18" x="414" y="46" width="18" height="18" />
+    <rect class="cube c19" x="437" y="46" width="18" height="18" />
+    <rect class="active lY" x="460" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lY" x="483" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c22" x="506" y="46" width="18" height="18" />
+    <rect class="cube c23" x="529" y="46" width="18" height="18" />
+    <rect class="active lA2" x="552" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="575" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="598" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="621" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c28" x="644" y="46" width="18" height="18" />
+    <rect class="cube c29" x="667" y="46" width="18" height="18" />
+    <rect class="active lN" x="690" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="713" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="736" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c33" x="759" y="46" width="18" height="18" />
+    <rect class="active lN" x="782" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="805" y="46" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c36" x="828" y="46" width="18" height="18" />
+    <rect class="cube c37" x="851" y="46" width="18" height="18" />
+
+    <!-- Row 3 (y=69) — A(2,3,6,7) R(9,10,13,14) Y(17-20) A2(23,24,27,28) N(30-35) -->
+    <rect class="cube c0" x="0" y="69" width="18" height="18" />
+    <rect class="cube c1" x="23" y="69" width="18" height="18" />
+    <rect class="active lA" x="46" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="69" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c4" x="92" y="69" width="18" height="18" />
+    <rect class="cube c5" x="115" y="69" width="18" height="18" />
+    <rect class="active lA" x="138" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="161" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c8" x="184" y="69" width="18" height="18" />
+    <rect class="active lR" x="207" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="230" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c11" x="253" y="69" width="18" height="18" />
+    <rect class="cube c12" x="276" y="69" width="18" height="18" />
+    <rect class="active lR" x="299" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="322" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c15" x="345" y="69" width="18" height="18" />
+    <rect class="cube c16" x="368" y="69" width="18" height="18" />
+    <rect class="active lY" x="391" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lY" x="414" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lY" x="437" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lY" x="460" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c21" x="483" y="69" width="18" height="18" />
+    <rect class="cube c22" x="506" y="69" width="18" height="18" />
+    <rect class="active lA2" x="529" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="552" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c25" x="575" y="69" width="18" height="18" />
+    <rect class="cube c26" x="598" y="69" width="18" height="18" />
+    <rect class="active lA2" x="621" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="644" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c29" x="667" y="69" width="18" height="18" />
+    <rect class="active lN" x="690" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="713" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="736" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="759" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="782" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="805" y="69" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c36" x="828" y="69" width="18" height="18" />
+    <rect class="cube c37" x="851" y="69" width="18" height="18" />
+
+    <!-- Row 4 (y=92) — A(2-7) R(9-13) Y(18,19) A2(23-28) N(30,31,33-35) -->
+    <rect class="cube c0" x="0" y="92" width="18" height="18" />
+    <rect class="cube c1" x="23" y="92" width="18" height="18" />
+    <rect class="active lA" x="46" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="69" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="92" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="115" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="138" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="161" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c8" x="184" y="92" width="18" height="18" />
+    <rect class="active lR" x="207" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="230" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="253" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="276" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="299" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c14" x="322" y="92" width="18" height="18" />
+    <rect class="cube c15" x="345" y="92" width="18" height="18" />
+    <rect class="cube c16" x="368" y="92" width="18" height="18" />
+    <rect class="cube c17" x="391" y="92" width="18" height="18" />
+    <rect class="active lY" x="414" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lY" x="437" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c20" x="460" y="92" width="18" height="18" />
+    <rect class="cube c21" x="483" y="92" width="18" height="18" />
+    <rect class="cube c22" x="506" y="92" width="18" height="18" />
+    <rect class="active lA2" x="529" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="552" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="575" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="598" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="621" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="644" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c29" x="667" y="92" width="18" height="18" />
+    <rect class="active lN" x="690" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="713" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c32" x="736" y="92" width="18" height="18" />
+    <rect class="active lN" x="759" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="782" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="805" y="92" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c36" x="828" y="92" width="18" height="18" />
+    <rect class="cube c37" x="851" y="92" width="18" height="18" />
+
+    <!-- Row 5 (y=115) — A(2,3,6,7) R(9,10,12,13) Y(18,19) A2(23,24,27,28) N(30,31,34,35) -->
+    <rect class="cube c0" x="0" y="115" width="18" height="18" />
+    <rect class="cube c1" x="23" y="115" width="18" height="18" />
+    <rect class="active lA" x="46" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="69" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c4" x="92" y="115" width="18" height="18" />
+    <rect class="cube c5" x="115" y="115" width="18" height="18" />
+    <rect class="active lA" x="138" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="161" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c8" x="184" y="115" width="18" height="18" />
+    <rect class="active lR" x="207" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="230" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c11" x="253" y="115" width="18" height="18" />
+    <rect class="active lR" x="276" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="299" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c14" x="322" y="115" width="18" height="18" />
+    <rect class="cube c15" x="345" y="115" width="18" height="18" />
+    <rect class="cube c16" x="368" y="115" width="18" height="18" />
+    <rect class="cube c17" x="391" y="115" width="18" height="18" />
+    <rect class="active lY" x="414" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lY" x="437" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c20" x="460" y="115" width="18" height="18" />
+    <rect class="cube c21" x="483" y="115" width="18" height="18" />
+    <rect class="cube c22" x="506" y="115" width="18" height="18" />
+    <rect class="active lA2" x="529" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="552" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c25" x="575" y="115" width="18" height="18" />
+    <rect class="cube c26" x="598" y="115" width="18" height="18" />
+    <rect class="active lA2" x="621" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="644" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c29" x="667" y="115" width="18" height="18" />
+    <rect class="active lN" x="690" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="713" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c32" x="736" y="115" width="18" height="18" />
+    <rect class="cube c33" x="759" y="115" width="18" height="18" />
+    <rect class="active lN" x="782" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="805" y="115" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c36" x="828" y="115" width="18" height="18" />
+    <rect class="cube c37" x="851" y="115" width="18" height="18" />
+
+    <!-- Row 6 (y=138) — A(2,3,6,7) R(9,10,13,14) Y(18,19) A2(23,24,27,28) N(30,31,34,35) -->
+    <rect class="cube c0" x="0" y="138" width="18" height="18" />
+    <rect class="cube c1" x="23" y="138" width="18" height="18" />
+    <rect class="active lA" x="46" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="69" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c4" x="92" y="138" width="18" height="18" />
+    <rect class="cube c5" x="115" y="138" width="18" height="18" />
+    <rect class="active lA" x="138" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA" x="161" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c8" x="184" y="138" width="18" height="18" />
+    <rect class="active lR" x="207" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="230" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c11" x="253" y="138" width="18" height="18" />
+    <rect class="cube c12" x="276" y="138" width="18" height="18" />
+    <rect class="active lR" x="299" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lR" x="322" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c15" x="345" y="138" width="18" height="18" />
+    <rect class="cube c16" x="368" y="138" width="18" height="18" />
+    <rect class="cube c17" x="391" y="138" width="18" height="18" />
+    <rect class="active lY" x="414" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lY" x="437" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c20" x="460" y="138" width="18" height="18" />
+    <rect class="cube c21" x="483" y="138" width="18" height="18" />
+    <rect class="cube c22" x="506" y="138" width="18" height="18" />
+    <rect class="active lA2" x="529" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="552" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c25" x="575" y="138" width="18" height="18" />
+    <rect class="cube c26" x="598" y="138" width="18" height="18" />
+    <rect class="active lA2" x="621" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lA2" x="644" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c29" x="667" y="138" width="18" height="18" />
+    <rect class="active lN" x="690" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="713" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c32" x="736" y="138" width="18" height="18" />
+    <rect class="cube c33" x="759" y="138" width="18" height="18" />
+    <rect class="active lN" x="782" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="active lN" x="805" y="138" width="18" height="18" rx="3" fill="#060919" stroke="rgba(0,229,255,0.06)" stroke-width="1.2"/>
+    <rect class="cube c36" x="828" y="138" width="18" height="18" />
+    <rect class="cube c37" x="851" y="138" width="18" height="18" />
+
+    <!-- Row 7 (y=161) — all inactive -->
+    <rect class="cube c0" x="0" y="161" width="18" height="18" />
+    <rect class="cube c1" x="23" y="161" width="18" height="18" />
+    <rect class="cube c2" x="46" y="161" width="18" height="18" />
+    <rect class="cube c3" x="69" y="161" width="18" height="18" />
+    <rect class="cube c4" x="92" y="161" width="18" height="18" />
+    <rect class="cube c5" x="115" y="161" width="18" height="18" />
+    <rect class="cube c6" x="138" y="161" width="18" height="18" />
+    <rect class="cube c7" x="161" y="161" width="18" height="18" />
+    <rect class="cube c8" x="184" y="161" width="18" height="18" />
+    <rect class="cube c9" x="207" y="161" width="18" height="18" />
+    <rect class="cube c10" x="230" y="161" width="18" height="18" />
+    <rect class="cube c11" x="253" y="161" width="18" height="18" />
+    <rect class="cube c12" x="276" y="161" width="18" height="18" />
+    <rect class="cube c13" x="299" y="161" width="18" height="18" />
+    <rect class="cube c14" x="322" y="161" width="18" height="18" />
+    <rect class="cube c15" x="345" y="161" width="18" height="18" />
+    <rect class="cube c16" x="368" y="161" width="18" height="18" />
+    <rect class="cube c17" x="391" y="161" width="18" height="18" />
+    <rect class="cube c18" x="414" y="161" width="18" height="18" />
+    <rect class="cube c19" x="437" y="161" width="18" height="18" />
+    <rect class="cube c20" x="460" y="161" width="18" height="18" />
+    <rect class="cube c21" x="483" y="161" width="18" height="18" />
+    <rect class="cube c22" x="506" y="161" width="18" height="18" />
+    <rect class="cube c23" x="529" y="161" width="18" height="18" />
+    <rect class="cube c24" x="552" y="161" width="18" height="18" />
+    <rect class="cube c25" x="575" y="161" width="18" height="18" />
+    <rect class="cube c26" x="598" y="161" width="18" height="18" />
+    <rect class="cube c27" x="621" y="161" width="18" height="18" />
+    <rect class="cube c28" x="644" y="161" width="18" height="18" />
+    <rect class="cube c29" x="667" y="161" width="18" height="18" />
+    <rect class="cube c30" x="690" y="161" width="18" height="18" />
+    <rect class="cube c31" x="713" y="161" width="18" height="18" />
+    <rect class="cube c32" x="736" y="161" width="18" height="18" />
+    <rect class="cube c33" x="759" y="161" width="18" height="18" />
+    <rect class="cube c34" x="782" y="161" width="18" height="18" />
+    <rect class="cube c35" x="805" y="161" width="18" height="18" />
+    <rect class="cube c36" x="828" y="161" width="18" height="18" />
+    <rect class="cube c37" x="851" y="161" width="18" height="18" />
   </g>
 </svg>

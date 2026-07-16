@@ -1,77 +1,269 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 220" width="420" height="220">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;display=swap');
-    
     .bg {
       fill: #0b0f19;
       stroke: rgba(0, 229, 255, 0.08);
       stroke-width: 1;
-      rx: 12px;
     }
-    .pane-border {
-      stroke: rgba(255, 255, 255, 0.06);
-      stroke-width: 1;
+
+    /* ═══ Scene cycling: IDE (0-6s) ↔ Dashboard (6-12s) ═══ */
+    @keyframes show-ide {
+      0%, 45% { opacity: 1; }
+      50%, 95% { opacity: 0; }
+      100% { opacity: 1; }
     }
+    @keyframes show-app {
+      0%, 45% { opacity: 0; }
+      50%, 95% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .scene-ide { animation: show-ide 12s infinite ease-in-out; }
+    .scene-app { animation: show-app 12s infinite ease-in-out; }
+
+    /* ═══ Common ═══ */
+    .pane-border { stroke: rgba(255, 255, 255, 0.06); stroke-width: 1; }
     .pane-title {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Consolas', 'Courier New', monospace;
       font-size: 10px;
       fill: #4c4c5e;
     }
     .code-text {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Consolas', 'Courier New', monospace;
       font-size: 9px;
       fill: #a9b1d6;
     }
+
+    /* ═══ IDE Scene — Syntax colors ═══ */
     .tag { fill: #f7768e; }
     .attr { fill: #e0af68; }
     .val { fill: #9ece6a; }
+    .kw { fill: #569cd6; }
+    .str { fill: #ce9178; }
+    .fn { fill: #dcdcaa; }
+    .cm { fill: #6a9955; }
     .term-green { fill: #73daca; }
     .term-dim { fill: #565f89; }
 
-    /* Typing / Compiling active scroll line keyframe */
+    /* Typing line reveal */
     @keyframes line-reveal {
-      0%, 100% { opacity: 0.3; }
+      0%, 100% { opacity: 0.2; }
       50% { opacity: 1; }
     }
-    .act-line {
-      animation: line-reveal 2s infinite ease-in-out;
+    .act-line { animation: line-reveal 2s infinite ease-in-out; }
+
+    /* Staggered code line typing */
+    @keyframes type-line {
+      0%, 5% { opacity: 0; }
+      10%, 100% { opacity: 1; }
+    }
+    .tl1 { animation: type-line 12s infinite; animation-delay: 0.2s; }
+    .tl2 { animation: type-line 12s infinite; animation-delay: 0.5s; }
+    .tl3 { animation: type-line 12s infinite; animation-delay: 0.8s; }
+    .tl4 { animation: type-line 12s infinite; animation-delay: 1.1s; }
+    .tl5 { animation: type-line 12s infinite; animation-delay: 1.4s; }
+    .tl6 { animation: type-line 12s infinite; animation-delay: 1.7s; }
+    .tl7 { animation: type-line 12s infinite; animation-delay: 2.0s; }
+
+    /* ═══ Dashboard Scene ═══ */
+    .nav-grad { fill: #667eea; }
+    .hero-bg { fill: #141428; }
+    .card-bg { fill: #1e1e38; }
+    .chart-bg { fill: #141428; }
+
+    /* Chart bar grow animation */
+    @keyframes bar-grow {
+      0%, 50% { transform: scaleY(0); }
+      60%, 95% { transform: scaleY(1); }
+      100% { transform: scaleY(0); }
+    }
+
+    .bar { transform-origin: bottom; animation: bar-grow 12s infinite ease-out; }
+    .bar-1 { animation-delay: 6.0s; }
+    .bar-2 { animation-delay: 6.1s; }
+    .bar-3 { animation-delay: 6.2s; }
+    .bar-4 { animation-delay: 6.3s; }
+    .bar-5 { animation-delay: 6.4s; }
+    .bar-6 { animation-delay: 6.5s; }
+    .bar-7 { animation-delay: 6.6s; }
+    .bar-8 { animation-delay: 6.7s; }
+
+    /* LED indicator */
+    @keyframes led-cycle {
+      0%, 45% { fill: #007acc; }
+      50%, 95% { fill: #27c93f; }
+    }
+    .led { animation: led-cycle 12s infinite ease-in-out; }
+
+    /* Label text cycle */
+    @keyframes lbl-ide {
+      0%, 45% { opacity: 1; }
+      50%, 95% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    @keyframes lbl-live {
+      0%, 45% { opacity: 0; }
+      50%, 95% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .lbl-ide { animation: lbl-ide 12s infinite; }
+    .lbl-live { animation: lbl-live 12s infinite; }
+
+    .label-text {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 8px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
     }
   </style>
-  
-  <rect class="bg" width="420" height="220" />
-  
-  <!-- Left Editor Pane -->
-  <g transform="translate(15, 15)">
-    <rect width="185" height="190" fill="#090d16" rx="6" />
-    <text class="pane-title" x="12" y="18">src/App.js</text>
-    <line class="pane-border" x1="0" y1="28" x2="185" y2="28" />
-    
-    <!-- Code Blocks -->
-    <g transform="translate(12, 45)" class="code-text">
-      <text x="0" y="10">&lt;<tspan class="tag">div</tspan> className="App"&gt;</text>
-      <text x="10" y="25" class="act-line">&lt;<tspan class="tag">Cubes</tspan> <tspan class="attr">gridSize</tspan>=<tspan class="val">{8}</tspan></text>
-      <text x="20" y="40">&lt;<tspan class="attr">maxAngle</tspan>=<tspan class="val">{45}</tspan></text>
-      <text x="20" y="55">&lt;<tspan class="attr">autoAnimate</tspan></text>
-      <text x="20" y="70">&lt;<tspan class="attr">faceColor</tspan>=<tspan class="val">"#1a1a2e"</tspan></text>
-      <text x="10" y="85">/&gt;</text>
-      <text x="0" y="100">&lt;/<tspan class="tag">div</tspan>&gt;</text>
+
+  <rect class="bg" width="420" height="220" rx="12" />
+
+  <!-- LED status indicator -->
+  <circle class="led" cx="400" cy="15" r="3.5"/>
+
+  <!-- ═══════ SCENE 1: VS Code IDE ═══════ -->
+  <g class="scene-ide">
+    <!-- Laptop bezel top -->
+    <rect x="15" y="12" width="390" height="12" rx="6" fill="#2c2c34"/>
+    <circle cx="210" cy="18" r="2" fill="#444450"/>
+    <!-- Traffic lights -->
+    <circle cx="30" cy="18" r="3" fill="#ff5f56"/>
+    <circle cx="40" cy="18" r="3" fill="#ffbd2e"/>
+    <circle cx="50" cy="18" r="3" fill="#27c93f"/>
+
+    <!-- Editor area -->
+    <rect x="15" y="24" width="390" height="168" fill="#1e1e1e"/>
+
+    <!-- Activity bar -->
+    <rect x="15" y="24" width="28" height="168" fill="#333340"/>
+    <rect x="25" y="34" width="8" height="2" rx="1" fill="#d4d4d4"/>
+    <rect x="25" y="44" width="8" height="2" rx="1" fill="#808088"/>
+    <rect x="25" y="54" width="8" height="2" rx="1" fill="#808088"/>
+
+    <!-- Sidebar -->
+    <rect x="43" y="24" width="75" height="168" fill="#252526"/>
+    <text x="50" y="38" style="font-family:monospace;font-size:8px;fill:#bbbbbb;">EXPLORER</text>
+    <rect x="50" y="44" width="4" height="4" rx="1" fill="#e8ab53"/>
+    <text x="58" y="48" style="font-family:monospace;font-size:7px;fill:#bbbbbb;">src</text>
+    <rect x="50" y="52" width="60" height="10" rx="2" fill="#37373d"/>
+    <rect x="54" y="54" width="4" height="4" rx="1" fill="#519aba"/>
+    <text x="62" y="60" style="font-family:monospace;font-size:7px;fill:#ffffff;">App.tsx</text>
+    <rect x="54" y="66" width="4" height="4" rx="1" fill="#519aba"/>
+    <text x="62" y="70" style="font-family:monospace;font-size:7px;fill:#bbbbbb;">index.ts</text>
+    <rect x="54" y="76" width="4" height="4" rx="1" fill="#519aba"/>
+    <text x="62" y="80" style="font-family:monospace;font-size:7px;fill:#bbbbbb;">utils.ts</text>
+
+    <!-- Tab bar -->
+    <rect x="118" y="24" width="287" height="14" fill="#252526"/>
+    <rect x="118" y="24" width="70" height="14" fill="#1e1e1e"/>
+    <text x="128" y="34" style="font-family:monospace;font-size:8px;fill:#bbbbbb;">App.tsx</text>
+    <rect x="188" y="24" width="60" height="14" fill="#2d2d2d"/>
+    <text x="195" y="34" style="font-family:monospace;font-size:8px;fill:#666666;">styles.css</text>
+
+    <!-- Code lines (staggered reveal) -->
+    <g transform="translate(125, 48)" class="code-text">
+      <text x="0" y="0" class="cm tl1">// Main application entry</text>
+      <text x="0" y="13" class="tl2"><tspan class="kw">import</tspan> React <tspan class="kw">from</tspan> <tspan class="str">'react'</tspan></text>
+      <text x="0" y="26" class="tl3"><tspan class="kw">import</tspan> { Cubes } <tspan class="kw">from</tspan> <tspan class="str">'./Cubes'</tspan></text>
+      <text x="0" y="39" class="tl4"></text>
+      <text x="0" y="52" class="tl5"><tspan class="kw">export default</tspan> <tspan class="kw">function</tspan> <tspan class="fn">App</tspan>() {</text>
+      <text x="8" y="65" class="tl6 act-line"><tspan class="kw">  return</tspan> &lt;<tspan class="tag">Cubes</tspan> <tspan class="attr">gridSize</tspan>={<tspan class="val">8</tspan>} /&gt;</text>
+      <text x="0" y="78" class="tl7">}</text>
     </g>
+
+    <!-- Line numbers -->
+    <g transform="translate(120, 48)" style="font-family:monospace;font-size:8px;fill:#858585;text-anchor:end;">
+      <text x="0" y="0">1</text>
+      <text x="0" y="13">2</text>
+      <text x="0" y="26">3</text>
+      <text x="0" y="39">4</text>
+      <text x="0" y="52">5</text>
+      <text x="0" y="65">6</text>
+      <text x="0" y="78">7</text>
+    </g>
+
+    <!-- Terminal -->
+    <rect x="118" y="138" width="287" height="40" fill="#1a1a1a"/>
+    <line x1="118" y1="138" x2="405" y2="138" stroke="#2a2a2a" stroke-width="1"/>
+    <text x="122" y="148" style="font-family:monospace;font-size:7px;fill:#888;">TERMINAL</text>
+    <text x="125" y="160" style="font-family:monospace;font-size:7px;fill:#27c93f;">$</text>
+    <text x="133" y="160" style="font-family:monospace;font-size:7px;fill:#cccccc;">npm run dev</text>
+    <text x="125" y="172" style="font-family:monospace;font-size:7px;fill:#569cd6;">ready - localhost:3000</text>
+
+    <!-- Status bar -->
+    <rect x="15" y="192" width="390" height="10" fill="#007acc"/>
+    <text x="20" y="199" style="font-family:monospace;font-size:7px;fill:#ffffff;">main</text>
+    <text x="340" y="199" style="font-family:monospace;font-size:7px;fill:#ffffff;">TypeScript</text>
+
+    <!-- Laptop base -->
+    <rect x="80" y="204" width="260" height="6" rx="3" fill="#2c2c34"/>
+    <rect x="170" y="204" width="80" height="6" rx="3" fill="#383844"/>
   </g>
 
-  <!-- Right Terminal Pane -->
-  <g transform="translate(220, 15)">
-    <rect width="185" height="190" fill="#05080e" rx="6" />
-    <text class="pane-title" x="12" y="18">terminal</text>
-    <line class="pane-border" x1="0" y1="28" x2="185" y2="28" />
-    
-    <!-- Logs Blocks -->
-    <g transform="translate(12, 45)" class="code-text">
-      <text x="0" y="10" class="term-dim">$ npm run dev</text>
-      <text x="0" y="25" class="term-green">> repo-lens@1.0.0 dev</text>
-      <text x="0" y="40">> next dev</text>
-      <text x="0" y="60" class="act-line">ready - started server on port 3000</text>
-      <text x="0" y="75" class="term-green">event - compiled client successfully</text>
-      <text x="0" y="90" class="term-dim">Parsed: 42 files (insights ready)</text>
-    </g>
+  <!-- ═══════ SCENE 2: Dashboard App ═══════ -->
+  <g class="scene-app" style="opacity: 0;">
+    <!-- Browser chrome -->
+    <rect x="15" y="12" width="390" height="12" rx="6" fill="#2b2b2b"/>
+    <circle cx="30" cy="18" r="3" fill="#ff5f56"/>
+    <circle cx="40" cy="18" r="3" fill="#ffbd2e"/>
+    <circle cx="50" cy="18" r="3" fill="#27c93f"/>
+
+    <!-- URL bar -->
+    <rect x="15" y="24" width="390" height="12" fill="#333340"/>
+    <circle cx="25" cy="30" r="2" fill="#27c93f"/>
+    <text x="32" y="33" style="font-family:monospace;font-size:7px;fill:#888888;">localhost:3000/dashboard</text>
+
+    <!-- Navbar gradient -->
+    <rect x="15" y="36" width="390" height="18" fill="#667eea" rx="0"/>
+    <text x="25" y="48" style="font-family:sans-serif;font-size:9px;fill:#ffffff;font-weight:bold;">RepoLens</text>
+    <text x="320" y="48" style="font-family:sans-serif;font-size:7px;fill:rgba(255,255,255,0.7);">Home  Docs  API</text>
+
+    <!-- Hero section -->
+    <rect x="15" y="54" width="390" height="36" fill="#141428"/>
+    <text x="120" y="70" style="font-family:sans-serif;font-size:11px;fill:#e0e0f0;font-weight:bold;">Repository Intelligence</text>
+    <text x="145" y="82" style="font-family:sans-serif;font-size:7px;fill:#888898;">Understand any codebase instantly</text>
+
+    <!-- Stats cards -->
+    <rect x="22" y="96" width="118" height="30" rx="4" fill="#1e1e38"/>
+    <rect x="22" y="96" width="118" height="4" rx="2" fill="#667eea"/>
+    <text x="30" y="112" style="font-family:sans-serif;font-size:9px;fill:#ffffff;font-weight:bold;">1,247</text>
+    <text x="30" y="121" style="font-family:sans-serif;font-size:6px;fill:#888898;">Repos Analyzed</text>
+
+    <rect x="150" y="96" width="118" height="30" rx="4" fill="#1e1e38"/>
+    <rect x="150" y="96" width="118" height="4" rx="2" fill="#f093fb"/>
+    <text x="158" y="112" style="font-family:sans-serif;font-size:9px;fill:#ffffff;font-weight:bold;">98.2%</text>
+    <text x="158" y="121" style="font-family:sans-serif;font-size:6px;fill:#888898;">Accuracy Score</text>
+
+    <rect x="278" y="96" width="118" height="30" rx="4" fill="#1e1e38"/>
+    <rect x="278" y="96" width="118" height="4" rx="2" fill="#4facfe"/>
+    <text x="286" y="112" style="font-family:sans-serif;font-size:9px;fill:#ffffff;font-weight:bold;">42ms</text>
+    <text x="286" y="121" style="font-family:sans-serif;font-size:6px;fill:#888898;">Avg Response</text>
+
+    <!-- Chart area -->
+    <rect x="15" y="132" width="390" height="60" rx="4" fill="#141428"/>
+    <text x="22" y="145" style="font-family:sans-serif;font-size:7px;fill:#888898;">Weekly Activity</text>
+
+    <!-- Chart bars (grow animation) -->
+    <rect class="bar bar-1" x="40"  y="158" width="14" height="28" rx="2" fill="#667eea"/>
+    <rect class="bar bar-2" x="62"  y="164" width="14" height="22" rx="2" fill="#f093fb"/>
+    <rect class="bar bar-3" x="84"  y="155" width="14" height="31" rx="2" fill="#4facfe"/>
+    <rect class="bar bar-4" x="106" y="168" width="14" height="18" rx="2" fill="#43e97b"/>
+    <rect class="bar bar-5" x="128" y="152" width="14" height="34" rx="2" fill="#fa709a"/>
+    <rect class="bar bar-6" x="150" y="160" width="14" height="26" rx="2" fill="#667eea"/>
+    <rect class="bar bar-7" x="172" y="156" width="14" height="30" rx="2" fill="#f093fb"/>
+    <rect class="bar bar-8" x="194" y="162" width="14" height="24" rx="2" fill="#4facfe"/>
+
+    <!-- Footer -->
+    <rect x="15" y="192" width="390" height="10" fill="#0e0e20"/>
+    <text x="150" y="199" style="font-family:sans-serif;font-size:6px;fill:#444458;">© 2025 RepoLens — Built with FastAPI + React</text>
+
+    <!-- Laptop base -->
+    <rect x="80" y="204" width="260" height="6" rx="3" fill="#2c2c34"/>
+    <rect x="170" y="204" width="80" height="6" rx="3" fill="#383844"/>
   </g>
+
+  <!-- Bottom label (cycles between states) -->
+  <text class="label-text lbl-ide" x="160" y="216" style="fill:#18263a;">writing code</text>
+  <text class="label-text lbl-live" x="165" y="216" style="fill:#1a6040; opacity:0;">● running</text>
 </svg>

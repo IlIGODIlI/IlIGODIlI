@@ -1,77 +1,121 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;display=swap');
-    
     .bg {
       fill: #0b0f19;
       stroke: rgba(0, 229, 255, 0.08);
       stroke-width: 1;
-      rx: 12px;
     }
-    .text-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 16px;
-      font-weight: 600;
-      fill: #00E5FF;
-      text-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+
+    /* Blinking cursor */
+    @keyframes cursor-blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
     }
-    .text-bold {
-      font-family: 'Outfit', sans-serif;
-      font-size: 16px;
-      font-weight: 600;
-      fill: #00E5FF;
-      text-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
-    }
-    .text-body {
-      font-family: 'Outfit', sans-serif;
-      font-size: 16px;
-      fill: #e2e8f0;
-      font-weight: 300;
-      opacity: 0;
-    }
-    
-    /* 12-second loop cycling through 3 pages of bio statements */
+
+    /* Page cycling: 3 pages, 12s total (4s per page) */
     @keyframes page-cycle {
-      0%, 30% { opacity: 1; transform: translateY(0); }
-      33%, 97% { opacity: 0; transform: translateY(-5px); }
+      0%, 28% { opacity: 1; }
+      33%, 95% { opacity: 0; }
+      100% { opacity: 0; }
     }
-    
+
+    /* Bottom accent line pulse synced with page changes */
+    @keyframes accent-pulse {
+      0%, 30% { opacity: 0.6; width: 80; }
+      33%, 63% { opacity: 0.3; width: 60; }
+      66%, 95% { opacity: 0.6; width: 80; }
+    }
+
+    /* Status dot */
+    @keyframes dot-breathe {
+      0%, 100% { fill: rgba(0, 229, 255, 0.3); }
+      50% { fill: rgba(0, 229, 255, 0.8); }
+    }
+
+    .text-header {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      fill: #00E5FF;
+    }
+
+    .text-body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      fill: #c9d1d9;
+      font-weight: 400;
+    }
+
+    .cursor {
+      fill: #00E5FF;
+      animation: cursor-blink 1s step-end infinite;
+    }
+
     .p1 { animation: page-cycle 12s infinite ease-in-out; animation-delay: 0s; }
     .p2 { animation: page-cycle 12s infinite ease-in-out; animation-delay: 4s; }
     .p3 { animation: page-cycle 12s infinite ease-in-out; animation-delay: 8s; }
+
+    .status-dot {
+      animation: dot-breathe 2s infinite ease-in-out;
+    }
+
+    .accent-line {
+      animation: accent-pulse 12s infinite ease-in-out;
+    }
+
+    .label-text {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 9px;
+      fill: #2a3a4a;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
   </style>
-  
-  <rect class="bg" width="220" height="220" />
-  
-  <g transform="translate(24, 45)">
-    <!-- Main Header (Symmetrical to Currently building) -->
-    <text class="text-bold" x="0" y="0">About</text>
-    
-    <!-- Cycling Pages (Matching layout scale of project.svg) -->
-    <g transform="translate(0, 32)">
+
+  <rect class="bg" width="220" height="220" rx="12" />
+
+  <!-- Status indicator dot -->
+  <circle class="status-dot" cx="196" cy="24" r="3"/>
+
+  <g transform="translate(24, 40)">
+    <!-- Header -->
+    <text class="text-header" x="0" y="0">About</text>
+    <rect class="cursor" x="50" y="-12" width="2" height="15" rx="1"/>
+
+    <!-- Cycling Pages -->
+    <g transform="translate(0, 28)">
       <!-- Page 1 -->
       <g class="p1">
         <text class="text-body" x="0" y="0">AI enthusiast,</text>
-        <text class="text-body" x="0" y="28">backend developer,</text>
-        <text class="text-body" x="0" y="56">and lifelong</text>
-        <text class="text-body" x="0" y="84">learner.</text>
+        <text class="text-body" x="0" y="24">backend developer,</text>
+        <text class="text-body" x="0" y="48">and lifelong</text>
+        <text class="text-body" x="0" y="72">learner driven by</text>
+        <text class="text-body" x="0" y="96">curiosity.</text>
       </g>
-      
+
       <!-- Page 2 -->
       <g class="p2" style="opacity: 0;">
-        <text class="text-body" x="0" y="0">Driven by</text>
-        <text class="text-body" x="0" y="28">curiosity and</text>
-        <text class="text-body" x="0" y="56">creating positive</text>
-        <text class="text-body" x="0" y="84">impact.</text>
+        <text class="text-body" x="0" y="0">Creating projects</text>
+        <text class="text-body" x="0" y="24">that challenge me,</text>
+        <text class="text-body" x="0" y="48">teach me, and</text>
+        <text class="text-body" x="0" y="72">hopefully help</text>
+        <text class="text-body" x="0" y="96">others.</text>
       </g>
 
       <!-- Page 3 -->
       <g class="p3" style="opacity: 0;">
         <text class="text-body" x="0" y="0">Building tools</text>
-        <text class="text-body" x="0" y="28">that challenge</text>
-        <text class="text-body" x="0" y="56">and help</text>
-        <text class="text-body" x="0" y="84">developers.</text>
+        <text class="text-body" x="0" y="24">that make complex</text>
+        <text class="text-body" x="0" y="48">systems easier</text>
+        <text class="text-body" x="0" y="72">to understand</text>
+        <text class="text-body" x="0" y="96">and navigate.</text>
       </g>
     </g>
   </g>
+
+  <!-- Bottom accent line -->
+  <rect class="accent-line" x="24" y="195" width="80" height="1.5" rx="0.75" fill="#00E5FF" opacity="0.4"/>
+
+  <!-- Bottom label -->
+  <text class="label-text" x="24" y="210">bio</text>
 </svg>
