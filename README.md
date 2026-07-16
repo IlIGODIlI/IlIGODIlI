@@ -43,7 +43,7 @@
       </a>
     </td>
     <td width="50%" align="center" valign="middle">
-      <img src="images.jpg" alt="Hollow Knight: Silksong" width="220" style="border-radius: 12px;" />
+      <img src="images.jpg" alt="Hollow Knight: Silksong" width="380" style="border-radius: 12px;" />
     </td>
   </tr>
 </table>

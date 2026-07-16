@@ -6,7 +6,7 @@
 <title>Shuffle Text Digital Clock — IST</title>
 <meta name="description" content="An interactive digital clock utilizing a text-shuffling scramble effect to display Indian Standard Time.">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Press+Start+2P&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@600;700&family=Press+Start+2P&display=swap');
 
   * {
     margin: 0;
@@ -15,7 +15,7 @@
   }
 
   body {
-    background-color: #050505;
+    background-color: #050816;
     color: #ffffff;
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
@@ -23,31 +23,104 @@
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Futuristic background mesh & glow */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 15% 25%, rgba(0, 229, 255, 0.05) 0%, transparent 40%),
+      radial-gradient(circle at 85% 75%, rgba(0, 229, 255, 0.03) 0%, transparent 45%),
+      radial-gradient(ellipse at 50% 50%, #081124 0%, #050816 70%);
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: linear-gradient(rgba(18, 24, 40, 0.12) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(18, 24, 40, 0.12) 1px, transparent 1px);
+    background-size: 24px 24px;
+    z-index: 1;
+    pointer-events: none;
   }
 
   .container {
+    position: relative;
+    z-index: 10;
     width: 100%;
     max-width: 500px;
     padding: 24px;
     text-align: center;
   }
 
-  /* Minimalist Box Bezel */
+  /* Minimalist Box Bezel with glassmorphism */
   .bezel {
-    background: #0c0c0c;
-    border: 1px solid #1a1a1a;
+    background: rgba(11, 15, 25, 0.65);
+    border: 1px solid rgba(0, 229, 255, 0.08);
     border-radius: 12px;
-    padding: 48px 32px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    padding: 48px 32px 32px 32px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.02);
     position: relative;
   }
 
-  /* Time display using Press Start 2P font, pure white, no glow */
+  /* Header Section */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    padding-bottom: 10px;
+  }
+
+  .title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #00E5FF;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.45rem;
+    color: #00ff88;
+    font-weight: bold;
+  }
+
+  .status-dot {
+    width: 5px;
+    height: 5px;
+    background-color: #00ff88;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #00ff88;
+    animation: breathe 2s infinite ease-in-out;
+  }
+
+  @keyframes breathe {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 1; }
+  }
+
+  /* Time display using Press Start 2P font, glowing cyan */
   .time-display {
     font-family: 'Press Start 2P', monospace;
     font-size: 1.55rem;
     font-weight: bold;
-    color: #ffffff;
+    color: #00E5FF;
+    text-shadow: 0 0 12px rgba(0, 229, 255, 0.4), 0 0 24px rgba(0, 229, 255, 0.15);
     line-height: 1.2;
     letter-spacing: 1px;
     user-select: none;
@@ -60,11 +133,19 @@
     opacity: 0.85;
   }
 
-  /* Divider line */
-  .divider {
-    height: 1px;
-    background-color: #1a1a1a;
+  /* Bottom accent line */
+  .accent-line {
+    height: 1.5px;
+    background-color: #00E5FF;
+    opacity: 0.4;
+    border-radius: 0.75px;
     margin: 20px 0;
+    animation: accent-pulse 4s infinite ease-in-out;
+  }
+
+  @keyframes accent-pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.7; }
   }
 
   /* Secondary Information */
@@ -74,7 +155,7 @@
     align-items: center;
     font-family: 'Press Start 2P', monospace;
     font-size: 0.55rem;
-    color: #555555;
+    color: #2a3a4a;
   }
 
   .info-group {
@@ -87,7 +168,7 @@
   }
 
   .info-group:hover {
-    color: #888888;
+    color: #4c6175;
   }
 
   .info-group:last-child {
@@ -95,18 +176,20 @@
   }
 
   .label {
-    color: #333333;
+    color: #2a3a4a;
     font-size: 0.45rem;
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-weight: bold;
   }
 
   .info-val {
-    color: #888888;
+    color: #4c6175;
   }
 
   .info-val.white {
-    color: #ffffff;
+    color: #00E5FF;
+    text-shadow: 0 0 6px rgba(0, 229, 255, 0.2);
   }
 
   /* Back to profile link */
@@ -118,13 +201,13 @@
     font-family: 'Inter', sans-serif;
     font-size: 0.75rem;
     font-weight: 500;
-    color: #555555;
+    color: #4c6175;
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   .back-btn:hover {
-    color: #ffffff;
+    color: #00E5FF;
   }
 
   .back-btn svg {
@@ -142,10 +225,19 @@
 <body>
 <div class="container">
   <div class="bezel">
+    <div class="header">
+      <span class="title">Shuffle System Clock</span>
+      <div class="status">
+        <span class="status-dot"></span>
+        <span>IST STABLE</span>
+      </div>
+    </div>
+
     <!-- TIME PANEL -->
     <div class="time-display" id="time-val" title="Click or hover to shuffle time">00:00:00 AM</div>
 
-    <div class="divider"></div>
+    <!-- Bottom progress line -->
+    <div class="accent-line"></div>
 
     <!-- SUB INFO -->
     <div class="sub-info">
