@@ -6,7 +6,7 @@
 <title>Shuffle Text Digital Clock — IST</title>
 <meta name="description" content="An interactive digital clock utilizing a text-shuffling scramble effect to display Indian Standard Time.">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&family=Share+Tech+Mono&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@600;700&family=Press+Start+2P&display=swap');
 
   * {
     margin: 0;
@@ -93,22 +93,6 @@
     background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.35), transparent);
   }
 
-  /* Scanline effect */
-  .scanline {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, transparent 95%, rgba(0, 229, 255, 0.02) 98%, transparent 100%);
-    background-size: 100% 200%;
-    animation: scan 6s linear infinite;
-    pointer-events: none;
-    z-index: 5;
-  }
-
-  @keyframes scan {
-    0% { background-position: 0 0; }
-    100% { background-position: 0 200%; }
-  }
-
   /* Header Section */
   .header {
     display: flex;
@@ -132,8 +116,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.75rem;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
     color: #00ff88;
     font-weight: bold;
     letter-spacing: 1px;
@@ -177,15 +161,15 @@
     z-index: 10;
   }
 
-  /* Time text formatting */
+  /* Time text formatting using cubic font */
   .time-display {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 3.5rem;
-    font-weight: 700;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.6rem;
+    font-weight: bold;
     color: #00E5FF;
     text-shadow: 0 0 16px rgba(0, 229, 255, 0.4), 0 0 32px rgba(0, 229, 255, 0.15);
-    line-height: 1;
-    letter-spacing: 2px;
+    line-height: 1.2;
+    letter-spacing: 1px;
     user-select: none;
   }
 
@@ -217,21 +201,22 @@
   }
 
   .label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.65rem;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.5rem;
     color: #4c6175;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     text-transform: uppercase;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     display: block;
   }
 
   .info-val {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1.15rem;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.58rem;
     color: #ffffff;
     opacity: 0.95;
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+    line-height: 1.5;
   }
 
   .info-val.cyan {
@@ -240,11 +225,11 @@
   }
 
   .footer-lbl {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.7rem;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.55rem;
     color: #00E5FF;
-    opacity: 0.3;
-    letter-spacing: 6px;
+    opacity: 0.25;
+    letter-spacing: 4px;
     text-transform: uppercase;
     margin-top: 28px;
     user-select: none;
@@ -283,7 +268,6 @@
 <body>
 <div class="container">
   <div class="bezel">
-    <div class="scanline"></div>
     
     <div class="header">
       <span class="title">Shuffle System Clock</span>
@@ -332,7 +316,6 @@
     }
 
     // Triggers a transition. If partial=true, it only shuffles characters that actually changed.
-    // If partial=false, it shuffles the entire string.
     scrambleTo(newText, partial = true, durationFrames = 15) {
       const oldText = this.currentText;
       const maxLength = Math.max(oldText.length, newText.length);

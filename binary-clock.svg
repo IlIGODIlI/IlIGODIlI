@@ -15,22 +15,24 @@
   </defs>
 
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
+
     .bg { fill: #0b0f19; stroke: rgba(0,229,255,0.08); stroke-width: 1; }
 
     /* Text digits styling */
     .time-digit {
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 52px;
+      font-family: 'Press Start 2P', 'Courier New', monospace;
+      font-size: 26px;
       fill: #00E5FF;
-      font-weight: 700;
+      font-weight: bold;
       dominant-baseline: central;
     }
 
     .time-digit-dim {
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 52px;
+      font-family: 'Press Start 2P', 'Courier New', monospace;
+      font-size: 26px;
       fill: #08121d;
-      font-weight: 700;
+      font-weight: bold;
       dominant-baseline: central;
       opacity: 0.15;
     }
@@ -92,16 +94,6 @@
       text-transform: uppercase;
     }
 
-    /* Ambient scanning line */
-    @keyframes scanline {
-      0% { transform: translateY(-20px); opacity: 0; }
-      10%, 90% { opacity: 0.06; }
-      100% { transform: translateY(220px); opacity: 0; }
-    }
-    .scanline {
-      animation: scanline 6s infinite linear;
-    }
-
     /* Status dot */
     @keyframes dot-pulse {
       0%, 100% { fill: rgba(0,229,255,0.2); }
@@ -128,9 +120,6 @@
   <!-- Inner panel border -->
   <rect class="panel-inner" x="15" y="15" width="390" height="190" rx="8"/>
 
-  <!-- Scanning line -->
-  <rect class="scanline" x="20" y="0" width="380" height="2" rx="1" fill="#00E5FF"/>
-
   <!-- Status dot -->
   <circle class="status" cx="395" cy="28" r="3"/>
 
@@ -141,63 +130,66 @@
   <rect x="392" y="192" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
 
   <!-- Ghost Background digits (LCD "off" segments) -->
-  <text class="time-digit-dim" x="72" y="110">88:88:88</text>
+  <text class="time-digit-dim" x="210" y="110" text-anchor="middle">88:88:88 AM</text>
 
   <!-- Hours: 10 -->
   <g filter="url(#glow)">
-    <text class="time-digit" x="72" y="110">10</text>
+    <text class="time-digit" x="60" y="110" text-anchor="middle">1</text>
+    <text class="time-digit" x="90" y="110" text-anchor="middle">0</text>
   </g>
 
   <!-- Colon 1 -->
   <g class="colon" filter="url(#glow)">
-    <text class="time-digit" x="134" y="110">:</text>
+    <text class="time-digit" x="120" y="110" text-anchor="middle">:</text>
   </g>
 
   <!-- Minutes: 08 -->
   <g filter="url(#glow)">
-    <text class="time-digit" x="162" y="110">08</text>
+    <text class="time-digit" x="150" y="110" text-anchor="middle">0</text>
+    <text class="time-digit" x="180" y="110" text-anchor="middle">8</text>
   </g>
 
   <!-- Colon 2 -->
   <g class="colon" filter="url(#glow)">
-    <text class="time-digit" x="224" y="110">:</text>
+    <text class="time-digit" x="210" y="110" text-anchor="middle">:</text>
   </g>
 
   <!-- ================= SECONDS DIGITS (With shuffle animations) ================= -->
-  <!-- Tens Digit (0-5) at x=252 -->
+  <!-- Tens Digit (0-5) at x=240 -->
   <g filter="url(#glow)">
-    <text class="time-digit sec-t0" x="252" y="110">0</text>
-    <text class="time-digit sec-t1" x="252" y="110" style="opacity:0">1</text>
-    <text class="time-digit sec-t2" x="252" y="110" style="opacity:0">2</text>
-    <text class="time-digit sec-t3" x="252" y="110" style="opacity:0">3</text>
-    <text class="time-digit sec-t4" x="252" y="110" style="opacity:0">4</text>
-    <text class="time-digit sec-t5" x="252" y="110" style="opacity:0">5</text>
+    <text class="time-digit sec-t0" x="240" y="110" text-anchor="middle">0</text>
+    <text class="time-digit sec-t1" x="240" y="110" text-anchor="middle" style="opacity:0">1</text>
+    <text class="time-digit sec-t2" x="240" y="110" text-anchor="middle" style="opacity:0">2</text>
+    <text class="time-digit sec-t3" x="240" y="110" text-anchor="middle" style="opacity:0">3</text>
+    <text class="time-digit sec-t4" x="240" y="110" text-anchor="middle" style="opacity:0">4</text>
+    <text class="time-digit sec-t5" x="240" y="110" text-anchor="middle" style="opacity:0">5</text>
   </g>
 
-  <!-- Ones Digit (0-9) at x=280 -->
+  <!-- Ones Digit (0-9) at x=270 -->
   <g filter="url(#glow)">
-    <text class="time-digit sec-s0" x="280" y="110">0</text>
-    <text class="time-digit sec-s1" x="280" y="110" style="opacity:0">1</text>
-    <text class="time-digit sec-s2" x="280" y="110" style="opacity:0">2</text>
-    <text class="time-digit sec-s3" x="280" y="110" style="opacity:0">3</text>
-    <text class="time-digit sec-s4" x="280" y="110" style="opacity:0">4</text>
-    <text class="time-digit sec-s5" x="280" y="110" style="opacity:0">5</text>
-    <text class="time-digit sec-s6" x="280" y="110" style="opacity:0">6</text>
-    <text class="time-digit sec-s7" x="280" y="110" style="opacity:0">7</text>
-    <text class="time-digit sec-s8" x="280" y="110" style="opacity:0">8</text>
-    <text class="time-digit sec-s9" x="280" y="110" style="opacity:0">9</text>
+    <text class="time-digit sec-s0" x="270" y="110" text-anchor="middle">0</text>
+    <text class="time-digit sec-s1" x="270" y="110" text-anchor="middle" style="opacity:0">1</text>
+    <text class="time-digit sec-s2" x="270" y="110" text-anchor="middle" style="opacity:0">2</text>
+    <text class="time-digit sec-s3" x="270" y="110" text-anchor="middle" style="opacity:0">3</text>
+    <text class="time-digit sec-s4" x="270" y="110" text-anchor="middle" style="opacity:0">4</text>
+    <text class="time-digit sec-s5" x="270" y="110" text-anchor="middle" style="opacity:0">5</text>
+    <text class="time-digit sec-s6" x="270" y="110" text-anchor="middle" style="opacity:0">6</text>
+    <text class="time-digit sec-s7" x="270" y="110" text-anchor="middle" style="opacity:0">7</text>
+    <text class="time-digit sec-s8" x="270" y="110" text-anchor="middle" style="opacity:0">8</text>
+    <text class="time-digit sec-s9" x="270" y="110" text-anchor="middle" style="opacity:0">9</text>
   </g>
 
   <!-- Ones Digit Scramble Overlay (Flashes every 1 second) -->
   <g filter="url(#glow)">
-    <text class="time-digit sc1" x="280" y="110">#</text>
-    <text class="time-digit sc2" x="280" y="110" style="opacity:0">%</text>
-    <text class="time-digit sc3" x="280" y="110" style="opacity:0">9</text>
-    <text class="time-digit sc4" x="280" y="110" style="opacity:0">&amp;</text>
+    <text class="time-digit sc1" x="270" y="110" text-anchor="middle">#</text>
+    <text class="time-digit sc2" x="270" y="110" text-anchor="middle" style="opacity:0">%</text>
+    <text class="time-digit sc3" x="270" y="110" text-anchor="middle" style="opacity:0">9</text>
+    <text class="time-digit sc4" x="270" y="110" text-anchor="middle" style="opacity:0">&amp;</text>
   </g>
 
   <!-- AM/PM Indicator -->
-  <text x="320" y="99" style="font-family:'Consolas',monospace;font-size:12px;fill:#00E5FF;font-weight:bold;opacity:0.6;" filter="url(#glow)">AM</text>
+  <text class="time-digit" x="315" y="110" text-anchor="middle" style="font-size: 26px;">A</text>
+  <text class="time-digit" x="345" y="110" text-anchor="middle" style="font-size: 26px;">M</text>
 
   <!-- Bottom label -->
   <text class="label" x="210" y="174" text-anchor="middle">indian standard time</text>
