@@ -1,186 +1,303 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 220" width="420" height="220">
   <defs>
+    <!-- Background LCD/LED Panel Glow -->
     <radialGradient id="lcd-glow" cx="50%" cy="45%" r="60%">
-      <stop offset="0%" stop-color="#0d1525"/>
-      <stop offset="100%" stop-color="#0b0f19"/>
+      <stop offset="0%" stop-color="#0a1526"/>
+      <stop offset="100%" stop-color="#050810"/>
     </radialGradient>
+    
+    <!-- LED Glow Filter -->
+    <filter id="led-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Text Glow Filter -->
     <filter id="text-glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="4" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
     </filter>
   </defs>
+
   <style>
-    .bg { fill: #0b0f19; stroke: rgba(0,229,255,0.08); stroke-width: 1; }
-
-    .time-digit {
-      font-family: 'Consolas', 'Courier New', 'Lucida Console', monospace;
-      font-size: 72px;
+    .bg { fill: #050810; stroke: rgba(0, 229, 255, 0.08); stroke-width: 1; }
+    
+    /* Panel border and styling */
+    .panel-inner {
+      fill: none;
+      stroke: rgba(0, 229, 255, 0.05);
+      stroke-width: 1;
+    }
+    
+    .panel-header {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 10px;
       fill: #00E5FF;
-      font-weight: 700;
+      font-weight: bold;
       letter-spacing: 2px;
-      dominant-baseline: central;
     }
 
-    .time-digit-dim {
-      font-family: 'Consolas', 'Courier New', 'Lucida Console', monospace;
-      font-size: 72px;
-      fill: #0a1828;
-      font-weight: 700;
-      letter-spacing: 2px;
-      dominant-baseline: central;
+    .status-text {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 8px;
+      fill: #00FF88;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
 
-    .time-sec {
+    /* Ambient pulse for status */
+    @keyframes status-pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+    .status-dot {
+      fill: #00FF88;
+      animation: status-pulse 2s infinite ease-in-out;
+      filter: drop-shadow(0 0 2px #00FF88);
+    }
+
+    /* Digital Readout Screen styling */
+    .display-screen {
+      fill: #020408;
+      stroke: rgba(0, 229, 255, 0.04);
+      stroke-width: 1;
+    }
+
+    .digit-main {
       font-family: 'Consolas', 'Courier New', 'Lucida Console', monospace;
-      font-size: 36px;
+      font-weight: 700;
+      fill: #ffffff;
+    }
+
+    .digit-accent {
+      font-family: 'Consolas', 'Courier New', 'Lucida Console', monospace;
+      font-weight: 700;
       fill: #00E5FF;
-      font-weight: 700;
-      dominant-baseline: central;
     }
 
-    /* Colon blink */
-    @keyframes colon-blink {
-      0%, 49% { opacity: 1; }
-      50%, 100% { opacity: 0.15; }
+    .label-dim {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 10px;
+      fill: #4c6175;
+      letter-spacing: 1px;
     }
-    .colon { animation: colon-blink 1s infinite steps(1); }
 
-    /* Seconds ONES digit — cycles 0→9 over 10s */
-    @keyframes s0 { 0%,10%{opacity:1} 10.1%,100%{opacity:0} }
-    @keyframes s1 { 0%,10%{opacity:0} 10.1%,20%{opacity:1} 20.1%,100%{opacity:0} }
-    @keyframes s2 { 0%,20%{opacity:0} 20.1%,30%{opacity:1} 30.1%,100%{opacity:0} }
-    @keyframes s3 { 0%,30%{opacity:0} 30.1%,40%{opacity:1} 40.1%,100%{opacity:0} }
-    @keyframes s4 { 0%,40%{opacity:0} 40.1%,50%{opacity:1} 50.1%,100%{opacity:0} }
-    @keyframes s5 { 0%,50%{opacity:0} 50.1%,60%{opacity:1} 60.1%,100%{opacity:0} }
-    @keyframes s6 { 0%,60%{opacity:0} 60.1%,70%{opacity:1} 70.1%,100%{opacity:0} }
-    @keyframes s7 { 0%,70%{opacity:0} 70.1%,80%{opacity:1} 80.1%,100%{opacity:0} }
-    @keyframes s8 { 0%,80%{opacity:0} 80.1%,90%{opacity:1} 90.1%,100%{opacity:0} }
-    @keyframes s9 { 0%,90%{opacity:0} 90.1%,100%{opacity:1} }
-    .s0{animation:s0 10s infinite} .s1{animation:s1 10s infinite}
-    .s2{animation:s2 10s infinite} .s3{animation:s3 10s infinite}
-    .s4{animation:s4 10s infinite} .s5{animation:s5 10s infinite}
-    .s6{animation:s6 10s infinite} .s7{animation:s7 10s infinite}
-    .s8{animation:s8 10s infinite} .s9{animation:s9 10s infinite}
+    /* 32-bit Register styles */
+    .led-bg {
+      fill: #020408;
+      stroke: rgba(0, 229, 255, 0.04);
+      stroke-width: 1;
+    }
 
-    /* Seconds TENS digit — cycles 0→5 over 60s */
+    .led-label {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 8px;
+      fill: #34485c;
+      font-weight: bold;
+    }
+
+    .led {
+      fill: #142230;
+      stroke: rgba(255, 255, 255, 0.02);
+      stroke-width: 0.5;
+      transition: fill 0.2s ease;
+    }
+
+    .led-on {
+      fill: #00E5FF;
+      filter: url(#led-glow);
+    }
+
+    /* Binary Up-Counter animation (50% duty cycle, starting OFF at t=0) */
+    @keyframes led-toggle-up {
+      0%, 50% { fill: #142230; filter: none; }
+      50.01%, 100% { fill: #00E5FF; filter: url(#led-glow); }
+    }
+
+    .l0 { animation: led-toggle-up 2s infinite step-end; }
+    .l1 { animation: led-toggle-up 4s infinite step-end; }
+    .l2 { animation: led-toggle-up 8s infinite step-end; }
+    .l3 { animation: led-toggle-up 16s infinite step-end; }
+    .l4 { animation: led-toggle-up 32s infinite step-end; }
+    .l5 { animation: led-toggle-up 64s infinite step-end; }
+    .l6 { animation: led-toggle-up 128s infinite step-end; }
+    .l7 { animation: led-toggle-up 256s infinite step-end; }
+
+    /* Digital clock animation keyframes */
+    /* Seconds ones digit (0-9) over 10s */
+    @keyframes s0 { 0%,10%{opacity:1} 10.01%,100%{opacity:0} }
+    @keyframes s1 { 0%,10%{opacity:0} 10.01%,20%{opacity:1} 20.01%,100%{opacity:0} }
+    @keyframes s2 { 0%,20%{opacity:0} 20.01%,30%{opacity:1} 30.01%,100%{opacity:0} }
+    @keyframes s3 { 0%,30%{opacity:0} 30.01%,40%{opacity:1} 40.01%,100%{opacity:0} }
+    @keyframes s4 { 0%,40%{opacity:0} 40.01%,50%{opacity:1} 50.01%,100%{opacity:0} }
+    @keyframes s5 { 0%,50%{opacity:0} 50.01%,60%{opacity:1} 60.01%,100%{opacity:0} }
+    @keyframes s6 { 0%,60%{opacity:0} 60.01%,70%{opacity:1} 70.01%,100%{opacity:0} }
+    @keyframes s7 { 0%,70%{opacity:0} 70.01%,80%{opacity:1} 80.01%,100%{opacity:0} }
+    @keyframes s8 { 0%,80%{opacity:0} 80.01%,90%{opacity:1} 90.01%,100%{opacity:0} }
+    @keyframes s9 { 0%,90%{opacity:0} 90.01%,100%{opacity:1} }
+
+    /* Seconds tens digit (0-5) over 60s */
     @keyframes t0 { 0%,16.66%{opacity:1} 16.67%,100%{opacity:0} }
     @keyframes t1 { 0%,16.66%{opacity:0} 16.67%,33.33%{opacity:1} 33.34%,100%{opacity:0} }
     @keyframes t2 { 0%,33.33%{opacity:0} 33.34%,50%{opacity:1} 50.01%,100%{opacity:0} }
     @keyframes t3 { 0%,50%{opacity:0} 50.01%,66.66%{opacity:1} 66.67%,100%{opacity:0} }
     @keyframes t4 { 0%,66.66%{opacity:0} 66.67%,83.33%{opacity:1} 83.34%,100%{opacity:0} }
     @keyframes t5 { 0%,83.33%{opacity:0} 83.34%,100%{opacity:1} }
-    .t0{animation:t0 60s infinite} .t1{animation:t1 60s infinite}
-    .t2{animation:t2 60s infinite} .t3{animation:t3 60s infinite}
-    .t4{animation:t4 60s infinite} .t5{animation:t5 60s infinite}
 
-    .label {
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 10px;
-      fill: #1a2a3a;
-      letter-spacing: 6px;
-      text-transform: uppercase;
-    }
+    .sec-s0 { animation: s0 10s infinite; }
+    .sec-s1 { animation: s1 10s infinite; }
+    .sec-s2 { animation: s2 10s infinite; }
+    .sec-s3 { animation: s3 10s infinite; }
+    .sec-s4 { animation: s4 10s infinite; }
+    .sec-s5 { animation: s5 10s infinite; }
+    .sec-s6 { animation: s6 10s infinite; }
+    .sec-s7 { animation: s7 10s infinite; }
+    .sec-s8 { animation: s8 10s infinite; }
+    .sec-s9 { animation: s9 10s infinite; }
 
-    .date-text {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      font-size: 12px;
-      fill: #2a3a4a;
-    }
+    .sec-t0 { animation: t0 60s infinite; }
+    .sec-t1 { animation: t1 60s infinite; }
+    .sec-t2 { animation: t2 60s infinite; }
+    .sec-t3 { animation: t3 60s infinite; }
+    .sec-t4 { animation: t4 60s infinite; }
+    .sec-t5 { animation: t5 60s infinite; }
 
-    /* Ambient scanning line */
-    @keyframes scanline {
-      0% { transform: translateY(-20px); opacity: 0; }
-      10%, 90% { opacity: 0.06; }
-      100% { transform: translateY(220px); opacity: 0; }
+    /* Colon Blinking */
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0.15; }
     }
-    .scanline {
-      animation: scanline 6s infinite linear;
-    }
-
-    /* Status dot */
-    @keyframes dot-pulse {
-      0%, 100% { fill: rgba(0,229,255,0.2); }
-      50% { fill: rgba(0,229,255,0.7); }
-    }
-    .status { animation: dot-pulse 2s infinite ease-in-out; }
-
-    /* Subtle panel inner border glow */
-    @keyframes panel-glow {
-      0%, 100% { stroke: rgba(0,229,255,0.06); }
-      50% { stroke: rgba(0,229,255,0.12); }
-    }
-    .panel-inner {
-      fill: none;
-      stroke: rgba(0,229,255,0.04);
-      stroke-width: 0.5;
-      animation: panel-glow 4s infinite ease-in-out;
-    }
+    .colon-blink { animation: blink 1s infinite step-end; }
   </style>
 
+  <!-- Outer chassis -->
   <rect class="bg" width="420" height="220" rx="12"/>
-  <rect fill="url(#lcd-glow)" width="420" height="220" rx="12" opacity="0.5"/>
+  <rect fill="url(#lcd-glow)" width="420" height="220" rx="12" opacity="0.6"/>
+  <rect class="panel-inner" x="12" y="12" width="396" height="196" rx="8"/>
 
-  <!-- Inner panel border -->
-  <rect class="panel-inner" x="15" y="15" width="390" height="190" rx="8"/>
+  <!-- Top Header Bar -->
+  <text class="panel-header" x="24" y="32">32-BIT LED REGISTER CLOCK</text>
+  <circle class="status-dot" cx="372" cy="28" r="3.5"/>
+  <text class="status-text" x="382" y="31">ONLINE</text>
 
-  <!-- Scanning line -->
-  <rect class="scanline" x="20" y="0" width="380" height="2" rx="1" fill="#00E5FF"/>
+  <!-- ================= SCREEN PANEL (Digital time & Epoch) ================= -->
+  <rect class="display-screen" x="24" y="48" width="372" height="72" rx="6"/>
+  
+  <!-- Left Side: Human Readable IST -->
+  <text class="label-dim" x="36" y="74">IST TIME</text>
+  <text class="digit-main" x="36" y="104" style="font-size: 24px;" filter="url(#text-glow)">09:57</text>
+  <text class="digit-accent colon-blink" x="108" y="104" style="font-size: 24px;" filter="url(#text-glow)">:</text>
+  
+  <!-- Animated Seconds in IST -->
+  <g class="digit-accent" style="font-size: 24px;" filter="url(#text-glow)">
+    <!-- Tens digit -->
+    <text class="sec-t0" x="120" y="104">0</text>
+    <text class="sec-t1" x="120" y="104" style="opacity:0">1</text>
+    <text class="sec-t2" x="120" y="104" style="opacity:0">2</text>
+    <text class="sec-t3" x="120" y="104" style="opacity:0">3</text>
+    <text class="sec-t4" x="120" y="104" style="opacity:0">4</text>
+    <text class="sec-t5" x="120" y="104" style="opacity:0">5</text>
+    
+    <!-- Ones digit -->
+    <text class="sec-s0" x="134" y="104">0</text>
+    <text class="sec-s1" x="134" y="104" style="opacity:0">1</text>
+    <text class="sec-s2" x="134" y="104" style="opacity:0">2</text>
+    <text class="sec-s3" x="134" y="104" style="opacity:0">3</text>
+    <text class="sec-s4" x="134" y="104" style="opacity:0">4</text>
+    <text class="sec-s5" x="134" y="104" style="opacity:0">5</text>
+    <text class="sec-s6" x="134" y="104" style="opacity:0">6</text>
+    <text class="sec-s7" x="134" y="104" style="opacity:0">7</text>
+    <text class="sec-s8" x="134" y="104" style="opacity:0">8</text>
+    <text class="sec-s9" x="134" y="104" style="opacity:0">9</text>
+  </g>
+  <text class="label-dim" x="156" y="94" style="font-size: 10px;">AM</text>
 
-  <!-- Status dot -->
-  <circle class="status" cx="395" cy="28" r="3"/>
+  <!-- Right Side: UNIX Epoch Time -->
+  <text class="label-dim" x="230" y="74">32-BIT UNIX TIMESTAMP</text>
+  <text class="digit-accent" x="230" y="102" style="font-size: 20px; letter-spacing: 1px;" filter="url(#text-glow)">17815072</text>
+  
+  <!-- Animated Epoch Last Two Digits -->
+  <g class="digit-accent" style="font-size: 20px; letter-spacing: 1px;" filter="url(#text-glow)">
+    <!-- Tens digit -->
+    <text class="sec-t0" x="328" y="102">4</text>
+    <text class="sec-t1" x="328" y="102" style="opacity:0">5</text>
+    <text class="sec-t2" x="328" y="102" style="opacity:0">0</text>
+    <text class="sec-t3" x="328" y="102" style="opacity:0">1</text>
+    <text class="sec-t4" x="328" y="102" style="opacity:0">2</text>
+    <text class="sec-t5" x="328" y="102" style="opacity:0">3</text>
 
-  <!-- Ghost digits (LCD "off" segments for depth) -->
-  <text class="time-digit-dim" x="48" y="108">88:88</text>
-
-  <!-- Hours and Minutes — static display -->
-  <text class="time-digit" x="48" y="108" filter="url(#text-glow)">06</text>
-
-  <!-- Colon 1 -->
-  <text class="time-digit colon" x="148" y="108" filter="url(#text-glow)">:</text>
-
-  <!-- Minutes -->
-  <text class="time-digit" x="175" y="108" filter="url(#text-glow)">13</text>
-
-  <!-- Seconds separator -->
-  <text class="time-sec colon" x="283" y="104" style="font-size:32px;" filter="url(#text-glow)">:</text>
-
-  <!-- Seconds tens digit — animated 0→5 over 60s -->
-  <g filter="url(#text-glow)">
-    <text class="time-sec t0" x="300" y="104">0</text>
-    <text class="time-sec t1" x="300" y="104" style="opacity:0">1</text>
-    <text class="time-sec t2" x="300" y="104" style="opacity:0">2</text>
-    <text class="time-sec t3" x="300" y="104" style="opacity:0">3</text>
-    <text class="time-sec t4" x="300" y="104" style="opacity:0">4</text>
-    <text class="time-sec t5" x="300" y="104" style="opacity:0">5</text>
+    <!-- Ones digit -->
+    <text class="sec-s0" x="340" y="102">5</text>
+    <text class="sec-s1" x="340" y="102" style="opacity:0">6</text>
+    <text class="sec-s2" x="340" y="102" style="opacity:0">7</text>
+    <text class="sec-s3" x="340" y="102" style="opacity:0">8</text>
+    <text class="sec-s4" x="340" y="102" style="opacity:0">9</text>
+    <text class="sec-s5" x="340" y="102" style="opacity:0">0</text>
+    <text class="sec-s6" x="340" y="102" style="opacity:0">1</text>
+    <text class="sec-s7" x="340" y="102" style="opacity:0">2</text>
+    <text class="sec-s8" x="340" y="102" style="opacity:0">3</text>
+    <text class="sec-s9" x="340" y="102" style="opacity:0">4</text>
   </g>
 
-  <!-- Seconds ones digit — animated 0→9 over 10s -->
-  <g filter="url(#text-glow)">
-    <text class="time-sec s0" x="322" y="104">0</text>
-    <text class="time-sec s1" x="322" y="104" style="opacity:0">1</text>
-    <text class="time-sec s2" x="322" y="104" style="opacity:0">2</text>
-    <text class="time-sec s3" x="322" y="104" style="opacity:0">3</text>
-    <text class="time-sec s4" x="322" y="104" style="opacity:0">4</text>
-    <text class="time-sec s5" x="322" y="104" style="opacity:0">5</text>
-    <text class="time-sec s6" x="322" y="104" style="opacity:0">6</text>
-    <text class="time-sec s7" x="322" y="104" style="opacity:0">7</text>
-    <text class="time-sec s8" x="322" y="104" style="opacity:0">8</text>
-    <text class="time-sec s9" x="322" y="104" style="opacity:0">9</text>
-  </g>
+  <!-- ================= REGISTER PANEL (32-Bit LEDs) ================= -->
+  <rect class="led-bg" x="24" y="134" width="372" height="62" rx="6"/>
+  
+  <!-- Labels -->
+  <text class="led-label" x="46" y="150">31</text>
+  <text class="led-label" x="79.25" y="150" text-anchor="middle">BYTE 3</text>
+  <text class="led-label" x="164.75" y="150" text-anchor="middle">BYTE 2</text>
+  <text class="led-label" x="250.25" y="150" text-anchor="middle">BYTE 1</text>
+  <text class="led-label" x="335.75" y="150" text-anchor="middle">BYTE 0</text>
+  <text class="led-label" x="369" y="150" text-anchor="end">0</text>
 
-  <!-- AM/PM indicator -->
-  <text x="352" y="97" style="font-family:'Consolas',monospace;font-size:14px;fill:#00E5FF;opacity:0.5;">AM</text>
+  <!-- Byte 3 (bits 31 to 24) - Static binary '01101010' -->
+  <circle class="led" cx="46" cy="168" r="2.5" />
+  <circle class="led led-on" cx="55.5" cy="168" r="2.5" />
+  <circle class="led led-on" cx="65" cy="168" r="2.5" />
+  <circle class="led" cx="74.5" cy="168" r="2.5" />
+  <circle class="led led-on" cx="84" cy="168" r="2.5" />
+  <circle class="led" cx="93.5" cy="168" r="2.5" />
+  <circle class="led led-on" cx="103" cy="168" r="2.5" />
+  <circle class="led" cx="112.5" cy="168" r="2.5" />
 
-  <!-- Bottom label -->
-  <text class="label" x="90" y="168">indian standard time</text>
+  <!-- Byte 2 (bits 23 to 16) - Static binary '00110001' -->
+  <circle class="led" cx="131.5" cy="168" r="2.5" />
+  <circle class="led" cx="141" cy="168" r="2.5" />
+  <circle class="led led-on" cx="150.5" cy="168" r="2.5" />
+  <circle class="led led-on" cx="160" cy="168" r="2.5" />
+  <circle class="led" cx="169.5" cy="168" r="2.5" />
+  <circle class="led" cx="179" cy="168" r="2.5" />
+  <circle class="led" cx="188.5" cy="168" r="2.5" />
+  <circle class="led led-on" cx="198" cy="168" r="2.5" />
 
-  <!-- Subtle decorative lines -->
-  <line x1="48" y1="145" x2="362" y2="145" stroke="rgba(0,229,255,0.04)" stroke-width="0.5"/>
-  <line x1="48" y1="60" x2="362" y2="60" stroke="rgba(0,229,255,0.04)" stroke-width="0.5"/>
+  <!-- Byte 1 (bits 15 to 8) - Static binary '00010001' -->
+  <circle class="led" cx="217" cy="168" r="2.5" />
+  <circle class="led" cx="226.5" cy="168" r="2.5" />
+  <circle class="led" cx="236" cy="168" r="2.5" />
+  <circle class="led led-on" cx="245.5" cy="168" r="2.5" />
+  <circle class="led" cx="255" cy="168" r="2.5" />
+  <circle class="led" cx="264.5" cy="168" r="2.5" />
+  <circle class="led" cx="274" cy="168" r="2.5" />
+  <circle class="led led-on" cx="283.5" cy="168" r="2.5" />
 
-  <!-- Corner accents -->
-  <rect x="22" y="22" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
-  <rect x="392" y="22" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
-  <rect x="22" y="192" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
-  <rect x="392" y="192" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
+  <!-- Byte 0 (bits 7 to 0) - Animated! -->
+  <circle class="led l7" cx="302.5" cy="168" r="2.5" />
+  <circle class="led l6" cx="312" cy="168" r="2.5" />
+  <circle class="led l5" cx="321.5" cy="168" r="2.5" />
+  <circle class="led l4" cx="331" cy="168" r="2.5" />
+  <circle class="led l3" cx="340.5" cy="168" r="2.5" />
+  <circle class="led l2" cx="350" cy="168" r="2.5" />
+  <circle class="led l1" cx="359.5" cy="168" r="2.5" />
+  <circle class="led l0" cx="369" cy="168" r="2.5" />
+  
+  <!-- Subtle byte separator lines -->
+  <line x1="122" y1="144" x2="122" y2="186" stroke="rgba(0,229,255,0.06)" stroke-dasharray="2 2" stroke-width="1"/>
+  <line x1="207.5" y1="144" x2="207.5" y2="186" stroke="rgba(0,229,255,0.06)" stroke-dasharray="2 2" stroke-width="1"/>
+  <line x1="293" y1="144" x2="293" y2="186" stroke="rgba(0,229,255,0.06)" stroke-dasharray="2 2" stroke-width="1"/>
 </svg>
