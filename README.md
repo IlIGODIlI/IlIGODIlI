@@ -34,9 +34,18 @@
   </tr>
 </table>
 
----
-
-## 👤 Bio & Profile
+<br>
+🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧
+<br><br>
+<table>
+<tr>
+<td width="75"></td>
+<td> About Me</td></td>
+<td width="322"></td>
+<td> My Favourite </td>
+<td width="230"></td>
+</tr>
+</table>
 
 <!-- About bio + Silksong pixel art side by side -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -52,9 +61,9 @@
   </tr>
 </table>
 
----
+🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧
 
-## 🛠️ Stack & Arsenal
+##  Stack & Arsenal
 
 <!-- Tech stack infinite marquee -->
 <p align="center">
@@ -63,9 +72,9 @@
   </a>
 </p>
 
----
+🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧
 
-## ⚡ what i've been shipping
+##  what i've been shipping
 
 <table width="100%" border="0" cellspacing="0" cellpadding="8">
   <tr>
@@ -87,18 +96,18 @@
   </tr>
 </table>
 
----
+🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧
 
-## 📈 Contribution Activity
+## Contribution Activity
 
 <!-- Contribution graph sits here — scroll past the noise first -->
 <p align="center">
   <img data-importer="snake" src="https://raw.githubusercontent.com/IlIGODIlI/IlIGODIlI/snake-output/snake.svg" alt="commit snake" style="max-width: 100%;" />
 </p>
 
----
+🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧
 
-## 📡 find me
+##  find me
 
 <p align="center">
   <a href="https://linkedin.com/in/blueled"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn"/></a>&nbsp;&nbsp;
