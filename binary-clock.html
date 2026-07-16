@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>7-Segment Digital Clock — IST</title>
-<meta name="description" content="An interactive 7-segment LED digital clock displaying Indian Standard Time in real-time.">
+<title>Shuffle Text Digital Clock — IST</title>
+<meta name="description" content="An interactive digital clock utilizing a text-shuffling scramble effect to display Indian Standard Time.">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&family=Share+Tech+Mono&display=swap');
 
   * {
     margin: 0;
@@ -15,7 +15,7 @@
   }
 
   body {
-    background-color: #050811;
+    background-color: #040712;
     color: #e2e8f0;
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
@@ -32,9 +32,9 @@
     position: fixed;
     inset: 0;
     background: 
-      radial-gradient(circle at 20% 30%, rgba(0, 229, 255, 0.05) 0%, transparent 40%),
-      radial-gradient(circle at 80% 70%, rgba(0, 229, 255, 0.03) 0%, transparent 45%),
-      radial-gradient(ellipse at 50% 50%, #070e1e 0%, #050811 70%);
+      radial-gradient(circle at 15% 25%, rgba(0, 229, 255, 0.05) 0%, transparent 40%),
+      radial-gradient(circle at 85% 75%, rgba(0, 229, 255, 0.03) 0%, transparent 45%),
+      radial-gradient(ellipse at 50% 50%, #081124 0%, #040712 70%);
     z-index: 0;
   }
 
@@ -42,9 +42,9 @@
     content: '';
     position: fixed;
     inset: 0;
-    background-image: linear-gradient(rgba(18, 24, 38, 0.1) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(18, 24, 38, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
+    background-image: linear-gradient(rgba(18, 24, 40, 0.12) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(18, 24, 40, 0.12) 1px, transparent 1px);
+    background-size: 24px 24px;
     z-index: 1;
     pointer-events: none;
   }
@@ -53,25 +53,34 @@
     position: relative;
     z-index: 10;
     width: 100%;
-    max-width: 560px;
+    max-width: 600px;
     padding: 24px;
     text-align: center;
   }
 
   /* Main Bezel Chassis */
   .bezel {
-    background: rgba(11, 15, 25, 0.65);
-    border: 1px solid rgba(0, 229, 255, 0.08);
+    background: rgba(10, 16, 30, 0.7);
+    border: 1px solid rgba(0, 229, 255, 0.12);
     border-radius: 16px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 40px 32px;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    padding: 40px;
     box-shadow: 
-      0 24px 64px rgba(0, 0, 0, 0.6),
-      0 0 40px rgba(0, 229, 255, 0.02),
-      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      0 32px 72px rgba(0, 0, 0, 0.65),
+      0 0 50px rgba(0, 229, 255, 0.03),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
     position: relative;
     overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .bezel:hover {
+    border-color: rgba(0, 229, 255, 0.25);
+    box-shadow: 
+      0 32px 72px rgba(0, 0, 0, 0.7),
+      0 0 50px rgba(0, 229, 255, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
   .bezel::before {
@@ -81,16 +90,16 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.25), transparent);
+    background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.35), transparent);
   }
 
   /* Scanline effect */
   .scanline {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, transparent 95%, rgba(0, 229, 255, 0.03) 98%, transparent 100%);
+    background: linear-gradient(to bottom, transparent 95%, rgba(0, 229, 255, 0.02) 98%, transparent 100%);
     background-size: 100% 200%;
-    animation: scan 8s linear infinite;
+    animation: scan 6s linear infinite;
     pointer-events: none;
     z-index: 5;
   }
@@ -105,17 +114,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 28px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding-bottom: 12px;
+    padding-bottom: 14px;
   }
 
   .title {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 700;
     color: #00E5FF;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
     text-transform: uppercase;
   }
 
@@ -123,9 +132,9 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: monospace;
+    font-family: 'Share Tech Mono', monospace;
     font-size: 0.75rem;
-    color: #00E5FF;
+    color: #00ff88;
     font-weight: bold;
     letter-spacing: 1px;
   }
@@ -133,117 +142,120 @@
   .status-dot {
     width: 6px;
     height: 6px;
-    background-color: #00E5FF;
+    background-color: #00ff88;
     border-radius: 50%;
-    box-shadow: 0 0 8px #00E5FF;
+    box-shadow: 0 0 8px #00ff88;
     animation: breathe 2s infinite ease-in-out;
   }
 
   @keyframes breathe {
-    0%, 100% { opacity: 0.4; }
+    0%, 100% { opacity: 0.45; }
     50% { opacity: 1; }
   }
 
-  /* 7-Segment Clock Display Panel */
+  /* Terminal Display Panel */
   .display-panel {
-    background: #020408;
-    border: 1px solid rgba(0, 229, 255, 0.04);
+    background: #020409;
+    border: 1px solid rgba(0, 229, 255, 0.05);
     border-radius: 12px;
-    padding: 36px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+    padding: 36px 20px;
     margin-bottom: 28px;
-    box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
     position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.9);
   }
 
-  /* Digit SVG Container */
-  .digit-container {
-    width: 48px;
-    height: 78px;
+  /* Monospace Scanline overlay inside screen */
+  .display-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.18) 2px, rgba(0,0,0,0.18) 4px);
+    pointer-events: none;
+    border-radius: 12px;
+    z-index: 10;
   }
 
-  .digit-container svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  /* Segments styling */
-  .seg {
-    transition: fill 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
-  }
-
-  .seg.dim {
-    fill: #06111a;
-    opacity: 0.12;
-  }
-
-  .seg.lit {
-    fill: #00E5FF;
-    opacity: 1;
-    filter: drop-shadow(0 0 4px #00E5FF) drop-shadow(0 0 10px rgba(0, 229, 255, 0.6));
-  }
-
-  /* Colon dots */
-  .colon-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 48px;
-    width: 10px;
-    align-items: center;
-  }
-
-  .colon-dot {
-    width: 5px;
-    height: 5px;
-    background-color: #00E5FF;
-    border-radius: 50%;
-    box-shadow: 0 0 8px #00E5FF;
-    transition: opacity 0.2s ease;
-  }
-
-  .colon-dot.blink {
-    animation: colon-flash 1s infinite step-end;
-  }
-
-  @keyframes colon-flash {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0.15; }
-  }
-
-  /* AM/PM Text */
-  .ampm-container {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
+  /* Time text formatting */
+  .time-display {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 3.5rem;
     font-weight: 700;
     color: #00E5FF;
-    align-self: flex-start;
-    margin-top: 10px;
-    margin-left: 8px;
-    letter-spacing: 1px;
-    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
-  }
-
-  .footer-lbl {
-    font-family: 'Consolas', 'Courier New', monospace;
-    font-size: 0.7rem;
-    color: #00E5FF;
-    opacity: 0.35;
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    margin-top: 24px;
+    text-shadow: 0 0 16px rgba(0, 229, 255, 0.4), 0 0 32px rgba(0, 229, 255, 0.15);
+    line-height: 1;
+    letter-spacing: 2px;
     user-select: none;
   }
 
-  /* Back to profile link button */
+  /* Secondary Information grid */
+  .sub-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .info-box {
+    background: #020409;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: left;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .info-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);
+    pointer-events: none;
+    border-radius: 8px;
+  }
+
+  .label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    color: #4c6175;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .info-val {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.15rem;
+    color: #ffffff;
+    opacity: 0.95;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+  }
+
+  .info-val.cyan {
+    color: #00E5FF;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.35);
+  }
+
+  .footer-lbl {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: #00E5FF;
+    opacity: 0.3;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-top: 28px;
+    user-select: none;
+  }
+
+  /* Back to profile button */
   .back-btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    margin-top: 28px;
+    margin-top: 32px;
     font-family: 'Inter', sans-serif;
     font-size: 0.75rem;
     font-weight: 500;
@@ -266,17 +278,6 @@
   .back-btn:hover svg {
     transform: translateX(-3px);
   }
-
-  /* Interactive grid lines inside panel */
-  .display-panel::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 6px);
-    pointer-events: none;
-    border-radius: 12px;
-    z-index: 10;
-  }
 </style>
 </head>
 <body>
@@ -285,53 +286,28 @@
     <div class="scanline"></div>
     
     <div class="header">
-      <span class="title">7-Segment Digital Clock</span>
+      <span class="title">Shuffle System Clock</span>
       <div class="status">
         <span class="status-dot"></span>
-        <span>IST LIVE</span>
+        <span>IST STABLE</span>
       </div>
     </div>
 
-    <!-- DIGITAL TIME PANEL -->
-    <div class="display-panel">
-      <!-- Hours -->
-      <div class="digit-container" id="h1">
-        <svg viewBox="0 0 32 52"></svg>
-      </div>
-      <div class="digit-container" id="h0">
-        <svg viewBox="0 0 32 52"></svg>
-      </div>
+    <!-- MAIN TIME PANEL -->
+    <div class="display-panel" id="clock-panel" title="Click or hover to shuffle time">
+      <div class="time-display" id="time-val">00:00:00 AM</div>
+    </div>
 
-      <!-- Colon -->
-      <div class="colon-container">
-        <div class="colon-dot blink"></div>
-        <div class="colon-dot blink"></div>
+    <!-- SUB INFO GRID -->
+    <div class="sub-info">
+      <div class="info-box" id="date-panel" title="Hover to shuffle date">
+        <span class="label">System Date</span>
+        <div class="info-val" id="date-val">LOADING...</div>
       </div>
-
-      <!-- Minutes -->
-      <div class="digit-container" id="m1">
-        <svg viewBox="0 0 32 52"></svg>
+      <div class="info-box" id="epoch-panel" title="Hover to shuffle timestamp">
+        <span class="label">UNIX Epoch</span>
+        <div class="info-val cyan" id="epoch-val">0000000000</div>
       </div>
-      <div class="digit-container" id="m0">
-        <svg viewBox="0 0 32 52"></svg>
-      </div>
-
-      <!-- Colon -->
-      <div class="colon-container">
-        <div class="colon-dot blink"></div>
-        <div class="colon-dot blink"></div>
-      </div>
-
-      <!-- Seconds -->
-      <div class="digit-container" id="s1">
-        <svg viewBox="0 0 32 52"></svg>
-      </div>
-      <div class="digit-container" id="s0">
-        <svg viewBox="0 0 32 52"></svg>
-      </div>
-
-      <!-- AM / PM -->
-      <div class="ampm-container" id="ampm">AM</div>
     </div>
 
     <div class="footer-lbl">Indian Standard Time</div>
@@ -344,102 +320,171 @@
 </div>
 
 <script>
-  // Segment paths definitions
-  const segments = {
-    a: "M 4,2 L 28,2 L 25,5 L 7,5 Z",
-    b: "M 29,4 L 29,25 L 26,22 L 26,7 Z",
-    c: "M 29,27 L 29,48 L 26,45 L 26,30 Z",
-    d: "M 4,50 L 28,50 L 25,47 L 7,47 Z",
-    e: "M 3,27 L 3,48 L 6,45 L 6,30 Z",
-    f: "M 3,4 L 3,25 L 6,22 L 6,7 Z",
-    g: "M 5,26 L 8,24 L 24,24 L 27,26 L 24,28 L 8,28 Z"
-  };
+  // High fidelity scrambler implementation matching props behavior
+  class TextScrambler {
+    constructor(el, scrambleCharset = "0123456789%@$#&?") {
+      this.el = el;
+      this.scrambleCharset = scrambleCharset;
+      this.resolveQueue = [];
+      this.frameId = null;
+      this.update = this.update.bind(this);
+      this.currentText = el.textContent || "";
+    }
 
-  // Digit to segment mapping
-  const digitMap = {
-    0: ['a', 'b', 'c', 'd', 'e', 'f'],
-    1: ['b', 'c'],
-    2: ['a', 'b', 'g', 'e', 'd'],
-    3: ['a', 'b', 'g', 'c', 'd'],
-    4: ['f', 'g', 'b', 'c'],
-    5: ['a', 'f', 'g', 'c', 'd'],
-    6: ['a', 'f', 'g', 'c', 'd', 'e'],
-    7: ['a', 'b', 'c'],
-    8: ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
-    9: ['a', 'b', 'c', 'd', 'f', 'g']
-  };
+    // Triggers a transition. If partial=true, it only shuffles characters that actually changed.
+    // If partial=false, it shuffles the entire string.
+    scrambleTo(newText, partial = true, durationFrames = 15) {
+      const oldText = this.currentText;
+      const maxLength = Math.max(oldText.length, newText.length);
+      this.resolveQueue = [];
 
-  const digits = ['h1', 'h0', 'm1', 'm0', 's1', 's0'];
-  const digitElMap = {};
+      for (let i = 0; i < maxLength; i++) {
+        const from = oldText[i] || "";
+        const to = newText[i] || "";
 
-  // Initialize SVG templates inside the containers
-  digits.forEach(id => {
-    const container = document.getElementById(id);
-    const svg = container.querySelector('svg');
-    
-    // Draw all 7 segment paths
-    Object.keys(segments).forEach(key => {
-      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      path.setAttribute("d", segments[key]);
-      path.setAttribute("class", `seg seg-${key} dim`);
-      svg.appendChild(path);
-    });
-    
-    digitElMap[id] = svg;
-  });
-
-  const ampmEl = document.getElementById('ampm');
-
-  function updateDigit(id, val) {
-    const svg = digitElMap[id];
-    const activeSegs = digitMap[val] || [];
-    
-    Object.keys(segments).forEach(key => {
-      const path = svg.querySelector(`.seg-${key}`);
-      if (activeSegs.includes(key)) {
-        path.classList.add('lit');
-        path.classList.remove('dim');
-      } else {
-        path.classList.add('dim');
-        path.classList.remove('lit');
+        // If characters are identical and partial-mode is active, resolve instantly with no shuffle
+        if (partial && from === to) {
+          this.resolveQueue.push({
+            to,
+            startFrame: 0,
+            endFrame: 0,
+            current: to
+          });
+        } else {
+          // Stagger delays per letter
+          const startFrame = Math.floor(Math.random() * 4);
+          const endFrame = startFrame + Math.floor(6 + Math.random() * 10);
+          this.resolveQueue.push({
+            to,
+            startFrame,
+            endFrame,
+            current: from || this.scrambleCharset[Math.floor(Math.random() * this.scrambleCharset.length)]
+          });
+        }
       }
-    });
+
+      this.frame = 0;
+      this.currentText = newText;
+
+      if (this.frameId) cancelAnimationFrame(this.frameId);
+      this.frameId = requestAnimationFrame(this.update);
+    }
+
+    update() {
+      let output = "";
+      let complete = true;
+
+      for (let i = 0; i < this.resolveQueue.length; i++) {
+        const item = this.resolveQueue[i];
+        if (this.frame >= item.endFrame) {
+          output += item.to;
+        } else if (this.frame >= item.startFrame) {
+          complete = false;
+          // Randomly replace with scrambling chars during active frames
+          if (Math.random() < 0.3) {
+            item.current = this.scrambleCharset[Math.floor(Math.random() * this.scrambleCharset.length)];
+          }
+          output += item.current;
+        } else {
+          complete = false;
+          output += item.current;
+        }
+      }
+
+      this.el.textContent = output;
+
+      if (!complete) {
+        this.frame++;
+        this.frameId = requestAnimationFrame(this.update);
+      }
+    }
+  }
+
+  // Element handles
+  const timeEl = document.getElementById('time-val');
+  const dateEl = document.getElementById('date-val');
+  const epochEl = document.getElementById('epoch-val');
+  const clockPanel = document.getElementById('clock-panel');
+  const datePanel = document.getElementById('date-panel');
+  const epochPanel = document.getElementById('epoch-panel');
+
+  // Scrambler instances
+  const timeScrambler = new TextScrambler(timeEl, "0123456789: APM");
+  const dateScrambler = new TextScrambler(dateEl, "ABCDEFGHIJKLMNOPQRSTUVWXYZ, 0123456789");
+  const epochScrambler = new TextScrambler(epochEl, "0123456789");
+
+  let lastTimeStr = "";
+  let forceFullTimeShuffle = true; // Force complete scramble on initial load
+
+  // Format date helper (IST timezone UTC+5:30)
+  function getISTTime() {
+    const now = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000;
+    return new Date(now.getTime() + istOffset + now.getTimezoneOffset() * 60 * 1000);
+  }
+
+  function getEpochSeconds() {
+    return Math.floor(Date.now() / 1000);
   }
 
   function updateClock() {
-    const now = new Date();
+    const istTime = getISTTime();
     
-    // Format IST time (UTC+5:30)
-    const istOffset = 5.5 * 60 * 60 * 1000;
-    const istTime = new Date(now.getTime() + istOffset + now.getTimezoneOffset() * 60 * 1000);
-    
+    // 1. Time string conversion (HH:MM:SS AM/PM)
     let hr = istTime.getHours();
     let mn = istTime.getMinutes();
     let sc = istTime.getSeconds();
     
     const ampm = hr >= 12 ? 'PM' : 'AM';
-    ampmEl.textContent = ampm;
-    
     hr = hr % 12;
-    hr = hr ? hr : 12; // Rollover 0 to 12
+    hr = hr ? hr : 12;
     
-    const h1Val = Math.floor(hr / 10);
-    const h0Val = hr % 10;
-    const m1Val = Math.floor(mn / 10);
-    const m0Val = mn % 10;
-    const s1Val = Math.floor(sc / 10);
-    const s0Val = sc % 10;
-    
-    updateDigit('h1', h1Val);
-    updateDigit('h0', h0Val);
-    updateDigit('m1', m1Val);
-    updateDigit('m0', m0Val);
-    updateDigit('s1', s1Val);
-    updateDigit('s0', s0Val);
+    const hrStr = String(hr).padStart(2, '0');
+    const mnStr = String(mn).padStart(2, '0');
+    const scStr = String(sc).padStart(2, '0');
+    const timeStr = `${hrStr}:${mnStr}:${scStr} ${ampm}`;
+
+    // Scramble time: do a partial update (only changed digits shuffle)
+    // unless we explicitly trigger a full scramble (on load / hover / click)
+    timeScrambler.scrambleTo(timeStr, !forceFullTimeShuffle);
+    forceFullTimeShuffle = false;
+
+    // 2. Epoch string update
+    const epochStr = String(getEpochSeconds());
+    epochScrambler.scrambleTo(epochStr, true);
+
+    // 3. Date string update (only update date value once per cycle)
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateStr = istTime.toLocaleDateString('en-US', options).toUpperCase();
+    if (dateEl.textContent === "LOADING...") {
+      dateScrambler.scrambleTo(dateStr, false);
+    }
   }
 
-  // Update clock every 100ms for responsiveness
-  setInterval(updateClock, 100);
+  // Trigger full-scramble on interactions
+  clockPanel.addEventListener('mouseenter', () => {
+    forceFullTimeShuffle = true;
+    updateClock();
+  });
+  clockPanel.addEventListener('click', () => {
+    forceFullTimeShuffle = true;
+    updateClock();
+  });
+
+  datePanel.addEventListener('mouseenter', () => {
+    const istTime = getISTTime();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateStr = istTime.toLocaleDateString('en-US', options).toUpperCase();
+    dateScrambler.scrambleTo(dateStr, false); // Full shuffle on date hover
+  });
+
+  epochPanel.addEventListener('mouseenter', () => {
+    const epochStr = String(getEpochSeconds());
+    epochScrambler.scrambleTo(epochStr, false); // Full shuffle on epoch hover
+  });
+
+  // Ticks every second (exactly matches clock progression)
+  setInterval(updateClock, 1000);
   updateClock();
 </script>
 </body>

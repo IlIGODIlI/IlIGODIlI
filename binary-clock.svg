@@ -5,126 +5,33 @@
       <stop offset="100%" stop-color="#0b0f19"/>
     </radialGradient>
     
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-
-    <!-- 7-Segment paths definitions (no fill defined so <use> cascades successfully) -->
-    <path id="seg-a" d="M 4,2 L 28,2 L 25,5 L 7,5 Z" />
-    <path id="seg-b" d="M 29,4 L 29,25 L 26,22 L 26,7 Z" />
-    <path id="seg-c" d="M 29,27 L 29,48 L 26,45 L 26,30 Z" />
-    <path id="seg-d" d="M 4,50 L 28,50 L 25,47 L 7,47 Z" />
-    <path id="seg-e" d="M 3,27 L 3,48 L 6,45 L 6,30 Z" />
-    <path id="seg-f" d="M 3,4 L 3,25 L 6,22 L 6,7 Z" />
-    <path id="seg-g" d="M 5,26 L 8,24 L 24,24 L 27,26 L 24,28 L 8,28 Z" />
-
-    <!-- 7-Segment digit definitions -->
-    <g id="digit-0">
-      <use href="#seg-a" class="seg-lit" />
-      <use href="#seg-b" class="seg-lit" />
-      <use href="#seg-c" class="seg-lit" />
-      <use href="#seg-d" class="seg-lit" />
-      <use href="#seg-e" class="seg-lit" />
-      <use href="#seg-f" class="seg-lit" />
-      <use href="#seg-g" class="seg-dim" />
-    </g>
-    <g id="digit-1">
-      <use href="#seg-a" class="seg-dim" />
-      <use href="#seg-b" class="seg-lit" />
-      <use href="#seg-c" class="seg-lit" />
-      <use href="#seg-d" class="seg-dim" />
-      <use href="#seg-e" class="seg-dim" />
-      <use href="#seg-f" class="seg-dim" />
-      <use href="#seg-g" class="seg-dim" />
-    </g>
-    <g id="digit-2">
-      <use href="#seg-a" class="seg-lit" />
-      <use href="#seg-b" class="seg-lit" />
-      <use href="#seg-c" class="seg-dim" />
-      <use href="#seg-d" class="seg-lit" />
-      <use href="#seg-e" class="seg-lit" />
-      <use href="#seg-f" class="seg-dim" />
-      <use href="#seg-g" class="seg-lit" />
-    </g>
-    <g id="digit-3">
-      <use href="#seg-a" class="seg-lit" />
-      <use href="#seg-b" class="seg-lit" />
-      <use href="#seg-c" class="seg-lit" />
-      <use href="#seg-d" class="seg-lit" />
-      <use href="#seg-e" class="seg-dim" />
-      <use href="#seg-f" class="seg-dim" />
-      <use href="#seg-g" class="seg-lit" />
-    </g>
-    <g id="digit-4">
-      <use href="#seg-a" class="seg-dim" />
-      <use href="#seg-b" class="seg-lit" />
-      <use href="#seg-c" class="seg-lit" />
-      <use href="#seg-d" class="seg-dim" />
-      <use href="#seg-e" class="seg-dim" />
-      <use href="#seg-f" class="seg-lit" />
-      <use href="#seg-g" class="seg-lit" />
-    </g>
-    <g id="digit-5">
-      <use href="#seg-a" class="seg-lit" />
-      <use href="#seg-b" class="seg-dim" />
-      <use href="#seg-c" class="seg-lit" />
-      <use href="#seg-d" class="seg-lit" />
-      <use href="#seg-e" class="seg-dim" />
-      <use href="#seg-f" class="seg-lit" />
-      <use href="#seg-g" class="seg-lit" />
-    </g>
-    <g id="digit-6">
-      <use href="#seg-a" class="seg-lit" />
-      <use href="#seg-b" class="seg-dim" />
-      <use href="#seg-c" class="seg-lit" />
-      <use href="#seg-d" class="seg-lit" />
-      <use href="#seg-e" class="seg-lit" />
-      <use href="#seg-f" class="seg-lit" />
-      <use href="#seg-g" class="seg-lit" />
-    </g>
-    <g id="digit-7">
-      <use href="#seg-a" class="seg-lit" />
-      <use href="#seg-b" class="seg-lit" />
-      <use href="#seg-c" class="seg-lit" />
-      <use href="#seg-d" class="seg-dim" />
-      <use href="#seg-e" class="seg-dim" />
-      <use href="#seg-f" class="seg-dim" />
-      <use href="#seg-g" class="seg-dim" />
-    </g>
-    <g id="digit-8">
-      <use href="#seg-a" class="seg-lit" />
-      <use href="#seg-b" class="seg-lit" />
-      <use href="#seg-c" class="seg-lit" />
-      <use href="#seg-d" class="seg-lit" />
-      <use href="#seg-e" class="seg-lit" />
-      <use href="#seg-f" class="seg-lit" />
-      <use href="#seg-g" class="seg-lit" />
-    </g>
-    <g id="digit-9">
-      <use href="#seg-a" class="seg-lit" />
-      <use href="#seg-b" class="seg-lit" />
-      <use href="#seg-c" class="seg-lit" />
-      <use href="#seg-d" class="seg-lit" />
-      <use href="#seg-e" class="seg-dim" />
-      <use href="#seg-f" class="seg-lit" />
-      <use href="#seg-g" class="seg-lit" />
-    </g>
   </defs>
 
   <style>
     .bg { fill: #0b0f19; stroke: rgba(0,229,255,0.08); stroke-width: 1; }
 
-    /* Segment Styles */
-    .seg-lit {
+    /* Text digits styling */
+    .time-digit {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 52px;
       fill: #00E5FF;
-      filter: url(#glow);
+      font-weight: 700;
+      dominant-baseline: central;
     }
-    .seg-dim {
-      fill: #06111a;
+
+    .time-digit-dim {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 52px;
+      fill: #08121d;
+      font-weight: 700;
+      dominant-baseline: central;
       opacity: 0.15;
     }
 
@@ -135,17 +42,17 @@
     }
     .colon { animation: colon-blink 1s infinite steps(1); }
 
-    /* Seconds ONES digit — cycles 0→9 over 10s */
-    @keyframes s0 { 0%,10%{opacity:1} 10.01%,100%{opacity:0} }
-    @keyframes s1 { 0%,10%{opacity:0} 10.01%,20%{opacity:1} 20.01%,100%{opacity:0} }
-    @keyframes s2 { 0%,20%{opacity:0} 20.01%,30%{opacity:1} 30.01%,100%{opacity:0} }
-    @keyframes s3 { 0%,30%{opacity:0} 30.01%,40%{opacity:1} 40.01%,100%{opacity:0} }
-    @keyframes s4 { 0%,40%{opacity:0} 40.01%,50%{opacity:1} 50.01%,100%{opacity:0} }
-    @keyframes s5 { 0%,50%{opacity:0} 50.01%,60%{opacity:1} 60.01%,100%{opacity:0} }
-    @keyframes s6 { 0%,60%{opacity:0} 60.01%,70%{opacity:1} 70.01%,100%{opacity:0} }
-    @keyframes s7 { 0%,70%{opacity:0} 70.01%,80%{opacity:1} 80.01%,100%{opacity:0} }
-    @keyframes s8 { 0%,80%{opacity:0} 80.01%,90%{opacity:1} 90.01%,100%{opacity:0} }
-    @keyframes s9 { 0%,90%{opacity:0} 90.01%,100%{opacity:1} }
+    /* Seconds ONES digit animation with scramble delay (scramble runs for 0.24s) */
+    @keyframes s0 { 0%, 2.4% { opacity: 0; } 2.41%, 10% { opacity: 1; } 10.01%, 100% { opacity: 0; } }
+    @keyframes s1 { 0%, 10% { opacity: 0; } 10.01%, 12.4% { opacity: 0; } 12.41%, 20% { opacity: 1; } 20.01%, 100% { opacity: 0; } }
+    @keyframes s2 { 0%, 20% { opacity: 0; } 20.01%, 22.4% { opacity: 0; } 22.41%, 30% { opacity: 1; } 30.01%, 100% { opacity: 0; } }
+    @keyframes s3 { 0%, 30% { opacity: 0; } 30.01%, 32.4% { opacity: 0; } 32.41%, 40% { opacity: 1; } 40.01%, 100% { opacity: 0; } }
+    @keyframes s4 { 0%, 40% { opacity: 0; } 40.01%, 42.4% { opacity: 0; } 42.41%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+    @keyframes s5 { 0%, 50% { opacity: 0; } 50.01%, 52.4% { opacity: 0; } 52.41%, 60% { opacity: 1; } 60.01%, 100% { opacity: 0; } }
+    @keyframes s6 { 0%, 60% { opacity: 0; } 60.01%, 62.4% { opacity: 0; } 62.41%, 70% { opacity: 1; } 70.01%, 100% { opacity: 0; } }
+    @keyframes s7 { 0%, 70% { opacity: 0; } 70.01%, 72.4% { opacity: 0; } 72.41%, 80% { opacity: 1; } 80.01%, 100% { opacity: 0; } }
+    @keyframes s8 { 0%, 80% { opacity: 0; } 80.01%, 82.4% { opacity: 0; } 82.41%, 90% { opacity: 1; } 90.01%, 100% { opacity: 0; } }
+    @keyframes s9 { 0%, 90% { opacity: 0; } 90.01%, 92.4% { opacity: 0; } 92.41%, 100% { opacity: 1; } }
 
     .sec-s0{animation:s0 10s infinite} .sec-s1{animation:s1 10s infinite}
     .sec-s2{animation:s2 10s infinite} .sec-s3{animation:s3 10s infinite}
@@ -153,17 +60,28 @@
     .sec-s6{animation:s6 10s infinite} .sec-s7{animation:s7 10s infinite}
     .sec-s8{animation:s8 10s infinite} .sec-s9{animation:s9 10s infinite}
 
-    /* Seconds TENS digit — cycles 0→5 over 60s */
-    @keyframes t0 { 0%,16.66%{opacity:1} 16.67%,100%{opacity:0} }
-    @keyframes t1 { 0%,16.66%{opacity:0} 16.67%,33.33%{opacity:1} 33.34%,100%{opacity:0} }
-    @keyframes t2 { 0%,33.33%{opacity:0} 33.34%,50%{opacity:1} 50.01%,100%{opacity:0} }
-    @keyframes t3 { 0%,50%{opacity:0} 50.01%,66.66%{opacity:1} 66.67%,100%{opacity:0} }
-    @keyframes t4 { 0%,66.66%{opacity:0} 66.67%,83.33%{opacity:1} 83.34%,100%{opacity:0} }
-    @keyframes t5 { 0%,83.33%{opacity:0} 83.34%,100%{opacity:1} }
+    /* Seconds TENS digit animation with scramble delay (scramble runs for 0.24s) */
+    @keyframes t0 { 0%, 0.4% { opacity: 0; } 0.41%, 16.66% { opacity: 1; } 16.67%, 100% { opacity: 0; } }
+    @keyframes t1 { 0%, 16.66% { opacity: 0; } 16.67%, 17.07% { opacity: 0; } 17.07%, 33.33% { opacity: 1; } 33.34%, 100% { opacity: 0; } }
+    @keyframes t2 { 0%, 33.33% { opacity: 0; } 33.34%, 33.74% { opacity: 0; } 33.74%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+    @keyframes t3 { 0%, 50% { opacity: 0; } 50.01%, 50.41% { opacity: 0; } 50.41%, 66.66% { opacity: 1; } 66.67%, 100% { opacity: 0; } }
+    @keyframes t4 { 0%, 66.66% { opacity: 0; } 66.67%, 67.07% { opacity: 0; } 67.07%, 83.33% { opacity: 1; } 83.34%, 100% { opacity: 0; } }
+    @keyframes t5 { 0%, 83.33% { opacity: 0; } 83.34%, 83.74% { opacity: 0; } 83.74%, 100% { opacity: 1; } }
 
     .sec-t0{animation:t0 60s infinite} .sec-t1{animation:t1 60s infinite}
     .sec-t2{animation:t2 60s infinite} .sec-t3{animation:t3 60s infinite}
     .sec-t4{animation:t4 60s infinite} .sec-t5{animation:t5 60s infinite}
+
+    /* Scramble overlay animations (period of 1s) */
+    @keyframes scram-1 { 0%, 6% { opacity: 1; } 6.01%, 100% { opacity: 0; } }
+    @keyframes scram-2 { 0%, 6% { opacity: 0; } 6.01%, 12% { opacity: 1; } 12.01%, 100% { opacity: 0; } }
+    @keyframes scram-3 { 0%, 12% { opacity: 0; } 12.01%, 18% { opacity: 1; } 18.01%, 100% { opacity: 0; } }
+    @keyframes scram-4 { 0%, 18% { opacity: 0; } 18.01%, 24% { opacity: 1; } 24.01%, 100% { opacity: 0; } }
+
+    .sc1 { animation: scram-1 1s infinite step-end; }
+    .sc2 { animation: scram-2 1s infinite step-end; }
+    .sc3 { animation: scram-3 1s infinite step-end; }
+    .sc4 { animation: scram-4 1s infinite step-end; }
 
     .label {
       font-family: 'Consolas', 'Courier New', monospace;
@@ -222,69 +140,69 @@
   <rect x="22" y="192" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
   <rect x="392" y="192" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
 
-  <!-- ================= TIME DIGITS (7-Segment Layout) ================= -->
-  <!-- Centered at y=84, height=52. Total width=276, centered (starts at x=72) -->
+  <!-- Ghost Background digits (LCD "off" segments) -->
+  <text class="time-digit-dim" x="72" y="110">88:88:88</text>
 
-  <!-- Hours: 06 -->
-  <g transform="translate(72, 84)">
-    <use href="#digit-0" />
-  </g>
-  <g transform="translate(112, 84)">
-    <use href="#digit-6" />
+  <!-- Hours: 10 -->
+  <g filter="url(#glow)">
+    <text class="time-digit" x="72" y="110">10</text>
   </g>
 
   <!-- Colon 1 -->
   <g class="colon" filter="url(#glow)">
-    <circle cx="159" cy="100" r="2" fill="#00E5FF" />
-    <circle cx="159" cy="120" r="2" fill="#00E5FF" />
+    <text class="time-digit" x="134" y="110">:</text>
   </g>
 
-  <!-- Minutes: 13 -->
-  <g transform="translate(174, 84)">
-    <use href="#digit-1" />
-  </g>
-  <g transform="translate(214, 84)">
-    <use href="#digit-3" />
+  <!-- Minutes: 08 -->
+  <g filter="url(#glow)">
+    <text class="time-digit" x="162" y="110">08</text>
   </g>
 
   <!-- Colon 2 -->
   <g class="colon" filter="url(#glow)">
-    <circle cx="261" cy="100" r="2" fill="#00E5FF" />
-    <circle cx="261" cy="120" r="2" fill="#00E5FF" />
+    <text class="time-digit" x="224" y="110">:</text>
   </g>
 
-  <!-- Seconds: Animated! -->
-  <!-- Tens Digit (0-5) at x=276 -->
-  <g transform="translate(276, 84)">
-    <use href="#digit-0" class="sec-t0" />
-    <use href="#digit-1" class="sec-t1" style="opacity:0" />
-    <use href="#digit-2" class="sec-t2" style="opacity:0" />
-    <use href="#digit-3" class="sec-t3" style="opacity:0" />
-    <use href="#digit-4" class="sec-t4" style="opacity:0" />
-    <use href="#digit-5" class="sec-t5" style="opacity:0" />
+  <!-- ================= SECONDS DIGITS (With shuffle animations) ================= -->
+  <!-- Tens Digit (0-5) at x=252 -->
+  <g filter="url(#glow)">
+    <text class="time-digit sec-t0" x="252" y="110">0</text>
+    <text class="time-digit sec-t1" x="252" y="110" style="opacity:0">1</text>
+    <text class="time-digit sec-t2" x="252" y="110" style="opacity:0">2</text>
+    <text class="time-digit sec-t3" x="252" y="110" style="opacity:0">3</text>
+    <text class="time-digit sec-t4" x="252" y="110" style="opacity:0">4</text>
+    <text class="time-digit sec-t5" x="252" y="110" style="opacity:0">5</text>
   </g>
 
-  <!-- Ones Digit (0-9) at x=316 -->
-  <g transform="translate(316, 84)">
-    <use href="#digit-0" class="sec-s0" />
-    <use href="#digit-1" class="sec-s1" style="opacity:0" />
-    <use href="#digit-2" class="sec-s2" style="opacity:0" />
-    <use href="#digit-3" class="sec-s3" style="opacity:0" />
-    <use href="#digit-4" class="sec-s4" style="opacity:0" />
-    <use href="#digit-5" class="sec-s5" style="opacity:0" />
-    <use href="#digit-6" class="sec-s6" style="opacity:0" />
-    <use href="#digit-7" class="sec-s7" style="opacity:0" />
-    <use href="#digit-8" class="sec-s8" style="opacity:0" />
-    <use href="#digit-9" class="sec-s9" style="opacity:0" />
+  <!-- Ones Digit (0-9) at x=280 -->
+  <g filter="url(#glow)">
+    <text class="time-digit sec-s0" x="280" y="110">0</text>
+    <text class="time-digit sec-s1" x="280" y="110" style="opacity:0">1</text>
+    <text class="time-digit sec-s2" x="280" y="110" style="opacity:0">2</text>
+    <text class="time-digit sec-s3" x="280" y="110" style="opacity:0">3</text>
+    <text class="time-digit sec-s4" x="280" y="110" style="opacity:0">4</text>
+    <text class="time-digit sec-s5" x="280" y="110" style="opacity:0">5</text>
+    <text class="time-digit sec-s6" x="280" y="110" style="opacity:0">6</text>
+    <text class="time-digit sec-s7" x="280" y="110" style="opacity:0">7</text>
+    <text class="time-digit sec-s8" x="280" y="110" style="opacity:0">8</text>
+    <text class="time-digit sec-s9" x="280" y="110" style="opacity:0">9</text>
+  </g>
+
+  <!-- Ones Digit Scramble Overlay (Flashes every 1 second) -->
+  <g filter="url(#glow)">
+    <text class="time-digit sc1" x="280" y="110">#</text>
+    <text class="time-digit sc2" x="280" y="110" style="opacity:0">%</text>
+    <text class="time-digit sc3" x="280" y="110" style="opacity:0">9</text>
+    <text class="time-digit sc4" x="280" y="110" style="opacity:0">&amp;</text>
   </g>
 
   <!-- AM/PM Indicator -->
-  <text x="358" y="99" style="font-family:'Consolas',monospace;font-size:12px;fill:#00E5FF;font-weight:bold;opacity:0.6;" filter="url(#glow)">AM</text>
+  <text x="320" y="99" style="font-family:'Consolas',monospace;font-size:12px;fill:#00E5FF;font-weight:bold;opacity:0.6;" filter="url(#glow)">AM</text>
 
   <!-- Bottom label -->
   <text class="label" x="210" y="174" text-anchor="middle">indian standard time</text>
 
-  <!-- Decorative horizontal lines (matching the original) -->
+  <!-- Decorative horizontal lines -->
   <line x1="48" y1="150" x2="362" y2="150" stroke="rgba(0,229,255,0.04)" stroke-width="0.5"/>
   <line x1="48" y1="60" x2="362" y2="60" stroke="rgba(0,229,255,0.04)" stroke-width="0.5"/>
 </svg>

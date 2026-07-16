@@ -12,12 +12,14 @@
 
 ---
 
-<!-- 32-Bit LED Register Clock + Binary Room side by side -->
+## 🖥️ System Terminals
+
+<!-- Shuffle Text Clock + Binary Room side by side -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td width="50%" align="center" valign="top">
       <a href="https://IlIGODIlI.github.io/IlIGODIlI/binary-clock.html" target="_blank">
-        <img src="binary-clock.svg" alt="32-Bit LED Register Clock" width="420" style="max-width: 100%; border-radius: 12px;" />
+        <img src="binary-clock.svg" alt="Shuffle Text Digital Clock" width="420" style="max-width: 100%; border-radius: 12px;" />
       </a>
     </td>
     <td width="50%" align="center" valign="top">
@@ -29,6 +31,8 @@
 </table>
 
 ---
+
+## 👤 Bio & Profile
 
 <!-- About bio + Silksong pixel art side by side -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -45,6 +49,8 @@
 </table>
 
 ---
+
+## 🛠️ Stack & Arsenal
 
 <!-- Tech stack infinite marquee -->
 <p align="center">
@@ -78,6 +84,8 @@
 </table>
 
 ---
+
+## 📈 Contribution Activity
 
 <!-- Contribution graph sits here — scroll past the noise first -->
 <p align="center">
