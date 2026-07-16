@@ -1,3 +1,7 @@
+<table background="background.jpg" width="100%" border="0" cellspacing="0" cellpadding="20" style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <td>
+
 <!-- Hero Banner — animated 3D grid spelling ARYAN, signal wave + breathing cubes -->
 <p align="center">
   <a href="https://IlIGODIlI.github.io/IlIGODIlI/title.html" target="_blank">
@@ -6,13 +10,13 @@
 </p>
 
 <p align="center">
-  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=IlIGODIlI&show_icons=true&theme=tokyonight&hide_border=true&bg_color=050816&title_color=00E5FF&icon_color=00E5FF&text_color=c9d1d9"/>
-  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=IlIGODIlI&layout=compact&theme=tokyonight&hide_border=true&bg_color=050816&title_color=00E5FF"/>
+  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=IlIGODIlI&amp;show_icons=true&amp;theme=tokyonight&amp;hide_border=true&amp;bg_color=050816&amp;title_color=00E5FF&amp;icon_color=00E5FF&amp;text_color=c9d1d9"/>
+  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=IlIGODIlI&amp;layout=compact&amp;theme=tokyonight&amp;hide_border=true&amp;bg_color=050816&amp;title_color=00E5FF"/>
 </p>
 
----
+<hr style="border: 0; border-top: 1px solid rgba(255, 255, 255, 0.08); margin: 24px 0;" />
 
-## 🖥️ System Terminals
+<h2 style="color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 1.5em; margin-top: 24px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 0.3em;">🖥️ System Terminals</h2>
 
 <!-- ZeroTrace VAULT + Binary Room side by side -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -30,9 +34,9 @@
   </tr>
 </table>
 
----
+<hr style="border: 0; border-top: 1px solid rgba(255, 255, 255, 0.08); margin: 24px 0;" />
 
-## 👤 Bio & Profile
+<h2 style="color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 1.5em; margin-top: 24px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 0.3em;">👤 Bio &amp; Profile</h2>
 
 <!-- About bio + Silksong pixel art side by side -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -48,9 +52,9 @@
   </tr>
 </table>
 
----
+<hr style="border: 0; border-top: 1px solid rgba(255, 255, 255, 0.08); margin: 24px 0;" />
 
-## 🛠️ Stack & Arsenal
+<h2 style="color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 1.5em; margin-top: 24px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 0.3em;">🛠️ Stack &amp; Arsenal</h2>
 
 <!-- Tech stack infinite marquee -->
 <p align="center">
@@ -59,49 +63,53 @@
   </a>
 </p>
 
----
+<hr style="border: 0; border-top: 1px solid rgba(255, 255, 255, 0.08); margin: 24px 0;" />
 
-## ⚡ what i've been shipping
+<h2 style="color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 1.5em; margin-top: 24px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 0.3em;">⚡ what i've been shipping</h2>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="8">
   <tr>
     <td width="33%" valign="top">
-      <h3>🔍 RepoLens</h3>
-      <p>drop any repo link and get architecture diagrams, docs, and dependency maps auto-generated. like having a senior dev explain the codebase.</p>
+      <h3 style="color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">🔍 RepoLens</h3>
+      <p style="color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5;">drop any repo link and get architecture diagrams, docs, and dependency maps auto-generated. like having a senior dev explain the codebase.</p>
       <p><code>Python</code> <code>FastAPI</code> <code>React</code></p>
     </td>
     <td width="33%" valign="top">
-      <h3>🔐 ZeroTrace</h3>
-      <p>AES-256 encryption + secure file shredding. the kind of thing you build because you actually care about privacy, not just as a portfolio piece.</p>
+      <h3 style="color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">🔐 ZeroTrace</h3>
+      <p style="color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5;">AES-256 encryption + secure file shredding. the kind of thing you build because you actually care about privacy, not just as a portfolio piece.</p>
       <p><code>Java</code> <code>Spring Boot</code> <code>AES-256</code></p>
     </td>
     <td width="33%" valign="top">
-      <h3>🧠 Vela</h3>
-      <p>feeds on raw text and spits out cause-effect graphs. trying to make reasoning something you can actually see and trace.</p>
+      <h3 style="color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">🧠 Vela</h3>
+      <p style="color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5;">feeds on raw text and spits out cause-effect graphs. trying to make reasoning something you can actually see and trace.</p>
       <p><code>Python</code> <code>NumPy</code> <code>NLP</code></p>
     </td>
   </tr>
 </table>
 
----
+<hr style="border: 0; border-top: 1px solid rgba(255, 255, 255, 0.08); margin: 24px 0;" />
 
-## 📈 Contribution Activity
+<h2 style="color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 1.5em; margin-top: 24px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 0.3em;">📈 Contribution Activity</h2>
 
 <!-- Contribution graph sits here — scroll past the noise first -->
 <p align="center">
   <img data-importer="snake" src="https://raw.githubusercontent.com/IlIGODIlI/IlIGODIlI/snake-output/snake.svg" alt="commit snake" style="max-width: 100%;" />
 </p>
 
----
+<hr style="border: 0; border-top: 1px solid rgba(255, 255, 255, 0.08); margin: 24px 0;" />
 
-## 📡 find me
+<h2 style="color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 1.5em; margin-top: 24px; margin-bottom: 16px; font-weight: 600; line-height: 1.25; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 0.3em;">📡 find me</h2>
 
 <p align="center">
-  <a href="https://linkedin.com/in/blueled"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn"/></a>&nbsp;&nbsp;
-  <a href="https://bluelediscool.netlify.app"><img src="https://img.shields.io/badge/Portfolio-000000?style=flat-square&logo=vercel&logoColor=white" alt="Portfolio"/></a>&nbsp;&nbsp;
-  <a href="mailto:bluelediscool@gmail.com"><img src="https://img.shields.io/badge/shoot me an email-EA4335?style=flat-square&logo=gmail&logoColor=white" alt="Email"/></a>
+  <a href="https://linkedin.com/in/blueled"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&amp;logo=linkedin&amp;logoColor=white" alt="LinkedIn"/></a>&nbsp;&nbsp;
+  <a href="https://bluelediscool.netlify.app"><img src="https://img.shields.io/badge/Portfolio-000000?style=flat-square&amp;logo=vercel&amp;logoColor=white" alt="Portfolio"/></a>&nbsp;&nbsp;
+  <a href="mailto:bluelediscool@gmail.com"><img src="https://img.shields.io/badge/shoot me an email-EA4335?style=flat-square&amp;logo=gmail&amp;logoColor=white" alt="Email"/></a>
 </p>
 
 <p align="center">
-  <img src="https://komarev.com/ghpvc/?username=IlIGODIlI&style=flat-square&color=00E5FF" alt="been here"/>
+  <img src="https://komarev.com/ghpvc/?username=IlIGODIlI&amp;style=flat-square&amp;color=00E5FF" alt="been here"/>
 </p>
+
+    </td>
+  </tr>
+</table>
