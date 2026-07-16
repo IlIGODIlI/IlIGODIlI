@@ -41,12 +41,12 @@
 <!-- About bio + Silksong pixel art side by side -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td width="50%" align="center" valign="top">
+    <td width="30%" align="center" valign="top">
       <a href="https://IlIGODIlI.github.io/IlIGODIlI/about.html" target="_blank">
         <img src="about.svg" alt="About — cycling bio" width="220" style="border-radius: 12px;" />
       </a>
     </td>
-    <td width="50%" align="center" valign="middle">
+    <td width="70%" align="center" valign="middle">
       <img src="images.jpg" alt="Hollow Knight: Silksong" width="100%" style="border-radius: 12px; display: block;" />
     </td>
   </tr>
