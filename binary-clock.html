@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>32-Bit LED Register Clock — IST</title>
-<meta name="description" content="An interactive 32-bit binary LED register clock displaying Indian Standard Time and UNIX epoch time in real-time.">
+<title>7-Segment Digital Clock — IST</title>
+<meta name="description" content="An interactive 7-segment LED digital clock displaying Indian Standard Time in real-time.">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap');
 
   * {
     margin: 0;
@@ -15,7 +15,7 @@
   }
 
   body {
-    background-color: #04060c;
+    background-color: #050811;
     color: #e2e8f0;
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
@@ -34,7 +34,7 @@
     background: 
       radial-gradient(circle at 20% 30%, rgba(0, 229, 255, 0.05) 0%, transparent 40%),
       radial-gradient(circle at 80% 70%, rgba(0, 229, 255, 0.03) 0%, transparent 45%),
-      radial-gradient(ellipse at 50% 50%, #070e1e 0%, #04060c 70%);
+      radial-gradient(ellipse at 50% 50%, #070e1e 0%, #050811 70%);
     z-index: 0;
   }
 
@@ -53,19 +53,19 @@
     position: relative;
     z-index: 10;
     width: 100%;
-    max-width: 600px;
+    max-width: 560px;
     padding: 24px;
     text-align: center;
   }
 
-  /* Main Rack/Widget Bezel */
+  /* Main Bezel Chassis */
   .bezel {
-    background: rgba(8, 12, 24, 0.6);
-    border: 1px solid rgba(0, 229, 255, 0.1);
+    background: rgba(11, 15, 25, 0.65);
+    border: 1px solid rgba(0, 229, 255, 0.08);
     border-radius: 16px;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    padding: 32px;
+    padding: 40px 32px;
     box-shadow: 
       0 24px 64px rgba(0, 0, 0, 0.6),
       0 0 40px rgba(0, 229, 255, 0.02),
@@ -81,7 +81,7 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.25), transparent);
   }
 
   /* Scanline effect */
@@ -105,14 +105,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     padding-bottom: 12px;
   }
 
   .title {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
     color: #00E5FF;
     letter-spacing: 3px;
@@ -123,18 +123,19 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: monospace;
     font-size: 0.75rem;
-    color: #00ff88;
+    color: #00E5FF;
     font-weight: bold;
+    letter-spacing: 1px;
   }
 
   .status-dot {
     width: 6px;
     height: 6px;
-    background-color: #00ff88;
+    background-color: #00E5FF;
     border-radius: 50%;
-    box-shadow: 0 0 8px #00ff88;
+    box-shadow: 0 0 8px #00E5FF;
     animation: breathe 2s infinite ease-in-out;
   }
 
@@ -143,167 +144,95 @@
     50% { opacity: 1; }
   }
 
-  /* Display Panel */
+  /* 7-Segment Clock Display Panel */
   .display-panel {
     background: #020408;
-    border: 1px solid rgba(0, 229, 255, 0.05);
-    border-radius: 10px;
-    padding: 24px;
-    margin-bottom: 28px;
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 20px;
-    text-align: left;
-    position: relative;
-  }
-
-  .display-group {
+    border: 1px solid rgba(0, 229, 255, 0.04);
+    border-radius: 12px;
+    padding: 36px 24px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .display-group:first-child {
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
-    padding-right: 10px;
-  }
-
-  .label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: #4c6175;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .time-val {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #ffffff;
-    text-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
-  }
-
-  .time-val span.accent {
-    color: #00E5FF;
-    text-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
-  }
-
-  .epoch-val {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #00E5FF;
-    letter-spacing: 1px;
-    text-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
-  }
-
-  /* Register Grid */
-  .register-panel {
-    background: #020408;
-    border: 1px solid rgba(0, 229, 255, 0.05);
-    border-radius: 10px;
-    padding: 24px;
-    position: relative;
-  }
-
-  .register-labels {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 14px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: #34485c;
-    font-weight: bold;
-  }
-
-  .byte-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    position: relative;
-  }
-
-  .byte-group {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 4px;
-    position: relative;
-  }
-
-  /* Divider between bytes */
-  .byte-group:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    right: -8px;
-    top: 2px;
-    bottom: 2px;
-    width: 1px;
-    border-right: 1px dashed rgba(0, 229, 255, 0.15);
-  }
-
-  .led-container {
-    display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 28px;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
     position: relative;
-    cursor: help;
   }
 
-  .led {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #142230;
-    border: 1px solid rgba(255, 255, 255, 0.02);
-    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Digit SVG Container */
+  .digit-container {
+    width: 48px;
+    height: 78px;
   }
 
-  .led.active {
-    background-color: #00E5FF;
-    box-shadow: 
-      0 0 8px #00E5FF,
-      0 0 16px rgba(0, 229, 255, 0.6);
+  .digit-container svg {
+    width: 100%;
+    height: 100%;
   }
 
-  /* Tooltip on hover */
-  .led-container:hover .tooltip {
+  /* Segments styling */
+  .seg {
+    transition: fill 0.15s ease, filter 0.15s ease, opacity 0.15s ease;
+  }
+
+  .seg.dim {
+    fill: #06111a;
+    opacity: 0.12;
+  }
+
+  .seg.lit {
+    fill: #00E5FF;
     opacity: 1;
-    transform: translateX(-50%) translateY(-100%) scale(1);
-    pointer-events: auto;
+    filter: drop-shadow(0 0 4px #00E5FF) drop-shadow(0 0 10px rgba(0, 229, 255, 0.6));
   }
 
-  .tooltip {
-    position: absolute;
-    bottom: 18px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-90%) scale(0.95);
-    background: #0b1222;
-    border: 1px solid rgba(0, 229, 255, 0.2);
-    padding: 6px 10px;
-    border-radius: 4px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
-    color: #e2e8f0;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.15s ease-out;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    z-index: 100;
+  /* Colon dots */
+  .colon-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 48px;
+    width: 10px;
+    align-items: center;
   }
 
-  .tooltip span {
+  .colon-dot {
+    width: 5px;
+    height: 5px;
+    background-color: #00E5FF;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #00E5FF;
+    transition: opacity 0.2s ease;
+  }
+
+  .colon-dot.blink {
+    animation: colon-flash 1s infinite step-end;
+  }
+
+  @keyframes colon-flash {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0.15; }
+  }
+
+  /* AM/PM Text */
+  .ampm-container {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
     color: #00E5FF;
-    font-weight: bold;
+    align-self: flex-start;
+    margin-top: 10px;
+    margin-left: 8px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
   }
 
   .footer-lbl {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: #26384a;
-    letter-spacing: 5px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.7rem;
+    color: #00E5FF;
+    opacity: 0.35;
+    letter-spacing: 6px;
     text-transform: uppercase;
     margin-top: 24px;
     user-select: none;
@@ -337,6 +266,17 @@
   .back-btn:hover svg {
     transform: translateX(-3px);
   }
+
+  /* Interactive grid lines inside panel */
+  .display-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 6px);
+    pointer-events: none;
+    border-radius: 12px;
+    z-index: 10;
+  }
 </style>
 </head>
 <body>
@@ -345,39 +285,53 @@
     <div class="scanline"></div>
     
     <div class="header">
-      <span class="title">32-Bit LED Register Clock</span>
+      <span class="title">7-Segment Digital Clock</span>
       <div class="status">
         <span class="status-dot"></span>
-        <span>IST ONLINE</span>
+        <span>IST LIVE</span>
       </div>
     </div>
 
     <!-- DIGITAL TIME PANEL -->
     <div class="display-panel">
-      <div class="display-group">
-        <span class="label">Indian Standard Time (IST)</span>
-        <div class="time-val" id="ist-time">00:00<span class="accent">:00</span></div>
+      <!-- Hours -->
+      <div class="digit-container" id="h1">
+        <svg viewBox="0 0 32 52"></svg>
       </div>
-      <div class="display-group">
-        <span class="label">32-Bit UNIX Timestamp</span>
-        <div class="epoch-val" id="epoch-time">0000000000</div>
+      <div class="digit-container" id="h0">
+        <svg viewBox="0 0 32 52"></svg>
       </div>
-    </div>
 
-    <!-- LED REGISTER GRID -->
-    <div class="register-panel">
-      <div class="register-labels">
-        <span>31 (MSB)</span>
-        <span>BYTE 3</span>
-        <span>BYTE 2</span>
-        <span>BYTE 1</span>
-        <span>BYTE 0</span>
-        <span>0 (LSB)</span>
+      <!-- Colon -->
+      <div class="colon-container">
+        <div class="colon-dot blink"></div>
+        <div class="colon-dot blink"></div>
       </div>
-      
-      <div class="byte-grid" id="led-register">
-        <!-- JS will populate this with 32 LEDs divided into 4 bytes -->
+
+      <!-- Minutes -->
+      <div class="digit-container" id="m1">
+        <svg viewBox="0 0 32 52"></svg>
       </div>
+      <div class="digit-container" id="m0">
+        <svg viewBox="0 0 32 52"></svg>
+      </div>
+
+      <!-- Colon -->
+      <div class="colon-container">
+        <div class="colon-dot blink"></div>
+        <div class="colon-dot blink"></div>
+      </div>
+
+      <!-- Seconds -->
+      <div class="digit-container" id="s1">
+        <svg viewBox="0 0 32 52"></svg>
+      </div>
+      <div class="digit-container" id="s0">
+        <svg viewBox="0 0 32 52"></svg>
+      </div>
+
+      <!-- AM / PM -->
+      <div class="ampm-container" id="ampm">AM</div>
     </div>
 
     <div class="footer-lbl">Indian Standard Time</div>
@@ -390,60 +344,71 @@
 </div>
 
 <script>
-  const ledRegister = document.getElementById('led-register');
-  const istTimeEl = document.getElementById('ist-time');
-  const epochTimeEl = document.getElementById('epoch-time');
+  // Segment paths definitions
+  const segments = {
+    a: "M 4,2 L 28,2 L 25,5 L 7,5 Z",
+    b: "M 29,4 L 29,25 L 26,22 L 26,7 Z",
+    c: "M 29,27 L 29,48 L 26,45 L 26,30 Z",
+    d: "M 4,50 L 28,50 L 25,47 L 7,47 Z",
+    e: "M 3,27 L 3,48 L 6,45 L 6,30 Z",
+    f: "M 3,4 L 3,25 L 6,22 L 6,7 Z",
+    g: "M 5,26 L 8,24 L 24,24 L 27,26 L 24,28 L 8,28 Z"
+  };
 
-  // Build the 32 LED elements inside 4 bytes
-  const leds = [];
-  
-  for (let byteIndex = 3; byteIndex >= 0; byteIndex--) {
-    const byteGroup = document.createElement('div');
-    byteGroup.className = 'byte-group';
+  // Digit to segment mapping
+  const digitMap = {
+    0: ['a', 'b', 'c', 'd', 'e', 'f'],
+    1: ['b', 'c'],
+    2: ['a', 'b', 'g', 'e', 'd'],
+    3: ['a', 'b', 'g', 'c', 'd'],
+    4: ['f', 'g', 'b', 'c'],
+    5: ['a', 'f', 'g', 'c', 'd'],
+    6: ['a', 'f', 'g', 'c', 'd', 'e'],
+    7: ['a', 'b', 'c'],
+    8: ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
+    9: ['a', 'b', 'c', 'd', 'f', 'g']
+  };
+
+  const digits = ['h1', 'h0', 'm1', 'm0', 's1', 's0'];
+  const digitElMap = {};
+
+  // Initialize SVG templates inside the containers
+  digits.forEach(id => {
+    const container = document.getElementById(id);
+    const svg = container.querySelector('svg');
     
-    for (let bitIndex = 7; bitIndex >= 0; bitIndex--) {
-      const overallBitIndex = byteIndex * 8 + bitIndex;
-      const weight = Math.pow(2, overallBitIndex);
-      
-      const container = document.createElement('div');
-      container.className = 'led-container';
-      
-      const ledEl = document.createElement('div');
-      ledEl.className = 'led';
-      
-      const tooltip = document.createElement('div');
-      tooltip.className = 'tooltip';
-      tooltip.innerHTML = `Bit <span>${overallBitIndex}</span><br>Weight: <span>${weight.toLocaleString()}</span>`;
-      
-      container.appendChild(ledEl);
-      container.appendChild(tooltip);
-      byteGroup.appendChild(container);
-      
-      // Store in order from LSB (index 0) to MSB (index 31)
-      leds[overallBitIndex] = ledEl;
-    }
+    // Draw all 7 segment paths
+    Object.keys(segments).forEach(key => {
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", segments[key]);
+      path.setAttribute("class", `seg seg-${key} dim`);
+      svg.appendChild(path);
+    });
     
-    ledRegister.appendChild(byteGroup);
+    digitElMap[id] = svg;
+  });
+
+  const ampmEl = document.getElementById('ampm');
+
+  function updateDigit(id, val) {
+    const svg = digitElMap[id];
+    const activeSegs = digitMap[val] || [];
+    
+    Object.keys(segments).forEach(key => {
+      const path = svg.querySelector(`.seg-${key}`);
+      if (activeSegs.includes(key)) {
+        path.classList.add('lit');
+        path.classList.remove('dim');
+      } else {
+        path.classList.add('dim');
+        path.classList.remove('lit');
+      }
+    });
   }
 
   function updateClock() {
     const now = new Date();
     
-    // Get actual current timestamp in seconds
-    const epoch = Math.floor(now.getTime() / 1000);
-    epochTimeEl.textContent = epoch;
-
-    // Convert epoch to 32-bit binary array (0s and 1s)
-    for (let i = 0; i < 32; i++) {
-      // Check if the i-th bit is set
-      const isBitSet = (epoch & (1 << i)) !== 0;
-      if (isBitSet) {
-        leds[i].classList.add('active');
-      } else {
-        leds[i].classList.remove('active');
-      }
-    }
-
     // Format IST time (UTC+5:30)
     const istOffset = 5.5 * 60 * 60 * 1000;
     const istTime = new Date(now.getTime() + istOffset + now.getTimezoneOffset() * 60 * 1000);
@@ -453,17 +418,27 @@
     let sc = istTime.getSeconds();
     
     const ampm = hr >= 12 ? 'PM' : 'AM';
+    ampmEl.textContent = ampm;
+    
     hr = hr % 12;
-    hr = hr ? hr : 12; // the hour '0' should be '12'
+    hr = hr ? hr : 12; // Rollover 0 to 12
     
-    const hrStr = String(hr).padStart(2, '0');
-    const mnStr = String(mn).padStart(2, '0');
-    const scStr = String(sc).padStart(2, '0');
+    const h1Val = Math.floor(hr / 10);
+    const h0Val = hr % 10;
+    const m1Val = Math.floor(mn / 10);
+    const m0Val = mn % 10;
+    const s1Val = Math.floor(sc / 10);
+    const s0Val = sc % 10;
     
-    istTimeEl.innerHTML = `${hrStr}:${mnStr}<span class="accent">:${scStr}</span> <span style="font-size: 1rem; color: #4c6175; font-weight: normal; margin-left: 4px;">${ampm}</span>`;
+    updateDigit('h1', h1Val);
+    updateDigit('h0', h0Val);
+    updateDigit('m1', m1Val);
+    updateDigit('m0', m0Val);
+    updateDigit('s1', s1Val);
+    updateDigit('s0', s0Val);
   }
 
-  // Update every 100ms for smooth real-time ticks
+  // Update clock every 100ms for responsiveness
   setInterval(updateClock, 100);
   updateClock();
 </script>

@@ -39,7 +39,7 @@
       </a>
     </td>
     <td width="50%" align="center" valign="middle">
-      <img src="silksong.png" alt="Hornet — Hollow Knight: Silksong" width="220" style="border-radius: 12px; image-rendering: pixelated;" />
+      <img src="images.jpg" alt="Hollow Knight: Silksong" width="220" style="border-radius: 12px;" />
     </td>
   </tr>
 </table>
