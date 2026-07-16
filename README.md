@@ -1,18 +1,22 @@
-<!-- Hero Banner — animated 3D grid spelling ARYAN, signal wave + breathing cubes -->
+
+🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧<!-- Hero Banner — animated 3D grid spelling ARYAN, signal wave + breathing cubes -->
 <p align="center">
   <a href="https://IlIGODIlI.github.io/IlIGODIlI/title.html" target="_blank">
     <img src="title.svg" alt="Aryan Nair — Interactive Grid Banner" width="900" style="max-width: 100%; border-radius: 12px;" />
   </a>
 </p>
+🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧
+<br><br>
+<table>
+<tr>
+<td width="175"></td>
+<td> Zero Trace</td></td>
+<td width="345"></td>
+<td> RepoLens </td>
+<td width="275"></td>
+</tr>
+</table>
 
-<p align="center">
-  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=IlIGODIlI&show_icons=true&theme=tokyonight&hide_border=true&bg_color=050816&title_color=00E5FF&icon_color=00E5FF&text_color=c9d1d9"/>
-  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=IlIGODIlI&layout=compact&theme=tokyonight&hide_border=true&bg_color=050816&title_color=00E5FF"/>
-</p>
-
----
-
-## 🖥️ System Terminals
 
 <!-- ZeroTrace VAULT + Binary Room side by side -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
