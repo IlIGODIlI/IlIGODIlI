@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZeroTrace — Encryption Terminal</title>
+<meta name="description" content="An interactive cryptographic vault dashboard demonstrating AES-256 bitstream scrambles and trace shredding.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@600;700&family=Share+Tech+Mono&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: #050816;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Background glow and mesh */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 15% 25%, rgba(0, 229, 255, 0.05) 0%, transparent 40%),
+      radial-gradient(circle at 85% 75%, rgba(0, 229, 255, 0.03) 0%, transparent 45%),
+      radial-gradient(ellipse at 50% 50%, #081124 0%, #050816 70%);
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: linear-gradient(rgba(18, 24, 40, 0.12) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(18, 24, 40, 0.12) 1px, transparent 1px);
+    background-size: 24px 24px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 560px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  /* Vault panel styling */
+  .bezel {
+    background: rgba(11, 15, 25, 0.7);
+    border: 1px solid rgba(0, 229, 255, 0.08);
+    border-radius: 16px;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    padding: 32px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    position: relative;
+    text-align: left;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 12px;
+  }
+
+  .title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #00E5FF;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: #00ff88;
+    font-weight: bold;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #00ff88;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #00ff88;
+    animation: breathe 2s infinite ease-in-out;
+  }
+
+  @keyframes breathe {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 1; }
+  }
+
+  /* Padlock visualization */
+  .vault-visual {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    background: #020409;
+    border: 1px solid rgba(0, 229, 255, 0.04);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .lock-svg {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .lock-svg path {
+    transition: transform 0.3s ease-in-out;
+    transform-origin: center;
+  }
+
+  .lock-svg.unlocked .shackle {
+    transform: translateY(-8px);
+  }
+
+  .cipher-monitor {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: #8b949e;
+    flex-grow: 1;
+    overflow: hidden;
+  }
+
+  .cipher-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .cipher-lbl {
+    color: #00E5FF;
+    font-weight: bold;
+    min-width: 50px;
+  }
+
+  .cipher-val {
+    color: #ffffff;
+  }
+
+  /* Console logs */
+  .console {
+    background: #020409;
+    border: 1px solid rgba(0, 229, 255, 0.04);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: #8b949e;
+    height: 120px;
+    overflow-y: hidden;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .console::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+    pointer-events: none;
+  }
+
+  .console-line {
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .console-accent {
+    color: #00E5FF;
+    font-weight: bold;
+  }
+
+  .console-alert {
+    color: #ff5f56;
+    font-weight: bold;
+  }
+
+  /* Interactive Input block */
+  .crypto-field {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .input-msg {
+    flex-grow: 1;
+    background: #020409;
+    border: 1px solid rgba(0, 229, 255, 0.12);
+    border-radius: 6px;
+    padding: 12px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: #ffffff;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .input-msg:focus {
+    border-color: #00E5FF;
+  }
+
+  .btn {
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid #00E5FF;
+    color: #00E5FF;
+    border-radius: 6px;
+    padding: 0 16px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+
+  .btn:hover {
+    background: rgba(0, 229, 255, 0.25);
+  }
+
+  .btn:active {
+    transform: scale(0.97);
+  }
+
+  .output-box {
+    background: #020409;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    padding: 16px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.95rem;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    color: #00FF88;
+    word-break: break-all;
+  }
+
+  .progress-panel {
+    margin-top: 20px;
+  }
+
+  .progress-bar-container {
+    height: 4px;
+    background: rgba(0, 229, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .progress-bar-fill {
+    width: 100%;
+    height: 100%;
+    background: #00E5FF;
+    box-shadow: 0 0 8px #00E5FF;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .accent-line {
+    height: 1.5px;
+    background-color: #00E5FF;
+    opacity: 0.4;
+    border-radius: 0.75px;
+    margin: 20px 0;
+  }
+
+  /* Back button */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #4c6175;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .back-btn:hover {
+    color: #00E5FF;
+  }
+
+  .back-btn svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+    transition: transform 0.2s ease;
+  }
+
+  .back-btn:hover svg {
+    transform: translateX(-3px);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="bezel">
+    <div class="header">
+      <span class="title">ZeroTrace Crypto VAULT</span>
+      <div class="status">
+        <span class="status-dot"></span>
+        <span>CIPHER SECURE</span>
+      </div>
+    </div>
+
+    <!-- VAULT VISUAL ROW -->
+    <div class="vault-visual">
+      <!-- Padlock SVG -->
+      <svg class="lock-svg" id="lock-icon" viewBox="0 0 24 24" fill="none" stroke="#00E5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path class="shackle" d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" fill="rgba(0,229,255,0.08)"/>
+        <path d="M12 15v3"/>
+        <circle cx="12" cy="15" r="1"/>
+      </svg>
+      <!-- Cipher blocks -->
+      <div class="cipher-monitor">
+        <div class="cipher-row">
+          <span class="cipher-lbl">AES-256</span>
+          <span class="cipher-val" id="ciph-row-1">00 00 00 00 00 00</span>
+        </div>
+        <div class="cipher-row">
+          <span class="cipher-lbl">VECTOR</span>
+          <span class="cipher-val" id="ciph-row-2">00 00 00 00 00 00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONSOLE MONITOR -->
+    <div class="console" id="console-log">
+      <div class="console-line"><span class="console-accent">&gt; VAULT</span> ZeroTrace cryptography engine active.</div>
+      <div class="console-line"><span class="console-accent">&gt; CIPHER</span> Listening on secure input buffers...</div>
+    </div>
+
+    <!-- INPUT VAULT -->
+    <div class="crypto-field">
+      <input type="text" class="input-msg" id="message-input" placeholder="Type data to encrypt..." maxlength="30" value="CONFIDENTIAL DATA">
+      <button class="btn" id="crypt-btn">ENCRYPT</button>
+    </div>
+
+    <!-- OUTPUT BOX -->
+    <div class="output-box" id="result-box">CONFIDENTIAL DATA</div>
+
+    <!-- PROGRESS LINE -->
+    <div class="progress-panel">
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="bar-fill"></div>
+      </div>
+    </div>
+
+    <div class="accent-line"></div>
+  </div>
+
+  <a href="https://github.com/IlIGODIlI" class="back-btn">
+    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    Back to Profile
+  </a>
+</div>
+
+<script>
+  // High fidelity scrambler implementation matching props behavior
+  class TextScrambler {
+    constructor(el, scrambleCharset = "0123456789ABCDEF!@$#%&*?") {
+      this.el = el;
+      this.scrambleCharset = scrambleCharset;
+      this.resolveQueue = [];
+      this.frameId = null;
+      this.update = this.update.bind(this);
+      this.currentText = el.textContent || "";
+    }
+
+    scrambleTo(newText, scrambleTimes = 8) {
+      const oldText = this.currentText;
+      const maxLength = Math.max(oldText.length, newText.length);
+      this.resolveQueue = [];
+
+      for (let i = 0; i < maxLength; i++) {
+        const from = oldText[i] || "";
+        const to = newText[i] || "";
+
+        // Stagger delays per letter
+        const startFrame = Math.floor(Math.random() * 3);
+        const endFrame = startFrame + Math.floor(4 + Math.random() * scrambleTimes);
+        
+        this.resolveQueue.push({
+          to,
+          startFrame,
+          endFrame,
+          current: from || this.scrambleCharset[Math.floor(Math.random() * this.scrambleCharset.length)]
+        });
+      }
+
+      this.frame = 0;
+      this.currentText = newText;
+
+      if (this.frameId) cancelAnimationFrame(this.frameId);
+      this.frameId = requestAnimationFrame(this.update);
+    }
+
+    update() {
+      let output = "";
+      let complete = true;
+
+      for (let i = 0; i < this.resolveQueue.length; i++) {
+        const item = this.resolveQueue[i];
+        if (this.frame >= item.endFrame) {
+          output += item.to;
+        } else if (this.frame >= item.startFrame) {
+          complete = false;
+          if (Math.random() < 0.4) {
+            item.current = this.scrambleCharset[Math.floor(Math.random() * this.scrambleCharset.length)];
+          }
+          output += item.current;
+        } else {
+          complete = false;
+          output += item.current;
+        }
+      }
+
+      this.el.textContent = output;
+
+      if (!complete) {
+        this.frame++;
+        this.frameId = requestAnimationFrame(this.update);
+      }
+    }
+  }
+
+  // Element handles
+  const lockIcon = document.getElementById('lock-icon');
+  const ciphRow1 = document.getElementById('ciph-row-1');
+  const ciphRow2 = document.getElementById('ciph-row-2');
+  const consoleLog = document.getElementById('console-log');
+  const msgInput = document.getElementById('message-input');
+  const cryptBtn = document.getElementById('crypt-btn');
+  const resultBox = document.getElementById('result-box');
+  const barFill = document.getElementById('bar-fill');
+
+  const resultScrambler = new TextScrambler(resultBox);
+
+  // Scramble logs periodically
+  function generateRandomHex(len) {
+    const chars = '0123456789ABCDEF';
+    let res = '';
+    for(let i=0; i<len; i++) {
+      res += chars[Math.floor(Math.random()*16)] + chars[Math.floor(Math.random()*16)] + ' ';
+    }
+    return res.trim();
+  }
+
+  setInterval(() => {
+    ciphRow1.textContent = generateRandomHex(6);
+    ciphRow2.textContent = generateRandomHex(6);
+  }, 1000);
+
+  // Console helper
+  function addConsoleLine(text, type='info') {
+    const line = document.createElement('div');
+    line.className = 'console-line';
+    if (type === 'accent') {
+      line.innerHTML = `<span class="console-accent">&gt; VAULT</span> ${text}`;
+    } else if (type === 'alert') {
+      line.innerHTML = `<span class="console-alert">&gt; ALERT</span> ${text}`;
+    } else {
+      line.innerHTML = `<span class="console-accent">&gt; CRYPT</span> ${text}`;
+    }
+    consoleLog.appendChild(line);
+    if (consoleLog.children.length > 5) {
+      consoleLog.removeChild(consoleLog.firstChild);
+    }
+  }
+
+  // Automated console logs simulating work
+  const simulationLogs = [
+    { text: "Diffie-Hellman key exchange initialized.", type: "info" },
+    { text: "ZeroTrace memory buffer shredded.", type: "accent" },
+    { text: "Securing IPC channels...", type: "info" },
+    { text: "AES-256 cipher blocks padded.", type: "info" },
+    { text: "Cleared trace buffers successfully.", type: "accent" },
+    { text: "Trace alert: shredding temp descriptors.", type: "alert" }
+  ];
+
+  let simIndex = 0;
+  setInterval(() => {
+    const log = simulationLogs[simIndex];
+    addConsoleLine(log.text, log.type);
+    simIndex = (simIndex + 1) % simulationLogs.length;
+  }, 3500);
+
+  // Interactive encryption process
+  let mode = 'encrypt'; // 'encrypt' or 'decrypt'
+  let storedRaw = 'CONFIDENTIAL DATA';
+  let storedEnc = '8A F3 9C 2B 4D 8E A1 C0';
+
+  function processCrypto() {
+    const textVal = msgInput.value.trim().toUpperCase() || 'DATA';
+    
+    // Animate padlock and progress bar
+    lockIcon.classList.add('unlocked');
+    barFill.style.width = '0%';
+    
+    addConsoleLine(`Starting cryptographic operation: ${mode.toUpperCase()}...`, 'accent');
+
+    setTimeout(() => {
+      barFill.style.width = '40%';
+      addConsoleLine(`Hashing entropy vectors...`, 'info');
+    }, 200);
+
+    setTimeout(() => {
+      barFill.style.width = '70%';
+      addConsoleLine(`Bitstream padding & encryption cycle...`, 'info');
+    }, 600);
+
+    setTimeout(() => {
+      barFill.style.width = '100%';
+      lockIcon.classList.remove('unlocked');
+      
+      if (mode === 'encrypt') {
+        storedRaw = textVal;
+        // Generate a pseudo-random hex stream based on input length
+        storedEnc = generateRandomHex(Math.max(4, Math.floor(textVal.length / 2)));
+        resultScrambler.scrambleTo(storedEnc, 15);
+        resultBox.style.color = '#ff5f56'; // Alert color for encrypted hex
+        addConsoleLine(`Encrypted text: "${storedRaw}" &rarr; [${storedEnc}]`, 'accent');
+        cryptBtn.textContent = 'DECRYPT';
+        mode = 'decrypt';
+      } else {
+        resultScrambler.scrambleTo(storedRaw, 15);
+        resultBox.style.color = '#00FF88'; // Clean green color for decrypted text
+        addConsoleLine(`Decrypted data verified: "${storedRaw}"`, 'accent');
+        cryptBtn.textContent = 'ENCRYPT';
+        mode = 'encrypt';
+      }
+    }, 1200);
+  }
+
+  cryptBtn.addEventListener('click', processCrypto);
+
+  // Trigger shuffles on hover
+  resultBox.addEventListener('mouseenter', () => {
+    const current = resultBox.textContent;
+    resultScrambler.scrambleTo(current, 8);
+  });
+</script>
+</body>
+</html>

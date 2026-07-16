@@ -1,0 +1,215 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 220" width="420" height="220">
+  <defs>
+    <radialGradient id="lcd-glow" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#0d1525"/>
+      <stop offset="100%" stop-color="#0b0f19"/>
+    </radialGradient>
+    
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    .bg { fill: #0b0f19; stroke: rgba(0,229,255,0.08); stroke-width: 1; }
+
+    /* Panel glow */
+    @keyframes panel-glow {
+      0%, 100% { stroke: rgba(0,229,255,0.06); }
+      50% { stroke: rgba(0,229,255,0.12); }
+    }
+    .panel-inner {
+      fill: none;
+      stroke: rgba(0,229,255,0.04);
+      stroke-width: 0.5;
+      animation: panel-glow 4s infinite ease-in-out;
+    }
+
+    /* Status dot */
+    @keyframes dot-pulse {
+      0%, 100% { fill: rgba(0,229,255,0.3); }
+      50% { fill: rgba(0,229,255,0.8); }
+    }
+    .status-dot { animation: dot-pulse 2s infinite ease-in-out; filter: url(#glow); }
+
+    /* Padlock shackle animation */
+    @keyframes lock-shackle {
+      0%, 20% { transform: translateY(0); }
+      50%, 70% { transform: translateY(-7px); }
+      90%, 100% { transform: translateY(0); }
+    }
+    .shackle {
+      animation: lock-shackle 6s infinite ease-in-out;
+    }
+
+    /* Padlock body pulse */
+    @keyframes lock-body-glow {
+      0%, 20%, 90%, 100% { fill: rgba(0, 229, 255, 0.15); filter: url(#glow); }
+      50%, 70% { fill: rgba(255, 95, 86, 0.15); stroke: #ff5f56; filter: none; }
+    }
+    .lock-body {
+      animation: lock-body-glow 6s infinite ease-in-out;
+    }
+    .lock-body-stroke {
+      animation: lock-body-glow 6s infinite ease-in-out;
+    }
+
+    /* Progress bar animation */
+    @keyframes progress-fill {
+      0% { width: 0; }
+      40% { width: 140px; }
+      75% { width: 320px; }
+      85%, 100% { width: 320px; }
+    }
+    .progress-bar {
+      animation: progress-fill 6s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Terminal logs fade-in sequence */
+    @keyframes log-1 { 0%, 5% { opacity: 0; } 10%, 100% { opacity: 0.95; } }
+    @keyframes log-2 { 0%, 25% { opacity: 0; } 30%, 100% { opacity: 0.95; } }
+    @keyframes log-3 { 0%, 50% { opacity: 0; } 55%, 100% { opacity: 0.95; } }
+    
+    .log-l1 { animation: log-1 6s infinite; }
+    .log-l2 { animation: log-2 6s infinite; }
+    .log-l3 { animation: log-3 6s infinite; }
+
+    /* Cipher scrambling text */
+    @keyframes cipher-scram-0 { 0%, 100% { content: "5A E9 4F A2 C3"; } 25% { content: "E9 8B 12 D4 F5"; } 50% { content: "1A C3 F0 A9 B2"; } 75% { content: "D4 E9 C3 8B 12"; } }
+    @keyframes cipher-scram-1 { 0%, 100% { content: "3B D8 1E F4 A9"; } 25% { content: "4C A2 B3 C4 1D"; } 50% { content: "9E F4 A9 D8 C3"; } 75% { content: "8B C3 1D E9 4F"; } }
+    .ciph-0::after { content: "5A E9 4F A2 C3"; animation: cipher-scram-0 4s infinite step-end; }
+    .ciph-1::after { content: "3B D8 1E F4 A9"; animation: cipher-scram-1 4s infinite step-end; }
+
+    /* Decrypted status label cycle */
+    @keyframes status-label-cycle {
+      0%, 10% { content: "INITIALIZING AES-256 MODULE..."; fill: #00E5FF; }
+      15%, 45% { content: "ENCRYPTING FILESYSTEM..."; fill: #00E5FF; }
+      50%, 75% { content: "VAULT KEY LOCKED [SECURE]"; fill: #ff5f56; }
+      80%, 100% { content: "MEM SHREDDED. SYSTEM LOCKED."; fill: #00FF88; }
+    }
+    .status-text::after {
+      content: "SYSTEM LOCKED";
+      animation: status-label-cycle 6s infinite step-end;
+    }
+
+    /* Typography styling */
+    .title-text {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 10px;
+      fill: #00E5FF;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .term-text {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 9px;
+      fill: #8b949e;
+      dominant-baseline: central;
+    }
+
+    .term-accent {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 9px;
+      fill: #00E5FF;
+      font-weight: bold;
+      dominant-baseline: central;
+    }
+
+    .term-alert {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 9px;
+      fill: #ff5f56;
+      font-weight: bold;
+      dominant-baseline: central;
+    }
+
+    .status-lbl-element {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 8px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+  </style>
+
+  <rect class="bg" width="420" height="220" rx="12"/>
+  <rect fill="url(#lcd-glow)" width="420" height="220" rx="12" opacity="0.6"/>
+
+  <!-- Inner panel border -->
+  <rect class="panel-inner" x="15" y="15" width="390" height="190" rx="8"/>
+
+  <!-- Status dot -->
+  <circle class="status-dot" cx="395" cy="24" r="3"/>
+
+  <!-- Corner accents -->
+  <rect x="22" y="22" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
+  <rect x="392" y="22" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
+  <rect x="22" y="192" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
+  <rect x="392" y="192" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
+
+  <!-- Header -->
+  <text class="title-text" x="24" y="35">ZEROTRACE // CRYPTO VAULT</text>
+
+  <!-- ================= LEFT COLUMN: PADLOCK GRAPHIC ================= -->
+  <g transform="translate(0, 0)">
+    <!-- Shackle (Animated slide) -->
+    <path class="shackle" d="M 48,84 L 48,69 C 48,55 68,55 68,69 L 68,84" fill="none" stroke="#00E5FF" stroke-width="4.5" stroke-linecap="round"/>
+    
+    <!-- Lock Body -->
+    <rect class="lock-body" x="34" y="80" width="48" height="40" rx="6" fill="rgba(0, 229, 255, 0.15)"/>
+    <rect class="lock-body-stroke" x="34" y="80" width="48" height="40" rx="6" fill="none" stroke="#00E5FF" stroke-width="2"/>
+    
+    <!-- Keyhole -->
+    <circle cx="58" cy="98" r="3.5" fill="#0b0f19" stroke="#00E5FF" stroke-width="1.5"/>
+    <path d="M 56,100 L 60,100 L 62,110 L 54,110 Z" fill="#00E5FF"/>
+  </g>
+
+  <!-- ================= RIGHT COLUMN: VAULT CONSOLE ================= -->
+  <g transform="translate(105, 52)">
+    <!-- Log Line 1 -->
+    <g class="log-l1">
+      <text class="term-accent" x="0" y="12">&gt; INIT</text>
+      <text class="term-text" x="42" y="12">AES-256-GCM cipher module</text>
+    </g>
+
+    <!-- Log Line 2 -->
+    <g class="log-l2" style="opacity:0">
+      <text class="term-accent" x="0" y="30">&gt; KEY</text>
+      <text class="term-text" x="42" y="30">SHA-512 secure hash generated</text>
+    </g>
+
+    <!-- Log Line 3 -->
+    <g class="log-l3" style="opacity:0">
+      <text class="term-accent" x="0" y="48">&gt; SHRED</text>
+      <text class="term-text" x="42" y="48">ZeroTrace metadata buffer purged</text>
+    </g>
+
+    <!-- Scrambling hex ciphers -->
+    <g transform="translate(0, 68)">
+      <text class="term-accent" x="0" y="12">OUT:</text>
+      <!-- Fast switching hex text -->
+      <text class="term-text ciph-0" x="36" y="12"></text>
+      <text class="term-text ciph-1" x="126" y="12"></text>
+    </g>
+  </g>
+
+  <!-- ================= BOTTOM PANEL: PROGRESS & STATUS ================= -->
+  <g transform="translate(0, 0)">
+    <!-- Progress Bar frame -->
+    <rect x="50" y="152" width="320" height="5" rx="2.5" fill="rgba(0, 229, 255, 0.04)" stroke="rgba(0, 229, 255, 0.08)" stroke-width="1"/>
+    
+    <!-- Progress Bar fill -->
+    <rect class="progress-bar" x="50" y="152" width="0" height="5" rx="2.5" fill="#00E5FF" filter="url(#glow)"/>
+    
+    <!-- Status Text line -->
+    <text class="status-lbl-element term-accent" x="50" y="180">STATUS: </text>
+    <text class="status-lbl-element status-text" x="98" y="180" fill="#00E5FF"></text>
+  </g>
+
+  <!-- Bottom accent line -->
+  <rect class="accent-line" x="48" y="195" width="324" height="1.5" rx="0.75" fill="#00E5FF" opacity="0.4"/>
+</svg>

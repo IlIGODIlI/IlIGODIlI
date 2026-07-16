@@ -14,12 +14,12 @@
 
 ## 🖥️ System Terminals
 
-<!-- Shuffle Text Clock + Binary Room side by side -->
+<!-- ZeroTrace VAULT + Binary Room side by side -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td width="50%" align="center" valign="top">
-      <a href="https://IlIGODIlI.github.io/IlIGODIlI/binary-clock.html" target="_blank">
-        <img src="binary-clock.svg" alt="Shuffle Text Digital Clock" width="420" style="max-width: 100%; border-radius: 12px;" />
+      <a href="https://IlIGODIlI.github.io/IlIGODIlI/encryption.html" target="_blank">
+        <img src="encryption.svg" alt="ZeroTrace VAULT — AES-256 secure encryption widget" width="420" style="max-width: 100%; border-radius: 12px;" />
       </a>
     </td>
     <td width="50%" align="center" valign="top">
@@ -43,7 +43,7 @@
       </a>
     </td>
     <td width="50%" align="center" valign="middle">
-      <img src="images.jpg" alt="Hollow Knight: Silksong" width="380" style="border-radius: 12px;" />
+      <img src="images.jpg" alt="Hollow Knight: Silksong" width="100%" style="border-radius: 12px; display: block;" />
     </td>
   </tr>
 </table>
