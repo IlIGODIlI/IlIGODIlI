@@ -1,238 +1,186 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 220" width="420" height="220">
   <defs>
-    <filter id="dot-glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="2.5" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <!-- Radial vignette gradient -->
-    <radialGradient id="vignette" cx="50%" cy="45%" r="65%">
-      <stop offset="0%" stop-color="#0d1220"/>
+    <radialGradient id="lcd-glow" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#0d1525"/>
       <stop offset="100%" stop-color="#0b0f19"/>
     </radialGradient>
+    <filter id="text-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>
   <style>
-    .bg {
-      fill: #0b0f19;
-      stroke: rgba(0, 229, 255, 0.08);
-      stroke-width: 1;
-    }
+    .bg { fill: #0b0f19; stroke: rgba(0,229,255,0.08); stroke-width: 1; }
 
-    .panel-title {
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 11px;
+    .time-digit {
+      font-family: 'Consolas', 'Courier New', 'Lucida Console', monospace;
+      font-size: 72px;
       fill: #00E5FF;
+      font-weight: 700;
       letter-spacing: 2px;
+      dominant-baseline: central;
     }
 
-    .col-label {
-      font-family: 'Consolas', 'Courier New', monospace;
-      font-size: 9px;
-      fill: #1a2a3a;
-      letter-spacing: 1px;
-      text-anchor: middle;
+    .time-digit-dim {
+      font-family: 'Consolas', 'Courier New', 'Lucida Console', monospace;
+      font-size: 72px;
+      fill: #0a1828;
+      font-weight: 700;
+      letter-spacing: 2px;
+      dominant-baseline: central;
     }
 
-    .dot {
-      fill: #161b22;
-      rx: 3;
-    }
-
-    /* Binary pulse animations at different frequencies */
-    @keyframes pulse-1s {
-      0%, 49% { fill: #161b22; }
-      50%, 100% { fill: #00E5FF; }
-    }
-    @keyframes pulse-2s {
-      0%, 49% { fill: #161b22; }
-      50%, 100% { fill: #00E5FF; }
-    }
-    @keyframes pulse-4s {
-      0%, 49% { fill: #161b22; }
-      50%, 100% { fill: #00E5FF; }
-    }
-    @keyframes pulse-8s {
-      0%, 49% { fill: #161b22; }
-      50%, 100% { fill: #00E5FF; }
-    }
-    @keyframes pulse-10s {
-      0%, 49% { fill: #161b22; }
-      50%, 100% { fill: #00E5FF; }
-    }
-    @keyframes pulse-20s {
-      0%, 49% { fill: #161b22; }
-      50%, 100% { fill: #00E5FF; }
-    }
-    @keyframes pulse-40s {
-      0%, 49% { fill: #161b22; }
-      50%, 100% { fill: #00E5FF; }
-    }
-    @keyframes pulse-60s {
-      0%, 49% { fill: #161b22; }
-      50%, 100% { fill: #00E5FF; }
-    }
-    @keyframes pulse-120s {
-      0%, 49% { fill: #161b22; }
-      50%, 100% { fill: #00E5FF; }
-    }
-    @keyframes pulse-240s {
-      0%, 49% { fill: #161b22; }
-      50%, 100% { fill: #00E5FF; }
-    }
-    @keyframes pulse-480s {
-      0%, 49% { fill: #161b22; }
-      50%, 100% { fill: #00E5FF; }
-    }
-
-    /* Seconds unit (1s, 2s, 4s, 8s) */
-    .s-u0 { animation: pulse-1s 1s infinite steps(1); }
-    .s-u1 { animation: pulse-2s 2s infinite steps(1); }
-    .s-u2 { animation: pulse-4s 4s infinite steps(1); }
-    .s-u3 { animation: pulse-8s 8s infinite steps(1); }
-
-    /* Seconds tens (10s, 20s, 40s) */
-    .s-t0 { animation: pulse-10s 10s infinite steps(1); }
-    .s-t1 { animation: pulse-20s 20s infinite steps(1); }
-    .s-t2 { animation: pulse-40s 40s infinite steps(1); }
-
-    /* Minutes unit (60s, 120s, 240s, 480s) */
-    .m-u0 { animation: pulse-60s 60s infinite steps(1); }
-    .m-u1 { animation: pulse-120s 120s infinite steps(1); }
-    .m-u2 { animation: pulse-240s 240s infinite steps(1); }
-    .m-u3 { animation: pulse-480s 480s infinite steps(1); }
-
-    /* Sweep glow traveling across columns */
-    @keyframes sweep {
-      0%, 100% { opacity: 0; }
-      8%, 12% { opacity: 0.6; }
-      20% { opacity: 0; }
-    }
-
-    .sweep-1 { animation: sweep 10s infinite ease-in-out; animation-delay: 0s; }
-    .sweep-2 { animation: sweep 10s infinite ease-in-out; animation-delay: 0.8s; }
-    .sweep-3 { animation: sweep 10s infinite ease-in-out; animation-delay: 1.6s; }
-    .sweep-4 { animation: sweep 10s infinite ease-in-out; animation-delay: 2.4s; }
-    .sweep-5 { animation: sweep 10s infinite ease-in-out; animation-delay: 3.2s; }
-    .sweep-6 { animation: sweep 10s infinite ease-in-out; animation-delay: 4.0s; }
-
-    /* Orbital ring animation */
-    @keyframes orbit-spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .orbit {
-      fill: none;
-      stroke: rgba(0, 229, 255, 0.06);
-      stroke-width: 0.8;
-      stroke-dasharray: 4 8;
-    }
-
-    .orbit-dot {
+    .time-sec {
+      font-family: 'Consolas', 'Courier New', 'Lucida Console', monospace;
+      font-size: 36px;
       fill: #00E5FF;
-      animation: orbit-spin 8s linear infinite;
-      transform-origin: 210px 35px;
+      font-weight: 700;
+      dominant-baseline: central;
     }
 
     /* Colon blink */
     @keyframes colon-blink {
-      0%, 49% { fill: #00E5FF; opacity: 0.8; }
-      50%, 100% { fill: #00E5FF; opacity: 0.15; }
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0.15; }
     }
-    .colon-dot {
-      animation: colon-blink 1s infinite steps(1);
+    .colon { animation: colon-blink 1s infinite steps(1); }
+
+    /* Seconds ONES digit — cycles 0→9 over 10s */
+    @keyframes s0 { 0%,10%{opacity:1} 10.1%,100%{opacity:0} }
+    @keyframes s1 { 0%,10%{opacity:0} 10.1%,20%{opacity:1} 20.1%,100%{opacity:0} }
+    @keyframes s2 { 0%,20%{opacity:0} 20.1%,30%{opacity:1} 30.1%,100%{opacity:0} }
+    @keyframes s3 { 0%,30%{opacity:0} 30.1%,40%{opacity:1} 40.1%,100%{opacity:0} }
+    @keyframes s4 { 0%,40%{opacity:0} 40.1%,50%{opacity:1} 50.1%,100%{opacity:0} }
+    @keyframes s5 { 0%,50%{opacity:0} 50.1%,60%{opacity:1} 60.1%,100%{opacity:0} }
+    @keyframes s6 { 0%,60%{opacity:0} 60.1%,70%{opacity:1} 70.1%,100%{opacity:0} }
+    @keyframes s7 { 0%,70%{opacity:0} 70.1%,80%{opacity:1} 80.1%,100%{opacity:0} }
+    @keyframes s8 { 0%,80%{opacity:0} 80.1%,90%{opacity:1} 90.1%,100%{opacity:0} }
+    @keyframes s9 { 0%,90%{opacity:0} 90.1%,100%{opacity:1} }
+    .s0{animation:s0 10s infinite} .s1{animation:s1 10s infinite}
+    .s2{animation:s2 10s infinite} .s3{animation:s3 10s infinite}
+    .s4{animation:s4 10s infinite} .s5{animation:s5 10s infinite}
+    .s6{animation:s6 10s infinite} .s7{animation:s7 10s infinite}
+    .s8{animation:s8 10s infinite} .s9{animation:s9 10s infinite}
+
+    /* Seconds TENS digit — cycles 0→5 over 60s */
+    @keyframes t0 { 0%,16.66%{opacity:1} 16.67%,100%{opacity:0} }
+    @keyframes t1 { 0%,16.66%{opacity:0} 16.67%,33.33%{opacity:1} 33.34%,100%{opacity:0} }
+    @keyframes t2 { 0%,33.33%{opacity:0} 33.34%,50%{opacity:1} 50.01%,100%{opacity:0} }
+    @keyframes t3 { 0%,50%{opacity:0} 50.01%,66.66%{opacity:1} 66.67%,100%{opacity:0} }
+    @keyframes t4 { 0%,66.66%{opacity:0} 66.67%,83.33%{opacity:1} 83.34%,100%{opacity:0} }
+    @keyframes t5 { 0%,83.33%{opacity:0} 83.34%,100%{opacity:1} }
+    .t0{animation:t0 60s infinite} .t1{animation:t1 60s infinite}
+    .t2{animation:t2 60s infinite} .t3{animation:t3 60s infinite}
+    .t4{animation:t4 60s infinite} .t5{animation:t5 60s infinite}
+
+    .label {
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 10px;
+      fill: #1a2a3a;
+      letter-spacing: 6px;
+      text-transform: uppercase;
     }
 
-    /* Ambient status dot */
-    @keyframes status-breathe {
-      0%, 100% { fill: rgba(0, 229, 255, 0.2); }
-      50% { fill: rgba(0, 229, 255, 0.7); }
+    .date-text {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 12px;
+      fill: #2a3a4a;
     }
-    .status-dot { animation: status-breathe 2s infinite ease-in-out; }
+
+    /* Ambient scanning line */
+    @keyframes scanline {
+      0% { transform: translateY(-20px); opacity: 0; }
+      10%, 90% { opacity: 0.06; }
+      100% { transform: translateY(220px); opacity: 0; }
+    }
+    .scanline {
+      animation: scanline 6s infinite linear;
+    }
+
+    /* Status dot */
+    @keyframes dot-pulse {
+      0%, 100% { fill: rgba(0,229,255,0.2); }
+      50% { fill: rgba(0,229,255,0.7); }
+    }
+    .status { animation: dot-pulse 2s infinite ease-in-out; }
+
+    /* Subtle panel inner border glow */
+    @keyframes panel-glow {
+      0%, 100% { stroke: rgba(0,229,255,0.06); }
+      50% { stroke: rgba(0,229,255,0.12); }
+    }
+    .panel-inner {
+      fill: none;
+      stroke: rgba(0,229,255,0.04);
+      stroke-width: 0.5;
+      animation: panel-glow 4s infinite ease-in-out;
+    }
   </style>
 
-  <rect class="bg" width="420" height="220" rx="12" />
+  <rect class="bg" width="420" height="220" rx="12"/>
+  <rect fill="url(#lcd-glow)" width="420" height="220" rx="12" opacity="0.5"/>
 
-  <!-- Subtle inner glow -->
-  <rect fill="url(#vignette)" width="420" height="220" rx="12" opacity="0.3"/>
+  <!-- Inner panel border -->
+  <rect class="panel-inner" x="15" y="15" width="390" height="190" rx="8"/>
 
-  <!-- Header -->
-  <text class="panel-title" x="30" y="32">BINARY ATOMIC CLOCK</text>
-  <circle class="status-dot" cx="390" cy="28" r="3"/>
+  <!-- Scanning line -->
+  <rect class="scanline" x="20" y="0" width="380" height="2" rx="1" fill="#00E5FF"/>
 
-  <!-- Orbital decorative rings around header area -->
-  <ellipse class="orbit" cx="210" cy="35" rx="185" ry="12"/>
-  <ellipse class="orbit" cx="210" cy="35" rx="195" ry="8" style="stroke-dasharray: 2 12;"/>
+  <!-- Status dot -->
+  <circle class="status" cx="395" cy="28" r="3"/>
 
-  <!-- Column sweep glow bars -->
-  <rect class="sweep-1" x="95" y="55" width="30" height="120" rx="4" fill="#00E5FF" opacity="0"/>
-  <rect class="sweep-2" x="130" y="55" width="30" height="120" rx="4" fill="#00E5FF" opacity="0"/>
-  <rect class="sweep-3" x="175" y="55" width="30" height="120" rx="4" fill="#00E5FF" opacity="0"/>
-  <rect class="sweep-4" x="210" y="55" width="30" height="120" rx="4" fill="#00E5FF" opacity="0"/>
-  <rect class="sweep-5" x="255" y="55" width="30" height="120" rx="4" fill="#00E5FF" opacity="0"/>
-  <rect class="sweep-6" x="290" y="55" width="30" height="120" rx="4" fill="#00E5FF" opacity="0"/>
+  <!-- Ghost digits (LCD "off" segments for depth) -->
+  <text class="time-digit-dim" x="48" y="108">88:88</text>
 
-  <!-- Clock Dot Matrix Grid -->
-  <g transform="translate(100, 60)">
-    <!-- Column 1: Hours tens (H1) — 2 dots -->
-    <rect class="dot" x="0" y="50" width="22" height="22" />
-    <rect class="dot" x="0" y="80" width="22" height="22" />
+  <!-- Hours and Minutes — static display -->
+  <text class="time-digit" x="48" y="108" filter="url(#text-glow)">06</text>
 
-    <!-- Colon separator -->
+  <!-- Colon 1 -->
+  <text class="time-digit colon" x="148" y="108" filter="url(#text-glow)">:</text>
 
-    <!-- Column 2: Hours unit (H2) — 4 dots -->
-    <rect class="dot" x="35" y="0" width="22" height="22" />
-    <rect class="dot" x="35" y="30" width="22" height="22" />
-    <rect class="dot" x="35" y="60" width="22" height="22" />
-    <rect class="dot" x="35" y="90" width="22" height="22" />
+  <!-- Minutes -->
+  <text class="time-digit" x="175" y="108" filter="url(#text-glow)">13</text>
 
-    <!-- Colon between H and M -->
-    <circle class="colon-dot" cx="72" cy="40" r="3"/>
-    <circle class="colon-dot" cx="72" cy="75" r="3"/>
+  <!-- Seconds separator -->
+  <text class="time-sec colon" x="283" y="104" style="font-size:32px;" filter="url(#text-glow)">:</text>
 
-    <!-- Column 3: Minutes tens (M1) — 3 dots -->
-    <rect class="dot m-u3" x="80" y="20" width="22" height="22" />
-    <rect class="dot m-u2" x="80" y="50" width="22" height="22" />
-    <rect class="dot m-u1" x="80" y="80" width="22" height="22" />
-
-    <!-- Column 4: Minutes unit (M2) — 4 dots -->
-    <rect class="dot m-u0" x="115" y="0" width="22" height="22" />
-    <rect class="dot" x="115" y="30" width="22" height="22" />
-    <rect class="dot" x="115" y="60" width="22" height="22" />
-    <rect class="dot" x="115" y="90" width="22" height="22" />
-
-    <!-- Colon between M and S -->
-    <circle class="colon-dot" cx="152" cy="40" r="3" style="animation-delay: 0.1s;"/>
-    <circle class="colon-dot" cx="152" cy="75" r="3" style="animation-delay: 0.1s;"/>
-
-    <!-- Column 5: Seconds tens (S1) — 3 dots -->
-    <rect class="dot s-t2" x="160" y="20" width="22" height="22" />
-    <rect class="dot s-t1" x="160" y="50" width="22" height="22" />
-    <rect class="dot s-t0" x="160" y="80" width="22" height="22" />
-
-    <!-- Column 6: Seconds unit (S2) — 4 dots -->
-    <rect class="dot s-u3" x="195" y="0" width="22" height="22" />
-    <rect class="dot s-u2" x="195" y="30" width="22" height="22" />
-    <rect class="dot s-u1" x="195" y="60" width="22" height="22" />
-    <rect class="dot s-u0" x="195" y="90" width="22" height="22" />
+  <!-- Seconds tens digit — animated 0→5 over 60s -->
+  <g filter="url(#text-glow)">
+    <text class="time-sec t0" x="300" y="104">0</text>
+    <text class="time-sec t1" x="300" y="104" style="opacity:0">1</text>
+    <text class="time-sec t2" x="300" y="104" style="opacity:0">2</text>
+    <text class="time-sec t3" x="300" y="104" style="opacity:0">3</text>
+    <text class="time-sec t4" x="300" y="104" style="opacity:0">4</text>
+    <text class="time-sec t5" x="300" y="104" style="opacity:0">5</text>
   </g>
 
-  <!-- Column labels -->
-  <g transform="translate(100, 180)">
-    <text class="col-label" x="11" y="0">H</text>
-    <text class="col-label" x="46" y="0">H</text>
-    <text class="col-label" x="91" y="0">M</text>
-    <text class="col-label" x="126" y="0">M</text>
-    <text class="col-label" x="171" y="0">S</text>
-    <text class="col-label" x="206" y="0">S</text>
+  <!-- Seconds ones digit — animated 0→9 over 10s -->
+  <g filter="url(#text-glow)">
+    <text class="time-sec s0" x="322" y="104">0</text>
+    <text class="time-sec s1" x="322" y="104" style="opacity:0">1</text>
+    <text class="time-sec s2" x="322" y="104" style="opacity:0">2</text>
+    <text class="time-sec s3" x="322" y="104" style="opacity:0">3</text>
+    <text class="time-sec s4" x="322" y="104" style="opacity:0">4</text>
+    <text class="time-sec s5" x="322" y="104" style="opacity:0">5</text>
+    <text class="time-sec s6" x="322" y="104" style="opacity:0">6</text>
+    <text class="time-sec s7" x="322" y="104" style="opacity:0">7</text>
+    <text class="time-sec s8" x="322" y="104" style="opacity:0">8</text>
+    <text class="time-sec s9" x="322" y="104" style="opacity:0">9</text>
   </g>
 
-  <!-- Bottom row labels -->
-  <g transform="translate(100, 195)">
-    <text class="col-label" x="11" y="0" style="font-size:7px; fill:#0d1a2a;">10</text>
-    <text class="col-label" x="46" y="0" style="font-size:7px; fill:#0d1a2a;">1</text>
-    <text class="col-label" x="91" y="0" style="font-size:7px; fill:#0d1a2a;">10</text>
-    <text class="col-label" x="126" y="0" style="font-size:7px; fill:#0d1a2a;">1</text>
-    <text class="col-label" x="171" y="0" style="font-size:7px; fill:#0d1a2a;">10</text>
-    <text class="col-label" x="206" y="0" style="font-size:7px; fill:#0d1a2a;">1</text>
-  </g>
+  <!-- AM/PM indicator -->
+  <text x="352" y="97" style="font-family:'Consolas',monospace;font-size:14px;fill:#00E5FF;opacity:0.5;">AM</text>
+
+  <!-- Bottom label -->
+  <text class="label" x="90" y="168">indian standard time</text>
+
+  <!-- Subtle decorative lines -->
+  <line x1="48" y1="145" x2="362" y2="145" stroke="rgba(0,229,255,0.04)" stroke-width="0.5"/>
+  <line x1="48" y1="60" x2="362" y2="60" stroke="rgba(0,229,255,0.04)" stroke-width="0.5"/>
+
+  <!-- Corner accents -->
+  <rect x="22" y="22" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
+  <rect x="392" y="22" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
+  <rect x="22" y="192" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
+  <rect x="392" y="192" width="6" height="6" rx="1" fill="rgba(0,229,255,0.04)" stroke="rgba(0,229,255,0.08)" stroke-width="0.5"/>
 </svg>
