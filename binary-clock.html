@@ -6,7 +6,7 @@
 <title>Shuffle Text Digital Clock — IST</title>
 <meta name="description" content="An interactive digital clock utilizing a text-shuffling scramble effect to display Indian Standard Time.">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@600;700&family=Press+Start+2P&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Press+Start+2P&display=swap');
 
   * {
     margin: 0;
@@ -15,227 +15,101 @@
   }
 
   body {
-    background-color: #040712;
-    color: #e2e8f0;
+    background-color: #050505;
+    color: #ffffff;
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow-x: hidden;
-    position: relative;
-  }
-
-  /* Futuristic background mesh & glow */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: 
-      radial-gradient(circle at 15% 25%, rgba(0, 229, 255, 0.05) 0%, transparent 40%),
-      radial-gradient(circle at 85% 75%, rgba(0, 229, 255, 0.03) 0%, transparent 45%),
-      radial-gradient(ellipse at 50% 50%, #081124 0%, #040712 70%);
-    z-index: 0;
-  }
-
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: linear-gradient(rgba(18, 24, 40, 0.12) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(18, 24, 40, 0.12) 1px, transparent 1px);
-    background-size: 24px 24px;
-    z-index: 1;
-    pointer-events: none;
   }
 
   .container {
-    position: relative;
-    z-index: 10;
     width: 100%;
-    max-width: 600px;
+    max-width: 500px;
     padding: 24px;
     text-align: center;
   }
 
-  /* Main Bezel Chassis */
+  /* Minimalist Box Bezel */
   .bezel {
-    background: rgba(10, 16, 30, 0.7);
-    border: 1px solid rgba(0, 229, 255, 0.12);
-    border-radius: 16px;
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    padding: 40px;
-    box-shadow: 
-      0 32px 72px rgba(0, 0, 0, 0.65),
-      0 0 50px rgba(0, 229, 255, 0.03),
-      inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .bezel:hover {
-    border-color: rgba(0, 229, 255, 0.25);
-    box-shadow: 
-      0 32px 72px rgba(0, 0, 0, 0.7),
-      0 0 50px rgba(0, 229, 255, 0.06),
-      inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  }
-
-  .bezel::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.35), transparent);
-  }
-
-  /* Header Section */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 28px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding-bottom: 14px;
-  }
-
-  .title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #00E5FF;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-  }
-
-  .status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 0.6rem;
-    color: #00ff88;
-    font-weight: bold;
-    letter-spacing: 1px;
-  }
-
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    background-color: #00ff88;
-    border-radius: 50%;
-    box-shadow: 0 0 8px #00ff88;
-    animation: breathe 2s infinite ease-in-out;
-  }
-
-  @keyframes breathe {
-    0%, 100% { opacity: 0.45; }
-    50% { opacity: 1; }
-  }
-
-  /* Terminal Display Panel */
-  .display-panel {
-    background: #020409;
-    border: 1px solid rgba(0, 229, 255, 0.05);
+    background: #0c0c0c;
+    border: 1px solid #1a1a1a;
     border-radius: 12px;
-    padding: 36px 20px;
-    margin-bottom: 28px;
+    padding: 48px 32px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
     position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.9);
   }
 
-  /* Monospace Scanline overlay inside screen */
-  .display-panel::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.18) 2px, rgba(0,0,0,0.18) 4px);
-    pointer-events: none;
-    border-radius: 12px;
-    z-index: 10;
-  }
-
-  /* Time text formatting using cubic font */
+  /* Time display using Press Start 2P font, pure white, no glow */
   .time-display {
     font-family: 'Press Start 2P', monospace;
-    font-size: 1.6rem;
+    font-size: 1.55rem;
     font-weight: bold;
-    color: #00E5FF;
-    text-shadow: 0 0 16px rgba(0, 229, 255, 0.4), 0 0 32px rgba(0, 229, 255, 0.15);
+    color: #ffffff;
     line-height: 1.2;
     letter-spacing: 1px;
     user-select: none;
-  }
-
-  /* Secondary Information grid */
-  .sub-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 12px;
-  }
-
-  .info-box {
-    background: #020409;
-    border: 1px solid rgba(255, 255, 255, 0.02);
-    border-radius: 8px;
-    padding: 16px;
-    text-align: left;
-    position: relative;
     cursor: pointer;
+    margin-bottom: 24px;
+    transition: opacity 0.2s ease;
   }
 
-  .info-box::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);
-    pointer-events: none;
-    border-radius: 8px;
+  .time-display:hover {
+    opacity: 0.85;
+  }
+
+  /* Divider line */
+  .divider {
+    height: 1px;
+    background-color: #1a1a1a;
+    margin: 20px 0;
+  }
+
+  /* Secondary Information */
+  .sub-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.55rem;
+    color: #555555;
+  }
+
+  .info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .info-group:hover {
+    color: #888888;
+  }
+
+  .info-group:last-child {
+    text-align: right;
   }
 
   .label {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 0.5rem;
-    color: #4c6175;
-    letter-spacing: 1px;
+    color: #333333;
+    font-size: 0.45rem;
     text-transform: uppercase;
-    margin-bottom: 8px;
-    display: block;
+    letter-spacing: 1px;
   }
 
   .info-val {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 0.58rem;
+    color: #888888;
+  }
+
+  .info-val.white {
     color: #ffffff;
-    opacity: 0.95;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
-    line-height: 1.5;
   }
 
-  .info-val.cyan {
-    color: #00E5FF;
-    text-shadow: 0 0 10px rgba(0, 229, 255, 0.35);
-  }
-
-  .footer-lbl {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 0.55rem;
-    color: #00E5FF;
-    opacity: 0.25;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-top: 28px;
-    user-select: none;
-  }
-
-  /* Back to profile button */
+  /* Back to profile link */
   .back-btn {
     display: inline-flex;
     align-items: center;
@@ -244,13 +118,13 @@
     font-family: 'Inter', sans-serif;
     font-size: 0.75rem;
     font-weight: 500;
-    color: #4c6175;
+    color: #555555;
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   .back-btn:hover {
-    color: #00E5FF;
+    color: #ffffff;
   }
 
   .back-btn svg {
@@ -268,33 +142,22 @@
 <body>
 <div class="container">
   <div class="bezel">
-    
-    <div class="header">
-      <span class="title">Shuffle System Clock</span>
-      <div class="status">
-        <span class="status-dot"></span>
-        <span>IST STABLE</span>
-      </div>
-    </div>
+    <!-- TIME PANEL -->
+    <div class="time-display" id="time-val" title="Click or hover to shuffle time">00:00:00 AM</div>
 
-    <!-- MAIN TIME PANEL -->
-    <div class="display-panel" id="clock-panel" title="Click or hover to shuffle time">
-      <div class="time-display" id="time-val">00:00:00 AM</div>
-    </div>
+    <div class="divider"></div>
 
-    <!-- SUB INFO GRID -->
+    <!-- SUB INFO -->
     <div class="sub-info">
-      <div class="info-box" id="date-panel" title="Hover to shuffle date">
-        <span class="label">System Date</span>
+      <div class="info-group" id="date-panel" title="Hover to shuffle date">
+        <span class="label">DATE</span>
         <div class="info-val" id="date-val">LOADING...</div>
       </div>
-      <div class="info-box" id="epoch-panel" title="Hover to shuffle timestamp">
-        <span class="label">UNIX Epoch</span>
-        <div class="info-val cyan" id="epoch-val">0000000000</div>
+      <div class="info-group" id="epoch-panel" title="Hover to shuffle epoch">
+        <span class="label">EPOCH</span>
+        <div class="info-val white" id="epoch-val">0000000000</div>
       </div>
     </div>
-
-    <div class="footer-lbl">Indian Standard Time</div>
   </div>
 
   <a href="https://github.com/IlIGODIlI" class="back-btn">
@@ -304,7 +167,7 @@
 </div>
 
 <script>
-  // High fidelity scrambler implementation matching props behavior
+  // High fidelity scrambler implementation
   class TextScrambler {
     constructor(el, scrambleCharset = "0123456789%@$#&?") {
       this.el = el;
@@ -315,8 +178,7 @@
       this.currentText = el.textContent || "";
     }
 
-    // Triggers a transition. If partial=true, it only shuffles characters that actually changed.
-    scrambleTo(newText, partial = true, durationFrames = 15) {
+    scrambleTo(newText, partial = true) {
       const oldText = this.currentText;
       const maxLength = Math.max(oldText.length, newText.length);
       this.resolveQueue = [];
@@ -325,7 +187,6 @@
         const from = oldText[i] || "";
         const to = newText[i] || "";
 
-        // If characters are identical and partial-mode is active, resolve instantly with no shuffle
         if (partial && from === to) {
           this.resolveQueue.push({
             to,
@@ -334,7 +195,6 @@
             current: to
           });
         } else {
-          // Stagger delays per letter
           const startFrame = Math.floor(Math.random() * 4);
           const endFrame = startFrame + Math.floor(6 + Math.random() * 10);
           this.resolveQueue.push({
@@ -363,7 +223,6 @@
           output += item.to;
         } else if (this.frame >= item.startFrame) {
           complete = false;
-          // Randomly replace with scrambling chars during active frames
           if (Math.random() < 0.3) {
             item.current = this.scrambleCharset[Math.floor(Math.random() * this.scrambleCharset.length)];
           }
@@ -383,23 +242,19 @@
     }
   }
 
-  // Element handles
   const timeEl = document.getElementById('time-val');
   const dateEl = document.getElementById('date-val');
   const epochEl = document.getElementById('epoch-val');
-  const clockPanel = document.getElementById('clock-panel');
+  const clockPanel = document.getElementById('time-val');
   const datePanel = document.getElementById('date-panel');
   const epochPanel = document.getElementById('epoch-panel');
 
-  // Scrambler instances
   const timeScrambler = new TextScrambler(timeEl, "0123456789: APM");
   const dateScrambler = new TextScrambler(dateEl, "ABCDEFGHIJKLMNOPQRSTUVWXYZ, 0123456789");
   const epochScrambler = new TextScrambler(epochEl, "0123456789");
 
-  let lastTimeStr = "";
-  let forceFullTimeShuffle = true; // Force complete scramble on initial load
+  let forceFullTimeShuffle = true;
 
-  // Format date helper (IST timezone UTC+5:30)
   function getISTTime() {
     const now = new Date();
     const istOffset = 5.5 * 60 * 60 * 1000;
@@ -413,7 +268,6 @@
   function updateClock() {
     const istTime = getISTTime();
     
-    // 1. Time string conversion (HH:MM:SS AM/PM)
     let hr = istTime.getHours();
     let mn = istTime.getMinutes();
     let sc = istTime.getSeconds();
@@ -427,24 +281,19 @@
     const scStr = String(sc).padStart(2, '0');
     const timeStr = `${hrStr}:${mnStr}:${scStr} ${ampm}`;
 
-    // Scramble time: do a partial update (only changed digits shuffle)
-    // unless we explicitly trigger a full scramble (on load / hover / click)
     timeScrambler.scrambleTo(timeStr, !forceFullTimeShuffle);
     forceFullTimeShuffle = false;
 
-    // 2. Epoch string update
     const epochStr = String(getEpochSeconds());
     epochScrambler.scrambleTo(epochStr, true);
 
-    // 3. Date string update (only update date value once per cycle)
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const options = { weekday: 'short', month: 'short', day: 'numeric' };
     const dateStr = istTime.toLocaleDateString('en-US', options).toUpperCase();
     if (dateEl.textContent === "LOADING...") {
       dateScrambler.scrambleTo(dateStr, false);
     }
   }
 
-  // Trigger full-scramble on interactions
   clockPanel.addEventListener('mouseenter', () => {
     forceFullTimeShuffle = true;
     updateClock();
@@ -456,17 +305,16 @@
 
   datePanel.addEventListener('mouseenter', () => {
     const istTime = getISTTime();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const options = { weekday: 'short', month: 'short', day: 'numeric' };
     const dateStr = istTime.toLocaleDateString('en-US', options).toUpperCase();
-    dateScrambler.scrambleTo(dateStr, false); // Full shuffle on date hover
+    dateScrambler.scrambleTo(dateStr, false);
   });
 
   epochPanel.addEventListener('mouseenter', () => {
     const epochStr = String(getEpochSeconds());
-    epochScrambler.scrambleTo(epochStr, false); // Full shuffle on epoch hover
+    epochScrambler.scrambleTo(epochStr, false);
   });
 
-  // Ticks every second (exactly matches clock progression)
   setInterval(updateClock, 1000);
   updateClock();
 </script>
