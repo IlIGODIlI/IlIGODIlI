@@ -1,19 +1,19 @@
 
-🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧<!-- Hero Banner — animated 3D grid spelling ARYAN, signal wave + breathing cubes -->
+🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧<!-- Hero Banner — animated 3D grid spelling ARYAN, signal wave + breathing cubes -->
 <p align="center">
   <a href="https://IlIGODIlI.github.io/IlIGODIlI/title.html" target="_blank">
     <img src="title.svg" alt="Aryan Nair — Interactive Grid Banner" width="900" style="max-width: 100%; border-radius: 12px;" />
   </a>
 </p>
-🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧
+🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧🟧
 <br><br>
 <table>
 <tr>
-<td width="175"></td>
+<td width="150"></td>
 <td> Zero Trace</td></td>
-<td width="345"></td>
+<td width="300"></td>
 <td> RepoLens </td>
-<td width="275"></td>
+<td width="200"></td>
 </tr>
 </table>
 
